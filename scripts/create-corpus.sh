@@ -1,0 +1,2 @@
+
+zless ../../data/turkish-texts-tokenized.txt.gz | awk ' { where = 1; str = $0; while (where != 0) { where = match(str, /((\S+{2}) \S+) (de) ((\S+{2}) \S+)/, ary); if (where != 0) { print ary[1], ary[3], ary[4] }; str = substr(str, RSTART+RLENGTH); } }' > window-5.txt
