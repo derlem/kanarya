@@ -40,6 +40,7 @@ for deda in de da te ta ; do
 			else
 				nelements=5
 				position=3
+				# type=word-02
 			fi
 		fi
 		echo generating CoNLL format for positive and negative ${type} samples
@@ -49,3 +50,5 @@ for deda in de da te ta ; do
 	done
 
 done
+
+for dataset in train dev test ; do echo ${dataset} ; less de-da-te-ta.conll.${dataset} | pv -l -s `wc -l de-da-te-ta.conll.${dataset}` -p | awk 'BEGIN { srand(); sample = ""; } !/^$/ { sample = sample "\n" $0; } /^$/ { if (rand() < 0.0001 ) { print sample }; sample = ""; }' > de-da-te-ta.10E-4percent.conll.${dataset} ; done
