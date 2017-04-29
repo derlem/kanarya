@@ -10,10 +10,12 @@ perform_morph_analysis=0
 for deda in de da te ta ; do
 
 	echo extracting ${deda} word windows from ${corpus_filepath}
-	zless $corpus_filepath | pv -l -s 22M -p | awk ' { where = 1; str = $0; while (where != 0) { where = match(str, /(\S+ \S+ (\S+)) ('${deda}') (\S+ \S+ \S+)/, ary); if (where != 0) { print ary[1], ary[3], ary[4]; print ary[1] ary[3], ary[4]; print ary[2], ary[3]; concatenated_word = ary[2] ary[3]; print concatenated_word; print ""; }; str = substr(str, RSTART+RLENGTH); } }' > ${dataset_label}-correct-${deda}-word-02.txt
+	# zless $corpus_filepath | pv -l -s 22M -p | python scripts/sentence_tokenizer.py | head -10000 | awk ' { str = $0; where = match(str, /^(.*\S+ (\S+)) ('${deda}') (.+)$/, ary); if (where != 0) { print ary[1], ary[3], ary[4]; print ary[1] ary[3], ary[4]; print ary[2], ary[3]; concatenated_word = ary[2] ary[3]; print concatenated_word; print ""; }; }' > ${dataset_label}-correct-${deda}-word-02.txt
+	# zless $corpus_filepath | pv -l -s 22M -p | python scripts/sentence_tokenizer.py | head -10000 | awk ' /^(.*\S+ (\S+)) ('${deda}') (.+)$/ { left_part = ""; for (i = 1; i <=NF; i++ ) { left_part = left_part $i; if ($i == "'${deda}'") { }  } print ary[1], ary[3], ary[4]; print ary[1] ary[3], ary[4]; print ary[2], ary[3]; concatenated_word = ary[2] ary[3]; print concatenated_word; print ""; }; }' > ${dataset_label}-correct-${deda}-word-02.txt
+	zless $corpus_filepath | pv -l -s 22M -p | python scripts/sentence_tokenizer.py | head -10000 | python scripts/conll_sample_creator.py ${deda} word > ${dataset_label}-${deda}-word-03-conll.txt
 
 	echo extracting ${deda} suffix windows from ${corpus_filepath}
-	zless $corpus_filepath | pv -l -s 22M -p | awk ' { where = 1; str = $0; while (where != 0) { where = match(str, /(\S+ \S+ (\S+))('${deda}') (\S+ \S+ \S+)/, ary); if (where != 0) { print ary[1] ary[3], ary[4]; print ary[1], ary[3], ary[4]; concatenated_word = ary[2] ary[3]; print concatenated_word; print ary[2], ary[3]; print ""; }; str = substr(str, RSTART+RLENGTH); } }' > ${dataset_label}-correct-${deda}-suffix-02.txt
+	zless $corpus_filepath | pv -l -s 22M -p | python scripts/sentence_tokenizer.py | head -10000 | python scripts/conll_sample_creator.py ${deda} suffix > ${dataset_label}-${deda}-suffix-03-conll.txt
 
 	if (( $perform_morph_analysis == 1 )) ; then
 		echo concatenating
@@ -29,29 +31,36 @@ for deda in de da te ta ; do
 		less ${dataset_label}-correct-${deda}-word-02-combined.txt | awk ' NR % 6 == 5 { if ($1 == 0) { count += 1 } } /^$/ { record_count += 1 } END { print count/record_count, count, record_count }' ;
 	fi
 
-	for type in word-02-combined suffix-02 ; do
-		if [ "${type}" == "suffix-02" ] ; then
-			nelements=5
-			position=4
-		else
-			if (( $perform_morph_analysis == 1 )) ; then
-				nelements=6
-				position=3
-			else
-				nelements=5
-				position=3
-				# type=word-02
-			fi
-		fi
-		echo generating CoNLL format for positive and negative ${type} samples
-		less ${dataset_label}-correct-${deda}-${type}.txt | pv -l -s `wc -l ${dataset_label}-correct-${deda}-${type}.txt` -p | awk ' NR % '${nelements}' == 1 { for (i = 1; i <= NF; i++) { print $i, "O"; } ; print ""; } NR % '${nelements}' == 2 { for (i = 1; i <= NF; i++) { if (i == '${position}') { label = "B-ERR"; } else { label = "O" }; print $i, label; } print ""; }' > ${dataset_label}-${deda}-${type}-conll.txt
-		echo seperating the dataset into train and test parts
+	for type in word-03 suffix-03 ; do
+#		if [ "${type}" == "suffix-02" ] ; then
+#			nelements=5
+#			position=4
+#		else
+#			if (( $perform_morph_analysis == 1 )) ; then
+#				nelements=6
+#				position=3
+#			else
+#				nelements=5
+#				position=3
+#				# type=word-02
+#			fi
+#		fi
+#		echo generating CoNLL format for positive and negative ${type} samples
+#		less ${dataset_label}-correct-${deda}-${type}.txt | pv -l -s `wc -l ${dataset_label}-correct-${deda}-${type}.txt` -p | awk ' NR % '${nelements}' == 1 { for (i = 1; i <= NF; i++) { print $i, "O"; } ; print ""; } NR % '${nelements}' == 2 { for (i = 1; i <= NF; i++) { if (i == '${position}') { label = "B-ERR"; } else { label = "O" }; print $i, label; } print ""; }' > ${dataset_label}-${deda}-${type}-conll.txt
+		echo seperating the dataset into train and test parts \(${type}\)
 		less ${dataset_label}-${deda}-${type}-conll.txt | pv -l -s `wc -l ${dataset_label}-${deda}-${type}-conll.txt` -p | awk 'BEGIN { srand(); sample = ""; second = 0; } !/^$/ { sample = sample "\n" $0; } /^$/ { if (second == 0) { sample = sample "\n"; second = 1 } else if (second == 1) { if (rand() < 0.1 ) { print sample > "'${dataset_label}'-correct-'${deda}'-'${type}'-conll.txt.test" } else if (rand() < 0.2 ) { print sample > "'${dataset_label}'-correct-'${deda}'-'${type}'-conll.txt.dev" } else { print sample > "'${dataset_label}'-correct-'${deda}'-'${type}'-conll.txt.train" }; sample = ""; second = 0; } }'
 	done
 
 done
 
 # TODO: get rid of sed at the end
-for dataset in train dev test ; do echo ${dataset} ; cat window-5-*.${dataset} > de-da-te-ta.conll.${dataset} ; sed -i '1d' de-da-te-ta.conll.${dataset} ; done
+for dataset in train dev test ; do
+	echo removing 1st line of ${dataset} dataset ;
+	cat ${dataset_label}-*.${dataset} > de-da-te-ta.conll.${dataset} ;
+	sed -i '1d' de-da-te-ta.conll.${dataset} ;
+done
 
-for dataset in train dev test ; do echo ${dataset}; less de-da-te-ta.conll.${dataset} | awk 'BEGIN { srand(); sample = ""; second = 0; } !/^$/ { sample = sample "\n" $0; } /^$/ { if (second == 0) { sample = sample "\n"; second = 1 } else if (second == 1) { if (rand() < 0.0001 ) { print sample > "de-da-te-ta.10E-4percent.conll.'${dataset}'" } sample = ""; second = 0; } }' ; done
+for dataset in train dev test ; do
+	echo ${dataset};
+	less de-da-te-ta.conll.${dataset} | awk 'BEGIN { srand(); sample = ""; second = 0; } !/^$/ { sample = sample "\n" $0; } /^$/ { if (second == 0) { sample = sample "\n"; second = 1 } else if (second == 1) { if (rand() < 0.0001 ) { print sample > "de-da-te-ta.10E-4percent.conll.'${dataset}'" } sample = ""; second = 0; } }' ;
+done
