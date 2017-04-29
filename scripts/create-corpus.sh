@@ -51,4 +51,7 @@ for deda in de da te ta ; do
 
 done
 
-for dataset in train dev test ; do echo ${dataset} ; less de-da-te-ta.conll.${dataset} | pv -l -s `wc -l de-da-te-ta.conll.${dataset}` -p | awk 'BEGIN { srand(); sample = ""; } !/^$/ { sample = sample "\n" $0; } /^$/ { if (rand() < 0.0001 ) { print sample }; sample = ""; }' > de-da-te-ta.10E-4percent.conll.${dataset} ; done
+# TODO: get rid of sed at the end
+for dataset in train dev test ; do echo ${dataset} ; cat window-5-*.${dataset} > de-da-te-ta.conll.${dataset} ; sed -i '1d' de-da-te-ta.conll.${dataset} ; done
+
+for dataset in train dev test ; do echo ${dataset}; less de-da-te-ta.conll.${dataset} | awk 'BEGIN { srand(); sample = ""; second = 0; } !/^$/ { sample = sample "\n" $0; } /^$/ { if (second == 0) { sample = sample "\n"; second = 1 } else if (second == 1) { if (rand() < 0.0001 ) { print sample > "de-da-te-ta.10E-4percent.conll.'${dataset}'" } sample = ""; second = 0; } }' ; done
