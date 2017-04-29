@@ -56,7 +56,7 @@ done
 # TODO: get rid of sed at the end
 for dataset in train dev test ; do
 	echo removing 1st line of ${dataset} dataset ;
-	cat ${dataset_label}-*.${dataset} > de-da-te-ta.conll.${dataset} ;
+	cat ${dataset_label}-*-word-03-*.${dataset} ${dataset_label}-*-suffix-03-*.${dataset} > de-da-te-ta.conll.${dataset} ;
 	sed -i '1d' de-da-te-ta.conll.${dataset} ;
 done
 
