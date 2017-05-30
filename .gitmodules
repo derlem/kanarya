@@ -1,0 +1,3 @@
+[submodule "ner-tagger-tensorflow"]
+	path = ner-tagger-tensorflow
+	url = git@github.com:onurgu/ner-tagger-tensorflow.git
