@@ -12,10 +12,10 @@ for deda in de da te ta ; do
 	echo extracting ${deda} word windows from ${corpus_filepath}
 	# zless $corpus_filepath | pv -l -s 22M -p | python scripts/sentence_tokenizer.py | head -10000 | awk ' { str = $0; where = match(str, /^(.*\S+ (\S+)) ('${deda}') (.+)$/, ary); if (where != 0) { print ary[1], ary[3], ary[4]; print ary[1] ary[3], ary[4]; print ary[2], ary[3]; concatenated_word = ary[2] ary[3]; print concatenated_word; print ""; }; }' > ${dataset_label}-correct-${deda}-word-02.txt
 	# zless $corpus_filepath | pv -l -s 22M -p | python scripts/sentence_tokenizer.py | head -10000 | awk ' /^(.*\S+ (\S+)) ('${deda}') (.+)$/ { left_part = ""; for (i = 1; i <=NF; i++ ) { left_part = left_part $i; if ($i == "'${deda}'") { }  } print ary[1], ary[3], ary[4]; print ary[1] ary[3], ary[4]; print ary[2], ary[3]; concatenated_word = ary[2] ary[3]; print concatenated_word; print ""; }; }' > ${dataset_label}-correct-${deda}-word-02.txt
-	zless $corpus_filepath | pv -l -s 22M -p | python scripts/sentence_tokenizer.py | head -10000 | python scripts/conll_sample_creator.py ${deda} word > ${dataset_label}-${deda}-word-03-conll.txt
+	zless $corpus_filepath | pv -l -s 22M -p | python scripts/sentence_tokenizer.py | python scripts/conll_sample_creator.py ${deda} word > ${dataset_label}-${deda}-word-03-conll.txt
 
 	echo extracting ${deda} suffix windows from ${corpus_filepath}
-	zless $corpus_filepath | pv -l -s 22M -p | python scripts/sentence_tokenizer.py | head -10000 | python scripts/conll_sample_creator.py ${deda} suffix > ${dataset_label}-${deda}-suffix-03-conll.txt
+	zless $corpus_filepath | pv -l -s 22M -p | python scripts/sentence_tokenizer.py | python scripts/conll_sample_creator.py ${deda} suffix > ${dataset_label}-${deda}-suffix-03-conll.txt
 
 	if (( $perform_morph_analysis == 1 )) ; then
 		echo concatenating
