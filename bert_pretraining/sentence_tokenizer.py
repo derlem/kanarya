@@ -1,8 +1,8 @@
 from nltk.tokenize import sent_tokenize
-
 import sys
-
 import re
+from time import sleep
+import subprocess
 
 for line in sys.stdin:
     line = re.sub(r'\s([?.!"](?:\s|$))', r'\1', line)
