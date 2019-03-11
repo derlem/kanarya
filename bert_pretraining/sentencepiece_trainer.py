@@ -7,7 +7,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--input")
     parser.add_argument("--model_prefix", default="m")
-    parser.add_argument("--vocab_size", type=int, default=30000)
+    parser.add_argument("--vocab_size", type=int, default=28996)
     parser.add_argument("--model_type", default="bpe")
     #parser.add_argument("--input_sentence_size", type=int)
     parser.add_argument("--control_symbols", default="[SEP],[CLS],[PAD],[MASK]")
