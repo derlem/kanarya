@@ -1,0 +1,1 @@
+python3 sentencepiece_trainer.py --input=$1
