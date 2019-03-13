@@ -1,1 +1,1 @@
-less $1 | sed 's/ ,/,/g' > $2
+less $1 | sed 's/ ,/,/g'
