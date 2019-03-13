@@ -15,3 +15,4 @@ for line in sys.stdin:
             print(sentence, end=" ")
         else:
             print(sentence)
+    print(sentence)
