@@ -7,7 +7,7 @@ output_file="pretraining_datas/data"
 for i in {1..51}
 do
 	input_file="$input_file_$i.txt"
-	output_file="$output_file$_i.tfrecord"
+	output_file="$output_file_$i.tfrecord"
 	echo "Started creating pretraining data for file: $input_file"
 	./run_create_pretraining_data.sh $input_file $output_file $vocab_file
 	echo "Completed creating pretraining data for file: $input_file"
