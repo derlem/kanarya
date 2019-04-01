@@ -12,9 +12,9 @@ def get_sentence_number(fname):
     number_of_sentences = 0
 
     with open() as f:
-    for line in f:
-       if line.strip():
-          number_of_sentences += 1
+        for line in f:
+           if line.strip():
+              number_of_sentences += 1
     return number_of_sentences
 
 if __name__ == "__main__":
