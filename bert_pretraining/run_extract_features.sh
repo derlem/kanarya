@@ -1,0 +1,1 @@
+python3 ../bert_pretraining/bert/extract_features.py --input_file=$1 --output_file=$2 --vocab_file=../m.model --bert_config_file=../bert/bert_config-small-turkish.json --init_checkpoint=$3 --layers=-2 --max_seq_length=128 --batch_size=8 
