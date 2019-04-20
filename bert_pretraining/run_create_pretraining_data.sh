@@ -1,1 +1,1 @@
-python3 ./bert/create_pretraining_data.py --input_file=$1 --output_file=$2 --vocab_file=$3 --do_lower_case=False --max_seq_length=128 --max_predictions_per_seq=20 --masked_lm_prob=0.15 --random_seed=12345 --dupe_factor=5
+python3 ./bert/create_pretraining_data.py --input_file=$1 --output_file=$2 --vocab_file=$3 --do_lower_case=False --max_seq_length=256 --max_predictions_per_seq=40 --masked_lm_prob=0.15 --random_seed=12345 --dupe_factor=5
