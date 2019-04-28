@@ -12,6 +12,8 @@ corpus: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus(data_folder, column
 tag_type = 'ner'
 tag_dictionary = corpus.make_tag_dictionary(tag_type=tag_type)
 #tag_dictionary: Dictionary = Dictionary.load('../vocab/m.model')
+
+#custom_embedding = WordEmbeddings('../../glove/GloVe/vectors_converted_to_gensim.gensim')
 embedding_types: List[TokenEmbeddings] = [WordEmbeddings('glove'), WordEmbeddings('tr')]
 embeddings: StackedEmbeddings = StackedEmbeddings(embeddings=embedding_types)
 
