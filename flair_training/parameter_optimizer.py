@@ -16,9 +16,9 @@ corpus1: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus(data_folder, colum
 corpus2: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus(data_folder, columns, train_file="de-da-te-ta.10E-4percent.conll.84max.train.txt", test_file="de-da-te-ta.10E-4percent.conll.84max.test.txt", dev_file="de-da-te-ta.10E-4percent.conll.84max.dev.txt")
 corpus = MultiCorpus([corpus1, corpus2])
 
-#custom_embedding = WordEmbeddings('../../glove/GloVe/vectors_converted_to_gensim.gensim')
-bert_embedding = BertEmbeddings('bert-embedding-files/')
-word_embeddings = StackedEmbeddings([bert_embedding])
+custom_embedding = WordEmbeddings('../../glove/GloVe/vectors_converted_to_gensim.gensim')
+#bert_embedding = BertEmbeddings('bert-embedding-files/')
+word_embeddings = StackedEmbeddings([custom_embedding, WordEmbeddings('tr')])
 
 search_space = SearchSpace()
 search_space.add(Parameter.EMBEDDINGS, hp.choice, options=[word_embeddings])
