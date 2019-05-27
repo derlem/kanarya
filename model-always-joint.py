@@ -21,7 +21,7 @@ for sentence in corpus:
 				tp += 1
 			elif tag == 'O':
 				fp += 1
-		else:
+		elif word[-2:] == 'de' or word[-2:] == 'da' or word[-2:] == 'te' or word[-2:] == 'ta':
 			if tag == 'B-ERR':
 				fn += 1 
 			elif tag == 'O':
