@@ -16,16 +16,17 @@ for sentence in corpus:
 			continue
 		word = pair.split()[0]
 		tag = pair.split()[1]
-		if word != 'de' and word != 'da' and (word[-2:] == 'de' or word[-2:] == 'da' or word[-2:] == 'te' or word[-2:] == 'ta'):
-			if tag == 'B-ERR':
-				tp += 1
-			elif tag == 'O':
-				fp += 1
-		elif word == 'de' or word == 'da':
+		if word == 'de' or word == 'da':
 			if tag == 'B-ERR':
 				fn += 1 
 			elif tag == 'O':
 				tn += 1
+		elif word[-2:] == 'de' or word[-2:] == 'da' or word[-2:] == 'te' or word[-2:] == 'ta':
+			if tag == 'B-ERR':
+				tp += 1
+			elif tag == 'O':
+				fp += 1
+		
 
 print('true positive ' + str(tp))
 print('true negative ' + str(tn))
