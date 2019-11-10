@@ -14,7 +14,7 @@ python ./bert_new/bert/run_pretraining.py \
       --output_dir=$2 \
       --do_train=True \
       --do_eval=True \
-      --bert_config_file=bert_config-small-turkish.json \
+      --bert_config_file=bert_config_small_turkish.json \
       --train_batch_size=16 \
       --max_seq_length=256 \
       --max_predictions_per_seq=40 \
