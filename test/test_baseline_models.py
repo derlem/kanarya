@@ -1,7 +1,7 @@
 import argparse
 import os
 
-files = [os.path.join("./data", filename) for filename in ['de-da-te-ta.10E-4percent.conll.dev',
+files = [os.path.join("../data", filename) for filename in ['de-da-te-ta.10E-4percent.conll.dev',
                                                            'de-da-te-ta.10E-4percent.conll.train',
                                                            'de-da-te-ta.10E-4percent.conll.test',
                                                            'de-da-te-ta.10E-4percent.conll.84max.dev',
