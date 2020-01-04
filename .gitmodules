@@ -1,6 +1,3 @@
-[submodule "ner-tagger-tensorflow"]
-	path = ner-tagger-tensorflow
-	url = git@github.com:onurgu/ner-tagger-tensorflow.git
 [submodule "bert_pretraining/bert"]
 	path = bert_pretraining/bert
 	url = https://github.com/onurgu/bert.git
