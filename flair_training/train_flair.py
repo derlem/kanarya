@@ -7,9 +7,15 @@ import flair, torch
 flair.device = torch.device('cpu') 
 
 columns = {0: 'text', 1: 'ner'}
-data_folder = '../'
-corpus1: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus(data_folder, columns, train_file="de-da-te-ta.10E-4percent.conll.train.txt", test_file="de-da-te-ta.10E-4percent.conll.test.txt", dev_file="de-da-te-ta.10E-4percent.conll.dev.txt")
-corpus2: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus(data_folder, columns, train_file="de-da-te-ta.10E-4percent.conll.84max.train.txt", test_file="de-da-te-ta.10E-4percent.conll.84max.test.txt", dev_file="de-da-te-ta.10E-4percent.conll.84max.dev.txt")
+data_folder = '../data'
+corpus1: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus(data_folder, columns,
+                                                              train_file="de-da-te-ta.10E-4percent.conll.train.txt",
+                                                              test_file="de-da-te-ta.10E-4percent.conll.test.txt",
+                                                              dev_file="de-da-te-ta.10E-4percent.conll.dev.txt")
+corpus2: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus(data_folder, columns,
+                                                              train_file="de-da-te-ta.10E-4percent.conll.84max.train.txt",
+                                                              test_file="de-da-te-ta.10E-4percent.conll.84max.test.txt",
+                                                              dev_file="de-da-te-ta.10E-4percent.conll.84max.dev.txt")
 corpus = MultiCorpus([corpus1, corpus2])
 tag_type = 'ner'
 tag_dictionary = corpus.make_tag_dictionary(tag_type=tag_type)

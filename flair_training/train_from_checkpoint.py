@@ -10,8 +10,11 @@ import flair, torch
 flair.device = torch.device('cpu')
 
 columns = {0: 'text', 1: 'ner'}
-data_folder = '../'
-corpus: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus(data_folder, columns, train_file="de-da-te-ta.10E-4percent.conll.84max.train.txt", test_file="de-da-te-ta.10E-4percent.conll.84max.test.txt", dev_file="de-da-te-ta.10E-4percent.conll.84max.dev.txt")
+data_folder = '../data'
+corpus: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus(data_folder, columns,
+                                                             train_file="de-da-te-ta.10E-4percent.conll.84max.train.txt",
+                                                             test_file="de-da-te-ta.10E-4percent.conll.84max.test.txt",
+                                                             dev_file="de-da-te-ta.10E-4percent.conll.84max.dev.txt")
 
 trainer = ModelTrainer.load_from_checkpoint(Path('./models/example-ner-tr-embedding/checkpoint.pt'), 'SequenceTagger', corpus)
 
