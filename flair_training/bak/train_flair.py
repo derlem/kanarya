@@ -31,12 +31,22 @@ embeddings: StackedEmbeddings = StackedEmbeddings(embeddings=embedding_types)
 
 from flair.models import SequenceTagger
 
-tagger: SequenceTagger = SequenceTagger(hidden_size=256, embeddings=embeddings, tag_dictionary=tag_dictionary, tag_type=tag_type, use_crf=True, use_rnn=True, rnn_layers=2)
+tagger: SequenceTagger = SequenceTagger(hidden_size=256,
+                                        embeddings=embeddings,
+                                        tag_dictionary=tag_dictionary,
+                                        tag_type=tag_type,
+                                        use_crf=True,
+                                        use_rnn=True,
+                                        rnn_layers=2)
 
 from flair.trainers import ModelTrainer
 
 trainer: ModelTrainer = ModelTrainer(tagger, corpus)
 
-trainer.train('./models/tr_glove2_word2vec_embedding_150_epochs_0.1_lr', learning_rate=0.1, mini_batch_size=16, max_epochs=150, checkpoint=True)
+trainer.train('./models/tr_glove2_word2vec_embedding_150_epochs_0.1_lr',
+              learning_rate=0.1,
+              mini_batch_size=16,
+              max_epochs=150,
+              checkpoint=True)
 
 
