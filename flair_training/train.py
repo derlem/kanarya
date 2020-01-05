@@ -22,9 +22,9 @@ def load_corpus(data_folder, tag_type):
     columns = {0: 'text', 1: 'ner'}
 
     corpus: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus(data_folder, columns,
-                                                                  train_file="de-da-te-ta.10E-4percent.conll.train",
-                                                                  test_file="de-da-te-ta.10E-4percent.conll.test",
-                                                                  dev_file="de-da-te-ta.10E-4percent.conll.dev")
+                                                                  train_file="de-da-te-ta.10E-4percent.conll.84max.train",
+                                                                  test_file="de-da-te-ta.10E-4percent.conll.84max.test",
+                                                                  dev_file="de-da-te-ta.10E-4percent.conll.84max.dev")
 
     tag_dictionary = corpus.make_tag_dictionary(tag_type=tag_type)
 
@@ -35,7 +35,7 @@ def create_embeddings(params):
     embedding_type = params["embedding_type"]
     assert embedding_type in ["bert", "flair", "char"]
     if embedding_type == "bert":
-        bert_embedding = BertEmbeddings(params["bert_model_dirpath"])
+        bert_embedding = BertEmbeddings(params["bert_model_dirpath_or_name"])
 
         embedding_types: List[TokenEmbeddings] = [bert_embedding]
         embeddings: StackedEmbeddings = StackedEmbeddings(embeddings=embedding_types)
@@ -56,7 +56,7 @@ def create_embeddings(params):
 
 
 def create_model(params, tag_dictionary):
-    embeddings = create_embeddings(params["embedding_type"])
+    embeddings = create_embeddings(params)
     tagger: SequenceTagger = SequenceTagger(hidden_size=256,
                                             embeddings=embeddings,
                                             tag_dictionary=tag_dictionary,
@@ -79,7 +79,7 @@ def select_hyperparameters(params, corpus):
     search_space.add(Parameter.DROPOUT, hp.uniform, low=0.2, high=0.7)
     # search_space.add(Parameter.LEARNING_RATE, hp.loguniform, low=-np.log(0.00001), high=np.log(1.0))
     # search_space.add(Parameter.OPTIMIZER, hp.choice, options=[Parameter.NESTEROV])
-    search_space.add(Parameter.MINI_BATCH_SIZE, hp.choice, options=[16, 32])
+    search_space.add(Parameter.MINI_BATCH_SIZE, hp.choice, options=[16])
 
     if not os.path.exists("hyperparameter_search"):
         print("Creating the hyperparameter_search directory for hyperparameter selection process...")
@@ -110,6 +110,7 @@ def find_learning_rate(trainer, params):
     plotter = Plotter()
     plotter.plot_learning_rate(learning_rate_tsv)
 
+
 def create_trainer(tagger, corpus):
     trainer: ModelTrainer = ModelTrainer(tagger, corpus)
     return trainer
@@ -130,27 +131,34 @@ def main():
 
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--command", choices=["hyperparameter_search", "train"])
+    parser.add_argument("--command", choices=["hyperparameter_search", "train"], required=True)
     parser.add_argument("--embedding_type", choices=["bert", "flair", "char"])
     parser.add_argument("--model_name", default="default_model_name")
-    parser.add_argument("--bert_model_dirpath", default="../outputs/bert_model/")
+    parser.add_argument("--bert_model_dirpath_or_name", default="bert-base-multilingual-cased")
     parser.add_argument("--model_output_dirpath", default="../outputs/tr_bert_embedding_1_epochs_0.15_lr")
     parser.add_argument("--learning_rate", default=0.05)
     parser.add_argument("--max_epochs", default=10)
     parser.add_argument("--mini_batch_size", default=16)
 
+    parser.add_argument("--data_folder", default="./data")
 
+    parser.add_argument("--device", default="gpu", choices=["cpu", "gpu"])
 
     args = parser.parse_args()
 
     command = args.command
     embedding_type = args.embedding_type
     model_name = args.model_name
-    bert_model_dirpath = args.bert_model_dirpath
+    bert_model_dirpath_or_name = args.bert_model_dirpath_or_name # "../outputs/bert_model/"
     model_output_dirpath = args.model_output_dirpath
     learning_rate = args.learning_rate
     max_epochs = args.max_epochs
     mini_batch_size = args.mini_batch_size
+    data_folder = args.data_folder
+    device = args.device
+
+    if device != "gpu" and device == "cpu":
+        flair.device = torch.device('cpu')
 
     corpus, tag_dictionary = load_corpus(data_folder, tag_type)
 
@@ -158,7 +166,7 @@ def main():
         "model_name": model_name,
         "embedding_type": embedding_type,
         "tag_type": tag_type,
-        "bert_model_dirpath": bert_model_dirpath,
+        "bert_model_dirpath_or_name": bert_model_dirpath_or_name,
         "model_output_dirpath": model_output_dirpath,
         "learning_rate": learning_rate,
         "max_epochs": max_epochs,
