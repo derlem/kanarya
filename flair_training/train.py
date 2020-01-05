@@ -10,6 +10,7 @@ from flair.hyperparameter import SearchSpace, Parameter, SequenceTaggerParamSele
 from flair.hyperparameter.param_selection import OptimizationValue
 from flair.models import SequenceTagger
 from flair.trainers import ModelTrainer
+from flair.training_utils import EvaluationMetric
 from hyperopt import hp
 import numpy as np
 import torch
@@ -76,7 +77,7 @@ def select_hyperparameters(params, corpus):
     search_space.add(Parameter.HIDDEN_SIZE, hp.choice, options=[32, 64, 128, 256, 512])
     # search_space.add(Parameter.HIDDEN_SIZE, hp.choice, options=[256])
     search_space.add(Parameter.RNN_LAYERS, hp.choice, options=[1, 2])
-    search_space.add(Parameter.DROPOUT, hp.uniform, low=0.2, high=0.7)
+    search_space.add(Parameter.DROPOUT, hp.choice, options=[0.3, 0.4, 0.5, 0.6, 0.7])
     # search_space.add(Parameter.LEARNING_RATE, hp.loguniform, low=-np.log(0.00001), high=np.log(1.0))
     # search_space.add(Parameter.OPTIMIZER, hp.choice, options=[Parameter.NESTEROV])
     search_space.add(Parameter.MINI_BATCH_SIZE, hp.choice, options=[16])
@@ -85,12 +86,16 @@ def select_hyperparameters(params, corpus):
         print("Creating the hyperparameter_search directory for hyperparameter selection process...")
         os.mkdir("hyperparameter_search")
 
+    print("Downsampling the training set to %10 of the original...")
+    corpus.downsample(percentage=0.1, only_downsample_train=True)
+
     param_selector = SequenceTaggerParamSelector(corpus=corpus,
                                                  tag_type=params['tag_type'],
                                                  base_path=os.path.join("hyperparameter_search",
                                                                         params['model_output_dirpath']),
-                                                 max_epochs=10,
-                                                 training_runs=1,
+                                                 max_epochs=5,
+                                                 training_runs=3,
+                                                 evaluation_metric=EvaluationMetric.MICRO_F1_SCORE,
                                                  optimization_value=OptimizationValue.DEV_SCORE)
 
     param_selector.optimize(search_space, max_evals=10)
