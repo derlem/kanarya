@@ -1,4 +1,5 @@
 import os
+import json
 from typing import List
 
 
@@ -68,6 +69,12 @@ def create_model(params, tag_dictionary):
     return tagger, embeddings
 
 
+def load_model(model_output_dirpath):
+    final_model_filepath = os.path.join(model_output_dirpath, "final-model.pt")
+    tagger = SequenceTagger.load_from_file(final_model_filepath)
+    return tagger
+
+
 def select_hyperparameters(params, corpus):
 
     search_space = SearchSpace()
@@ -132,6 +139,20 @@ def train(params, tagger, corpus):
                   checkpoint=True)
 
 
+def save_params(params, filepath):
+
+    with open(filepath, "w") as f:
+        json.dump(params, f)
+
+
+def load_params(filepath):
+
+    with open(filepath, "w") as f:
+        params = json.load(f)
+
+    return params
+
+
 def main():
 
     import argparse
@@ -140,7 +161,7 @@ def main():
     parser.add_argument("--embedding_type", choices=["bert", "flair", "char"])
     parser.add_argument("--model_name", default="default_model_name")
     parser.add_argument("--bert_model_dirpath_or_name", default="bert-base-multilingual-cased")
-    parser.add_argument("--model_output_dirpath", default="../outputs/tr_bert_embedding_1_epochs_0.15_lr")
+    parser.add_argument("--model_output_dirpath", default=None)
     parser.add_argument("--learning_rate", default=0.05)
     parser.add_argument("--max_epochs", default=10)
     parser.add_argument("--mini_batch_size", default=16)
@@ -155,7 +176,15 @@ def main():
     embedding_type = args.embedding_type
     model_name = args.model_name
     bert_model_dirpath_or_name = args.bert_model_dirpath_or_name # "../outputs/bert_model/"
+
     model_output_dirpath = args.model_output_dirpath
+    if model_output_dirpath is None and command != "evaluate":
+        if not os.path.exists("./models"):
+            os.mkdir("./models")
+        model_output_dirpath = "./models/%s" % model_name
+        if not os.path.exists(model_output_dirpath):
+            os.mkdir(model_output_dirpath)
+
     learning_rate = args.learning_rate
     max_epochs = args.max_epochs
     mini_batch_size = args.mini_batch_size
@@ -192,7 +221,24 @@ def main():
         tagger, embeddings = create_model(params,
                                           tag_dictionary)
 
+        tag_dictionary.save(os.path.join(params["model_output_dirpath"], "tag_dictionary.pickle"))
+
+        save_params(params,
+                    os.path.join(params["model_output_dirpath"], "params.json"))
+
         train(params, tagger, corpus)
+    elif command == "evaluate":
+        tag_dictionary: Dictionary = Dictionary.load_from_file(os.path.join(params["model_output_dirpath"],
+                                                                            "tag_dictionary.pickle"))
+        params = load_params(os.path.join(model_output_dirpath,
+                                          "params.json"))
+        tagger: SequenceTagger = load_model(model_output_dirpath)
+
+        trainer = create_trainer(tagger, corpus)
+        trainer.evaluate(tagger, corpus.test, eval_mini_batch_size=16)
+
+        for sentence in corpus.test:
+            tagger.predict(sentence)
 
 
 if __name__ == "__main__":
