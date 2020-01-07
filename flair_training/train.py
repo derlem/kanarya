@@ -1,5 +1,6 @@
 import os
 import json
+from pathlib import Path
 from typing import List
 
 
@@ -129,7 +130,14 @@ def create_trainer(tagger, corpus):
 
 
 def train(params, tagger, corpus):
-    trainer = create_trainer(tagger, corpus)
+    if tagger is not None:
+        trainer = create_trainer(tagger, corpus)
+    else:
+        print("Resuming training")
+        trainer = ModelTrainer.load_from_checkpoint(Path(os.path.join(params["model_output_dirpath"],
+                                                                 "checkpoint.pt")),
+                                                    'SequenceTagger',
+                                                    corpus)
 
     # trainer.train('./models/tr_glove2_word2vec_embedding_150_epochs_0.15_lr', learning_rate=0.15, mini_batch_size=16, max_epochs=150, checkpoint=True)
     trainer.train(params["model_output_dirpath"],
@@ -157,7 +165,10 @@ def main():
 
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--command", choices=["hyperparameter_search", "train", "evaluate"], required=True)
+    parser.add_argument("--command", choices=["hyperparameter_search",
+                                              "train",
+                                              "resume_train",
+                                              "evaluate"], required=True)
     parser.add_argument("--embedding_type", choices=["bert", "flair", "char"])
     parser.add_argument("--model_name", default="default_model_name")
     parser.add_argument("--bert_model_dirpath_or_name", default="bert-base-multilingual-cased")
@@ -230,6 +241,10 @@ def main():
                     os.path.join(params["model_output_dirpath"], "params.json"))
 
         train(params, tagger, corpus)
+    elif command == "resume_train":
+        params = load_params(os.path.join(model_output_dirpath,
+                                          "params.json"))
+        train(params, None, corpus)
     elif command == "evaluate":
         try:
             tag_dictionary: Dictionary = Dictionary.load_from_file(os.path.join(model_output_dirpath,
