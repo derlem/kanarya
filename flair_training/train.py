@@ -147,8 +147,8 @@ def save_params(params, filepath):
 
 def load_params(filepath):
 
-    with open(filepath, "w") as f:
-        params = json.load(f)
+    with open(filepath, "r") as f:
+        params = json.loads("\n".join(f.readlines()))
 
     return params
 
@@ -157,7 +157,7 @@ def main():
 
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--command", choices=["hyperparameter_search", "train"], required=True)
+    parser.add_argument("--command", choices=["hyperparameter_search", "train", "evaluate"], required=True)
     parser.add_argument("--embedding_type", choices=["bert", "flair", "char"])
     parser.add_argument("--model_name", default="default_model_name")
     parser.add_argument("--bert_model_dirpath_or_name", default="bert-base-multilingual-cased")
@@ -221,6 +221,9 @@ def main():
         tagger, embeddings = create_model(params,
                                           tag_dictionary)
 
+        if not os.path.exists(params["model_output_dirpath"]):
+            os.mkdir(params["model_output_dirpath"])
+
         tag_dictionary.save(os.path.join(params["model_output_dirpath"], "tag_dictionary.pickle"))
 
         save_params(params,
@@ -228,17 +231,19 @@ def main():
 
         train(params, tagger, corpus)
     elif command == "evaluate":
-        tag_dictionary: Dictionary = Dictionary.load_from_file(os.path.join(params["model_output_dirpath"],
+        try:
+            tag_dictionary: Dictionary = Dictionary.load_from_file(os.path.join(model_output_dirpath,
+                                                                            "tag_dictionary.pickle"))
+        except FileNotFoundError:
+            print("tag_dictionary is not found at %s" % os.path.join(model_output_dirpath,
                                                                             "tag_dictionary.pickle"))
         params = load_params(os.path.join(model_output_dirpath,
                                           "params.json"))
         tagger: SequenceTagger = load_model(model_output_dirpath)
 
         trainer = create_trainer(tagger, corpus)
-        trainer.evaluate(tagger, corpus.test, eval_mini_batch_size=16)
-
-        for sentence in corpus.test:
-            tagger.predict(sentence)
+        trainer.evaluate(tagger, corpus.test, eval_mini_batch_size=16,
+                         out_path=os.path.join(params["model_output_dirpath"], "evaluation.txt"))
 
 
 if __name__ == "__main__":
