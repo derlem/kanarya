@@ -16,10 +16,12 @@ from flair.training_utils import EvaluationMetric
 from hyperopt import hp
 import numpy as np
 import torch
+from torch.optim import Adam, SGD
 
 data_folder = '../data'
 tag_type = 'ner'
 
+optimizers_dict = {"sgd": SGD, "adam": Adam}
 
 def load_corpus(data_folder, tag_type):
     columns = {0: 'text', 1: 'ner'}
@@ -30,6 +32,8 @@ def load_corpus(data_folder, tag_type):
                                                                   dev_file="de-da-te-ta.10E-4percent.conll.84max.dev")
 
     tag_dictionary = corpus.make_tag_dictionary(tag_type=tag_type)
+
+    print(corpus.obtain_statistics(tag_type=tag_type))
 
     return corpus, tag_dictionary
 
@@ -90,10 +94,6 @@ def select_hyperparameters(params, corpus):
     # search_space.add(Parameter.OPTIMIZER, hp.choice, options=[Parameter.NESTEROV])
     search_space.add(Parameter.MINI_BATCH_SIZE, hp.choice, options=[16])
 
-    if not os.path.exists("hyperparameter_search"):
-        print("Creating the hyperparameter_search directory for hyperparameter selection process...")
-        os.mkdir("hyperparameter_search")
-
     print("Downsampling the training set to %10 of the original...")
     corpus.downsample(percentage=0.1, only_downsample_train=True)
 
@@ -117,15 +117,20 @@ def find_learning_rate(trainer, params):
 
     learning_rate_tsv = trainer.find_learning_rate(os.path.join("hyperparameter_search",
                                                                 params['model_output_dirpath']),
-                                                   'learning_rate_search_log.tsv')
+                                                   'learning_rate_search_log.tsv',
+                                                   iterations=400,
+                                                   stop_early=False,
+                                                   mini_batch_size=16)
 
     from flair.visual.training_curves import Plotter
     plotter = Plotter()
     plotter.plot_learning_rate(learning_rate_tsv)
 
 
-def create_trainer(tagger, corpus):
-    trainer: ModelTrainer = ModelTrainer(tagger, corpus)
+def create_trainer(tagger, corpus, optimizer = SGD):
+    trainer: ModelTrainer = ModelTrainer(tagger,
+                                         corpus,
+                                         optimizer=optimizer)
     return trainer
 
 
@@ -166,6 +171,7 @@ def main():
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--command", choices=["hyperparameter_search",
+                                              "find_learning_rate",
                                               "train",
                                               "resume_train",
                                               "evaluate"], required=True)
@@ -173,9 +179,10 @@ def main():
     parser.add_argument("--model_name", default="default_model_name")
     parser.add_argument("--bert_model_dirpath_or_name", default="bert-base-multilingual-cased")
     parser.add_argument("--model_output_dirpath", default=None)
-    parser.add_argument("--learning_rate", default=0.05)
-    parser.add_argument("--max_epochs", default=10)
-    parser.add_argument("--mini_batch_size", default=16)
+    parser.add_argument("--optimizer", default="sgd", choices=["sgd", "adam"])
+    parser.add_argument("--learning_rate", default=0.05, type=float)
+    parser.add_argument("--max_epochs", default=10, type=int)
+    parser.add_argument("--mini_batch_size", default=16, type=int)
 
     parser.add_argument("--data_folder", default="./data")
 
@@ -196,6 +203,7 @@ def main():
         if not os.path.exists(model_output_dirpath):
             os.mkdir(model_output_dirpath)
 
+    optimizer = args.optimizer
     learning_rate = args.learning_rate
     max_epochs = args.max_epochs
     mini_batch_size = args.mini_batch_size
@@ -213,18 +221,25 @@ def main():
         "tag_type": tag_type,
         "bert_model_dirpath_or_name": bert_model_dirpath_or_name,
         "model_output_dirpath": model_output_dirpath,
+        "optimizer": optimizer,
         "learning_rate": learning_rate,
         "max_epochs": max_epochs,
         "mini_batch_size": mini_batch_size
     }
 
-    if command == "hyperparameter_search":
-        select_hyperparameters(params, corpus)
+    if command in ["hyperparameter_search", "find_learning_rate"]:
+
+        if not os.path.exists("hyperparameter_search"):
+            print("Creating the hyperparameter_search directory for hyperparameter selection process...")
+            os.mkdir("hyperparameter_search")
+
+        if command == "hyperparameter_search":
+            select_hyperparameters(params, corpus)
 
         tagger, embeddings = create_model(params,
                                           tag_dictionary)
 
-        trainer = create_trainer(tagger, corpus)
+        trainer = create_trainer(tagger, corpus, optimizer=optimizers_dict[optimizer])
 
         find_learning_rate(trainer, params)
 
