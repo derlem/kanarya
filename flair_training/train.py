@@ -53,7 +53,8 @@ def create_embeddings(params):
     embedding_type = params["embedding_type"]
     assert embedding_type in ["bert", "flair", "char"]
     if embedding_type == "bert":
-        bert_embedding = BertEmbeddings(params["bert_model_dirpath_or_name"])
+        bert_embedding = BertEmbeddings(params["bert_model_dirpath_or_name"],
+                                        pooling_operation="mean")
 
         embedding_types: List[TokenEmbeddings] = [bert_embedding]
         embeddings: StackedEmbeddings = StackedEmbeddings(embeddings=embedding_types)
