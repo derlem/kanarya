@@ -23,19 +23,30 @@ tag_type = 'ner'
 
 optimizers_dict = {"sgd": SGD, "adam": Adam}
 
-def load_corpus(data_folder, tag_type):
-    columns = {0: 'text', 1: 'ner'}
 
-    corpus: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus(data_folder, columns,
-                                                                  train_file="de-da-te-ta.10E-4percent.conll.84max.train",
-                                                                  test_file="de-da-te-ta.10E-4percent.conll.84max.test",
-                                                                  dev_file="de-da-te-ta.10E-4percent.conll.84max.dev")
+def load_standard_corpus(data_folder, tag_type):
+
+    files = {"train_file": "de-da-te-ta.10E-4percent.conll.84max.train",
+             "dev_file": "de-da-te-ta.10E-4percent.conll.84max.dev",
+             "test_file": "de-da-te-ta.10E-4percent.conll.84max.test"}
+    for key, value in files.items():
+        files[key] = os.path.abspath(os.path.join(data_folder, value))
+
+    corpus = load_specific_corpus(files)
 
     tag_dictionary = corpus.make_tag_dictionary(tag_type=tag_type)
 
     print(corpus.obtain_statistics(tag_type=tag_type))
 
     return corpus, tag_dictionary
+
+
+def load_specific_corpus(files):
+
+    columns = {0: 'text', 1: 'ner'}
+    corpus: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus("/", columns, **files)
+
+    return corpus
 
 
 def create_embeddings(params):
@@ -179,6 +190,7 @@ def main():
     parser.add_argument("--model_name", default="default_model_name")
     parser.add_argument("--bert_model_dirpath_or_name", default="bert-base-multilingual-cased")
     parser.add_argument("--model_output_dirpath", default=None)
+    parser.add_argument("--other_test_file_for_evaluation", default=None)
     parser.add_argument("--optimizer", default="sgd", choices=["sgd", "adam"])
     parser.add_argument("--learning_rate", default=0.05, type=float)
     parser.add_argument("--max_epochs", default=10, type=int)
@@ -203,6 +215,8 @@ def main():
         if not os.path.exists(model_output_dirpath):
             os.mkdir(model_output_dirpath)
 
+    other_test_file_for_evaluation = args.other_test_file_for_evaluation
+
     optimizer = args.optimizer
     learning_rate = args.learning_rate
     max_epochs = args.max_epochs
@@ -213,7 +227,14 @@ def main():
     if device != "gpu" and device == "cpu":
         flair.device = torch.device('cpu')
 
-    corpus, tag_dictionary = load_corpus(data_folder, tag_type)
+    if other_test_file_for_evaluation is None:
+        corpus, tag_dictionary = load_standard_corpus(data_folder, tag_type)
+    else:
+        corpus = load_specific_corpus({"test_file": other_test_file_for_evaluation})
+        # tag dictionary will be loaded from the model
+        tag_dictionary = None
+
+    assert corpus and command != "evaluate", "corpus should be loaded"
 
     params = {
         "model_name": model_name,
@@ -265,7 +286,7 @@ def main():
             tag_dictionary: Dictionary = Dictionary.load_from_file(os.path.join(model_output_dirpath,
                                                                             "tag_dictionary.pickle"))
         except FileNotFoundError:
-            print("tag_dictionary is not found at %s" % os.path.join(model_output_dirpath,
+            print("WARN: tag_dictionary is not found at %s" % os.path.join(model_output_dirpath,
                                                                             "tag_dictionary.pickle"))
         params = load_params(os.path.join(model_output_dirpath,
                                           "params.json"))
