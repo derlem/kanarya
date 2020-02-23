@@ -32,6 +32,10 @@ def load_standard_corpus(data_folder, tag_type):
     files = {"train_file": "de-da-te-ta.10E-4percent.conll.84max.train",
              "dev_file": "de-da-te-ta.10E-4percent.conll.84max.dev",
              "test_file": "de-da-te-ta.10E-4percent.conll.84max.test"}
+    if "10E-3percent" in data_folder:
+        files = {"train_file": "de-da-te-ta.10E-3percent.conll.84max.train",
+                 "dev_file": "de-da-te-ta.10E-4percent.conll.84max.dev",
+                 "test_file": "de-da-te-ta.10E-4percent.conll.84max.test"}
     for key, value in files.items():
         files[key] = os.path.abspath(os.path.join(data_folder, value))
 
@@ -80,11 +84,13 @@ def create_embeddings(params):
         embedding_types: List[TokenEmbeddings] = [bert_embedding]
         embeddings: StackedEmbeddings = StackedEmbeddings(embeddings=embedding_types)
     elif embedding_type == "flair":
-        glove_embedding = WordEmbeddings('../../glove/GLOVE/GloVe/vectors.gensim')
-        word2vec_embedding = WordEmbeddings('../../huawei_w2v/vector.gensim')
+        glove_embedding = WordEmbeddings('/opt/kanarya/glove/GLOVE/GloVe/vectors.gensim')
+        word2vec_embedding = WordEmbeddings('/opt/kanarya/huawei_w2v/vector.gensim')
+        fast_text_embedding = WordEmbeddings('tr')
+        char_embedding = CharacterEmbeddings()
 
         # bert_embedding = BertEmbeddings('../bert_pretraining/pretraining_outputs/pretraining_output_batch_size_32')
-        embedding_types: List[TokenEmbeddings] = [WordEmbeddings('tr'), glove_embedding, word2vec_embedding]
+        embedding_types: List[TokenEmbeddings] = [fast_text_embedding, glove_embedding, word2vec_embedding, char_embedding]
         # embedding_types: List[TokenEmbeddings] = [custom_embedding]
         embeddings: StackedEmbeddings = StackedEmbeddings(embeddings=embedding_types)
     elif embedding_type == "char":
@@ -183,11 +189,12 @@ def train(params, tagger, corpus):
                   learning_rate=params["learning_rate"],
                   mini_batch_size=params["mini_batch_size"],
                   max_epochs=params["max_epochs"],
-                  patience=10,
+                  patience=3,
                   anneal_factor=0.5,
                   anneal_against_train_loss=True,
                   anneal_with_restarts=True,
-                  checkpoint=True)
+                  checkpoint=True,
+                  embeddings_in_memory=True)
 
 
 def save_params(params, filepath):
@@ -230,7 +237,7 @@ def main():
     parser.add_argument("--data_folder", default="./data")
 
     parser.add_argument("--device", default="gpu", choices=["cpu", "gpu"])
-    parser.add_argument("--loglevel", default="NOTSET", choices=["critical", "NOTSET"])
+    parser.add_argument("--loglevel", default="NOTSET", choices=["CRITICAL", "NOTSET", "INFO"])
 
     args = parser.parse_args()
 
@@ -344,7 +351,7 @@ def main():
         metric, eval_loss = trainer.evaluate(tagger, corpus.test, eval_mini_batch_size=16,
                          out_path=Path(out_path))
 
-        print(metric, eval_loss)
+        print(metric.to_tsv())
     elif command == "evaluate_from_stdin":
         try:
             tag_dictionary: Dictionary = Dictionary.load_from_file(os.path.join(model_output_dirpath,
