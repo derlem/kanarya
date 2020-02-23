@@ -10,10 +10,16 @@ import flair, torch
 
 flair.device = torch.device('cpu')
 columns  = {0: 'text', 1: 'ner'}
-data_folder = '../'
+data_folder = '../data'
 
-corpus1: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus(data_folder, columns, train_file="de-da-te-ta.10E-4percent.conll.train.txt", test_file="de-da-te-ta.10E-4percent.conll.test.txt", dev_file="de-da-te-ta.10E-4percent.conll.dev.txt")
-corpus2: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus(data_folder, columns, train_file="de-da-te-ta.10E-4percent.conll.84max.train.txt", test_file="de-da-te-ta.10E-4percent.conll.84max.test.txt", dev_file="de-da-te-ta.10E-4percent.conll.84max.dev.txt")
+corpus1: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus(data_folder, columns,
+                                                              train_file="de-da-te-ta.10E-4percent.conll.train.txt",
+                                                              test_file="de-da-te-ta.10E-4percent.conll.test.txt",
+                                                              dev_file="de-da-te-ta.10E-4percent.conll.dev.txt")
+corpus2: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus(data_folder, columns,
+                                                              train_file="de-da-te-ta.10E-4percent.conll.84max.train.txt",
+                                                              test_file="de-da-te-ta.10E-4percent.conll.84max.test.txt",
+                                                              dev_file="de-da-te-ta.10E-4percent.conll.84max.dev.txt")
 corpus = MultiCorpus([corpus1, corpus2])
 
 custom_embedding = WordEmbeddings('../../glove/GloVe/vectors_converted_to_gensim.gensim')

@@ -1,4 +1,2 @@
+#tiny-tokenizer # added as a workaround for a PyPI problem in Flair 0.4.4
 flair==0.4.1
-tensorflow>=1.13.1 # CPU Version of Tensorflow
-tensorflow-gpu>=1.13.1 # GPU Version of Tensorflow
-

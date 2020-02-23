@@ -1,0 +1,3 @@
+tensorflow>=1.13.1 # CPU Version of Tensorflow
+tensorflow-gpu>=1.13.1 # GPU Version of Tensorflow
+transformers

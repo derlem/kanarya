@@ -7,15 +7,21 @@ import flair, torch
 #flair.device = torch.device('cpu') 
 
 columns = {0: 'text', 1: 'ner'}
-data_folder = '../'
+data_folder = '../data'
 
 #max_tokens = 32
 
-corpus1: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus(data_folder, columns, train_file="de-da-te-ta.10E-4percent.conll.train.txt", test_file="de-da-te-ta.10E-4percent.conll.test.txt", dev_file="de-da-te-ta.10E-4percent.conll.dev.txt")
+corpus1: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus(data_folder, columns,
+                                                              train_file="de-da-te-ta.10E-4percent.conll.train.txt",
+                                                              test_file="de-da-te-ta.10E-4percent.conll.test.txt",
+                                                              dev_file="de-da-te-ta.10E-4percent.conll.dev.txt")
 #corpus1._train = [x for x in corpus1.train if len(x) < max_tokens]
 #corpus1._dev = [x for x in corpus1.dev if len(x) < max_tokens]
 #corpus1._test = [x for x in corpus1.test if len(x) < max_tokens]
-corpus2: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus(data_folder, columns, train_file="de-da-te-ta.10E-4percent.conll.84max.train.txt", test_file="de-da-te-ta.10E-4percent.conll.84max.test.txt", dev_file="de-da-te-ta.10E-4percent.conll.84max.dev.txt")
+corpus2: TaggedCorpus = NLPTaskDataFetcher.load_column_corpus(data_folder, columns,
+                                                              train_file="de-da-te-ta.10E-4percent.conll.84max.train.txt",
+                                                              test_file="de-da-te-ta.10E-4percent.conll.84max.test.txt",
+                                                              dev_file="de-da-te-ta.10E-4percent.conll.84max.dev.txt")
 #corpus2._train = [x for x in corpus2.train if len(x) < max_tokens]
 #corpus2._dev = [x for x in corpus2.dev if len(x) < max_tokens]
 #corpus2._test = [x for x in corpus2.test if len(x) < max_tokens]
