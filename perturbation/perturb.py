@@ -1,6 +1,6 @@
 # Author: Hasan Öztürk
-# Usage: python extract_errors.py --flair_model_dirpath <path-to-flair-model>  --conll_dataset_dirpath <path-to-conll-data> --is_prob <include-probabilities-or-not>
-# Example: python extract_errors.py python extract_errors.py --flair_model_dirpath  /opt/kanarya/resources/flair_models/bertcustom_2020-01-09_02 --conll_dataset_dirpath /home/hasan.ozturk/kanarya-github/kanarya/data/de-da-te-ta.10E-4percent.conll.84max.dev --is_prob True
+# Usage: python perturb.py --flair_model_dirpath <path-to-flair-model>  --conll_dataset_dirpath <path-to-conll-data> 
+# Example: python perturb.py python extract_errors.py --flair_model_dirpath  /opt/kanarya/resources/flair_models/bertcustom_2020-01-09_02 --conll_dataset_dirpath /home/hasan.ozturk/kanarya-github/kanarya/data/de-da-te-ta.10E-4percent.conll.84max.dev
 # Note that we only take the last word w/ the de/da suffix into account.
 
 import numpy as np
