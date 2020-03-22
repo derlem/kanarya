@@ -1,6 +1,6 @@
 # Author: Hasan Öztürk
-# Usage: python extract_errors.py --flair_model_dirpath <path-to-flair-model>  --conll_dataset_dirpath <path-to-conll-data> --is_prob <include-probabilities-or-not>
-# Example: python extract_errors.py python extract_errors.py --flair_model_dirpath  /opt/kanarya/resources/flair_models/bertcustom_2020-01-09_02 --conll_dataset_dirpath /home/hasan.ozturk/kanarya-github/kanarya/data/de-da-te-ta.10E-4percent.conll.84max.dev --is_prob True
+# Usage: python perturb.py --flair_model_dirpath <path-to-flair-model>  --conll_dataset_dirpath <path-to-conll-data> 
+# Example: python perturb.py python perturb.py --flair_model_dirpath  /opt/kanarya/resources/flair_models/bertcustom_2020-01-09_02 --conll_dataset_dirpath /home/hasan.ozturk/kanarya-github/kanarya/data/de-da-te-ta.10E-4percent.conll.84max.dev
 # Note that we only take the last word w/ the de/da suffix into account.
 
 import numpy as np
@@ -10,7 +10,9 @@ import flair, torch
 import sys
 import argparse
 import copy
+import json
 
+#deda_pos = 0
 
 def get_labels(to_tagged_string):
 
@@ -45,6 +47,7 @@ def div_dict(my_dict, dividend):
 def get_prob(sentence, pos):
 
 	deda_token = sentence.tokens[pos]
+	#print("Token: " + str(deda_token))
 	label = deda_token.get_tag('ner') # Be careful, it returns 
 
 	value = label.value
@@ -67,6 +70,7 @@ def perturb1(sentence, pos):
 	token = perturbed_sentence.tokens[perturbed_token_pos]
 	if len(token.text) != 1:
 		token.text = token.text[:-1]
+	#print("Perturb 1: " + str(perturbed_sentence))
 	return perturbed_sentence
 
 
@@ -79,6 +83,7 @@ def perturb2(sentence, pos):
 	token = perturbed_sentence.tokens[perturbed_token_pos]
 	if len(token.text) != 1:
 		token.text = token.text[1:]
+	#print("Perturb 2: " + str(perturbed_sentence))
 	return perturbed_sentence
 
 # Capitalize the first character of the preceding word
@@ -89,10 +94,112 @@ def perturb3(sentence, pos):
 	perturbed_sentence = copy.deepcopy(sentence)
 	token = perturbed_sentence.tokens[perturbed_token_pos]
 	token.text = token.text.capitalize()
+	#print("Perturb 3: " + str(perturbed_sentence))
 	return perturbed_sentence
 
+# !!! If there is no word in the position where a word will be deleted, then we return delta_pi = 0, which might cause problems.
 
-perturbation_functions = [perturb1, perturb2, perturb3]
+# Remove the preceding word, if any
+def perturb4(sentence, pos):
+	
+	# If there is a preceding word, then remove it. If not, do not perturb
+	if pos > 0:
+		perturbed_sentence = copy.deepcopy(sentence)
+		del perturbed_sentence.tokens[pos - 1]
+		#global deda_pos
+		#deda_pos -= 1
+		print("Perturb 4: " + str(perturbed_sentence))
+		return perturbed_sentence
+	else:
+		print("Perturb 4: " + str(sentence))
+		return sentence
+
+# Remove the two previous word, if any
+def perturb5(sentence, pos):
+	
+	# If there is a word two before the deda_word, then remove it. If not, do not perturb
+	if pos > 1:
+		perturbed_sentence = copy.deepcopy(sentence)
+		del perturbed_sentence.tokens[pos - 2]
+		#global deda_pos
+		#deda_pos -= 1
+		print("Perturb 5: " + str(perturbed_sentence))
+		return perturbed_sentence
+	else:
+		print("Perturb 5: " + str(sentence))
+		return sentence
+
+
+
+# Remove the three previous word, if any
+def perturb6(sentence, pos):
+	
+	# If there is a word three before the deda_word, then remove it. If not, do not perturb
+	if pos > 2:
+		perturbed_sentence = copy.deepcopy(sentence)
+		del perturbed_sentence.tokens[pos - 3]
+		#global deda_pos
+		#deda_pos -= 1
+		print("Perturb 6: " + str(perturbed_sentence))
+		return perturbed_sentence
+	else:
+		print("Perturb 6: " + str(sentence))
+		return sentence
+
+# Remove the following word, if any
+def perturb7(sentence, pos):
+	
+	# If there is a following word, then remove it. If not, do not perturb
+	if pos < (len(sentence.tokens) - 1):
+		perturbed_sentence = copy.deepcopy(sentence)
+		del perturbed_sentence.tokens[pos + 1]
+		print("Perturb 7: " + str(perturbed_sentence))
+		return perturbed_sentence
+	else:
+		print("Perturb 7: " + str(sentence))
+		return sentence
+
+# Remove the two following word, if any
+def perturb8(sentence, pos):
+	
+	# If there is a word after 2 positions of deda_word, then remove it. If not, do not perturb
+	if pos < (len(sentence.tokens) - 2):
+		perturbed_sentence = copy.deepcopy(sentence)
+		del perturbed_sentence.tokens[pos + 2]
+		print("Perturb 8: " + str(perturbed_sentence))
+		return perturbed_sentence
+	else:
+		print("Perturb 8: " + str(sentence))
+		return sentence
+
+# Remove the three following word, if any
+def perturb9(sentence, pos):
+	
+	# If there is a word after 3 positions of deda_word, then remove it. If not, do not perturb
+	if pos < (len(sentence.tokens) - 3):
+		perturbed_sentence = copy.deepcopy(sentence)
+		del perturbed_sentence.tokens[pos + 3]
+		print("Perturb 9: " + str(perturbed_sentence))
+		return perturbed_sentence
+	else:
+		print("Perturb 9: " + str(sentence))
+		return sentence
+
+
+
+# This will be a more convinient but costly operation, let us not it for now.
+def get_deda_pos(sentence):
+	deda_pos = 0
+	for idx, token in enumerate(sentence.tokens):
+		if does_contain_deda(token.text):
+			deda_pos = idx
+	return deda_pos
+
+
+
+
+
+perturbation_functions = [perturb1, perturb2, perturb3, perturb4, perturb5, perturb6, perturb7, perturb8, perturb9]
 
 delta_p_dict = {}
 
@@ -100,7 +207,7 @@ sentence_count = 0
 
 def create_dict():
 	for func in perturbation_functions:
-		delta_p_dict[func] = 0
+		delta_p_dict[str(func)] = 0
 
 def runner(params):
 
@@ -109,7 +216,6 @@ def runner(params):
 	#classifier_model = sys.argv[1]
 	classifier_model = params["flair_model_dirpath"]
 	conll_data = params["conll_dataset_dirpath"]
-	#fname = sys.argv[2]
 
 	classifier = SequenceTagger.load_from_file(classifier_model + '/best-model.pt')
 
@@ -118,7 +224,8 @@ def runner(params):
 
 	sentence = ""
 	word_idx = 0 # 0 indexing
-	deda_pos = 0
+	#deda_pos = 0
+	global deda_pos
 	for line in f:
 		tokens = line.split()
 		if(len(tokens) == 2):
@@ -127,6 +234,7 @@ def runner(params):
 			current_word = tokens[0] 
 			current_label = tokens[1]
 
+			'''
 			# Currently we only take the last word which contains de/da in a sentence !!
 			if does_contain_deda(current_word):
 				deda_pos = word_idx
@@ -134,6 +242,7 @@ def runner(params):
 
 			word_idx += 1
 
+			'''
 			true_labels.append(current_label)
 
 			# Check if it is the end of a sentence
@@ -152,6 +261,7 @@ def runner(params):
 				# Get the labels for the sentence (does include "O"s)
 				predicted_labels = get_labels(tagged_string)
 
+				deda_pos = get_deda_pos(sentence)
 				p0 = get_prob(sentence, deda_pos) 
 
 				print(sentence)
@@ -160,12 +270,13 @@ def runner(params):
 
 					classifier.predict(perturbed_sentence)
 
+					deda_pos = get_deda_pos(sentence)
 					pi = get_prob(perturbed_sentence, deda_pos)
 
 					delta_p = pi - p0
 
 					print("Delta_p for " + str(func) + ": " + str(delta_p))
-					delta_p_dict[func] += delta_p
+					delta_p_dict[str(func)] += delta_p
 
 				print("=================================")
 				
@@ -206,13 +317,13 @@ def main():
 
     global delta_p_dict
 
-    print(delta_p_dict)
     print("Sentence Count: " + str(sentence_count))
 
-    delta_p_dict = delta_p_dict / sentence_count
-    div_dict(delta_p_dict)
-    print(delta_p_dict)
+    div_dict(delta_p_dict, sentence_count)
+    # Pretty print
+    print (json.dumps(delta_p_dict, indent=4))
 
 
 if __name__ == "__main__":
     main()
+
