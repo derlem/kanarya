@@ -62,12 +62,13 @@ def populate_vocab(params):
 
 	f = open(bert_vocab_dirpath, "r")
 	for line in f:
+		line = line.strip() # Eliminate space chars
 		if line[:2] == "##":
 			bert_vocab_subtokens.add(line[2:])
-			print("Subtoken" + line[2:])
+			#print("Subtoken: " + line[2:] + " - " + str(len(line[2:])))
 		else:
 			bert_vocab_tokens.add(line)
-			print("Token" + line)
+			#print("Token: " + line + " - " + str(len(line)))
 
 
 
@@ -139,12 +140,10 @@ def perturb4(sentence, pos):
 	if pos > 0:
 		perturbed_sentence = copy.deepcopy(sentence)
 		del perturbed_sentence.tokens[pos - 1]
-		#global deda_pos
-		#deda_pos -= 1
-		print("Perturb 4: " + str(perturbed_sentence))
+		#print("Perturb 4: " + str(perturbed_sentence))
 		return perturbed_sentence
 	else:
-		print("Perturb 4: " + str(sentence))
+		#print("Perturb 4: " + str(sentence))
 		return sentence
 
 # Remove the two previous word, if any
@@ -154,12 +153,10 @@ def perturb5(sentence, pos):
 	if pos > 1:
 		perturbed_sentence = copy.deepcopy(sentence)
 		del perturbed_sentence.tokens[pos - 2]
-		#global deda_pos
-		#deda_pos -= 1
-		print("Perturb 5: " + str(perturbed_sentence))
+		#print("Perturb 5: " + str(perturbed_sentence))
 		return perturbed_sentence
 	else:
-		print("Perturb 5: " + str(sentence))
+		#print("Perturb 5: " + str(sentence))
 		return sentence
 
 
@@ -171,12 +168,10 @@ def perturb6(sentence, pos):
 	if pos > 2:
 		perturbed_sentence = copy.deepcopy(sentence)
 		del perturbed_sentence.tokens[pos - 3]
-		#global deda_pos
-		#deda_pos -= 1
-		print("Perturb 6: " + str(perturbed_sentence))
+		#print("Perturb 6: " + str(perturbed_sentence))
 		return perturbed_sentence
 	else:
-		print("Perturb 6: " + str(sentence))
+		#print("Perturb 6: " + str(sentence))
 		return sentence
 
 # Remove the following word, if any
@@ -186,10 +181,10 @@ def perturb7(sentence, pos):
 	if pos < (len(sentence.tokens) - 1):
 		perturbed_sentence = copy.deepcopy(sentence)
 		del perturbed_sentence.tokens[pos + 1]
-		print("Perturb 7: " + str(perturbed_sentence))
+		#print("Perturb 7: " + str(perturbed_sentence))
 		return perturbed_sentence
 	else:
-		print("Perturb 7: " + str(sentence))
+		#print("Perturb 7: " + str(sentence))
 		return sentence
 
 # Remove the two following word, if any
@@ -199,10 +194,10 @@ def perturb8(sentence, pos):
 	if pos < (len(sentence.tokens) - 2):
 		perturbed_sentence = copy.deepcopy(sentence)
 		del perturbed_sentence.tokens[pos + 2]
-		print("Perturb 8: " + str(perturbed_sentence))
+		#print("Perturb 8: " + str(perturbed_sentence))
 		return perturbed_sentence
 	else:
-		print("Perturb 8: " + str(sentence))
+		#print("Perturb 8: " + str(sentence))
 		return sentence
 
 # Remove the three following word, if any
@@ -212,24 +207,60 @@ def perturb9(sentence, pos):
 	if pos < (len(sentence.tokens) - 3):
 		perturbed_sentence = copy.deepcopy(sentence)
 		del perturbed_sentence.tokens[pos + 3]
-		print("Perturb 9: " + str(perturbed_sentence))
+		#print("Perturb 9: " + str(perturbed_sentence))
 		return perturbed_sentence
 	else:
-		print("Perturb 9: " + str(sentence))
+		#print("Perturb 9: " + str(sentence))
 		return sentence
 
-# Remove the first common pattern in the preceding word using BERT vocab
+# Remove the first and shortest common pattern (##subtoken) in the preceding word using BERT vocab
 def perturb10(sentence, pos):
-	pass
+
+	# If there is a preceding word, then remove it. If not, do not perturb
+	if pos > 0:
+		perturbed_sentence = copy.deepcopy(sentence)
+		
+		token = perturbed_sentence.tokens[pos - 1]
+		perturbed_token = perturb10_helper(token.text)
+
+		token.text = perturbed_token
+		
+		
+		print("Perturb 10: " + str(perturbed_sentence))
+		return perturbed_sentence
+	else:
+		print("Perturb 10: " + str(sentence))
+		return sentence
+
+	
+
+def perturb10_helper(word):
+
+	# Careful w/ single chars
+
+	for idx in range(len(word)):
+
+		# For now ignore single chars, since it seems like there is a problem in bert vocab
+		if idx > 1:
+			if word[:idx+1] in bert_vocab_subtokens:
+				if len(word[idx+1:]) > 0:
+					print("Word: " + word + " - " + "Found: " + word[:idx+1] + " - " + "Return: " + word[idx+1:])
+					return word[idx+1:]
+	print("Could not find a pattern, returning the original word: " + word)
+	return word
 
 
-perturbation_functions = [perturb1, perturb2, perturb3, perturb4, perturb5, perturb6, perturb7, perturb8, perturb9]
+
+
+perturbation_functions = [perturb1, perturb2, perturb3, perturb4, perturb5, perturb6, perturb7, perturb8, perturb9, perturb10]
 
 
 
 def create_dict():
 	for func in perturbation_functions:
 		delta_p_dict[str(func)] = 0
+
+# !!! OMIT ZEROS
 
 def runner(params):
 
