@@ -14,6 +14,13 @@ import json
 
 #deda_pos = 0
 
+bert_vocab_tokens = set()
+bert_vocab_subtokens = set()
+
+delta_p_dict = {}
+
+sentence_count = 0
+
 def get_labels(to_tagged_string):
 
 		labels = []
@@ -38,6 +45,32 @@ def does_contain_deda(word):
 		return True
 	else:
 		return False
+
+# This will be a more convinient but costly operation, let us not it for now.
+def get_deda_pos(sentence):
+	deda_pos = 0
+	for idx, token in enumerate(sentence.tokens):
+		if does_contain_deda(token.text):
+			deda_pos = idx
+	return deda_pos
+
+
+def populate_vocab(params):
+
+	bert_vocab_dirpath = params["bert_vocab_dirpath"]
+	global bert_vocab
+
+	f = open(bert_vocab_dirpath, "r")
+	for line in f:
+		if line[:2] == "##":
+			bert_vocab_subtokens.add(line[2:])
+			print("Subtoken" + line[2:])
+		else:
+			bert_vocab_tokens.add(line)
+			print("Token" + line)
+
+
+
 
 def div_dict(my_dict, dividend):
 	for i in my_dict:
@@ -185,25 +218,14 @@ def perturb9(sentence, pos):
 		print("Perturb 9: " + str(sentence))
 		return sentence
 
-
-
-# This will be a more convinient but costly operation, let us not it for now.
-def get_deda_pos(sentence):
-	deda_pos = 0
-	for idx, token in enumerate(sentence.tokens):
-		if does_contain_deda(token.text):
-			deda_pos = idx
-	return deda_pos
-
-
-
+# Remove the first common pattern in the preceding word using BERT vocab
+def perturb10(sentence, pos):
+	pass
 
 
 perturbation_functions = [perturb1, perturb2, perturb3, perturb4, perturb5, perturb6, perturb7, perturb8, perturb9]
 
-delta_p_dict = {}
 
-sentence_count = 0
 
 def create_dict():
 	for func in perturbation_functions:
@@ -296,11 +318,14 @@ def main():
 
     parser = argparse.ArgumentParser()
 
+    # Default parameter values
     best_bert_model = '/opt/kanarya/resources/flair_models/bertcustom_2020-01-09_02'
     test_set = '/home/hasan.ozturk/kanarya-github/kanarya/data/de-da-te-ta.10E-4percent.conll.84max.test'
+    bert_vocab_dirpath = '/opt/kanarya/resources/vocabs/vocab_whole_corpus_28996.txt'
 
     parser.add_argument("--conll_dataset_dirpath", default=test_set)
     parser.add_argument("--flair_model_dirpath", default=best_bert_model)
+    parser.add_argument("--bert_vocab_dirpath", default=bert_vocab_dirpath)
 
     args = parser.parse_args()
 
@@ -310,7 +335,10 @@ def main():
     params = {
     	"conll_dataset_dirpath": conll_dataset_dirpath,
     	"flair_model_dirpath": flair_model_dirpath,
+    	"bert_vocab_dirpath": bert_vocab_dirpath
     }
+
+    populate_vocab(params)
 
     create_dict()
     runner(params)
