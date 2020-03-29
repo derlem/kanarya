@@ -21,6 +21,9 @@ delta_p_dict = {}
 
 sentence_count = 0
 
+
+
+
 def get_labels(to_tagged_string):
 
 		labels = []
@@ -252,13 +255,19 @@ def perturb10_helper(word):
 
 
 
-perturbation_functions = [perturb1, perturb2, perturb3, perturb4, perturb5, perturb6, perturb7, perturb8, perturb9, perturb10]
-
+perturbation_functions = [perturb1, perturb2, perturb4, perturb5, perturb6, perturb7, perturb8, perturb9, perturb10]
 
 
 def create_dict():
+	'''
 	for func in perturbation_functions:
 		delta_p_dict[str(func)] = 0
+	'''
+
+	for func in perturbation_functions:
+		delta_p_dict[str(func)] = []
+
+
 
 # !!! OMIT ZEROS
 
@@ -317,7 +326,7 @@ def runner(params):
 				deda_pos = get_deda_pos(sentence)
 				p0 = get_prob(sentence, deda_pos) 
 
-				print(sentence)
+				#print(sentence)
 				for func in perturbation_functions:
 					perturbed_sentence = func(sentence, deda_pos)
 
@@ -328,10 +337,11 @@ def runner(params):
 
 					delta_p = pi - p0
 
-					print("Delta_p for " + str(func) + ": " + str(delta_p))
-					delta_p_dict[str(func)] += delta_p
+					#print("Delta_p for " + str(func) + ": " + str(delta_p))
+					#delta_p_dict[str(func)] += delta_p
+					delta_p_dict[str(func)].append(delta_p)
 
-				print("=================================")
+				#print("=================================")
 				
 
 				sentence = ""
@@ -342,6 +352,24 @@ def runner(params):
 				# Construct the sentence
 				# Careful: Sentence begins with a space !
 				sentence = sentence + " " + current_word
+
+
+def report():
+
+	#global delta_p_dict
+
+    print("Sentence Count: " + str(sentence_count) + "\n")
+
+    print('{:<30s}{:<30s}{:<30s}'.format("Function","Mean", "Variance"))
+    for func in perturbation_functions:
+    	# Eliminate zeros (?)
+    	delta_p_dict[str(func)] = [i for i in delta_p_dict[str(func)] if i != 0.0]
+
+    	mean = np.mean(delta_p_dict[str(func)])
+    	var = np.var(delta_p_dict[str(func)])
+
+    	s = '{:<50s}{:<30s}{:<30s}'.format(str(func),str(mean), str(var))
+    	print(s)
 
 
 
@@ -374,6 +402,9 @@ def main():
     create_dict()
     runner(params)
 
+    report()
+
+    '''
     global delta_p_dict
 
     print("Sentence Count: " + str(sentence_count))
@@ -381,6 +412,7 @@ def main():
     div_dict(delta_p_dict, sentence_count)
     # Pretty print
     print (json.dumps(delta_p_dict, indent=4))
+    '''
 
 
 if __name__ == "__main__":
