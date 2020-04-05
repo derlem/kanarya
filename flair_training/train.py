@@ -79,7 +79,11 @@ def create_embeddings(params):
     assert embedding_type in ["bert", "flair", "char"]
     if embedding_type == "bert":
         bert_embedding = BertEmbeddings(params["bert_model_dirpath_or_name"],
-                                        pooling_operation="mean")
+                                        pooling_operation="first")
+        if params["bert_model_dirpath_or_name"] == "dbmdz/bert-case-turkish-cased":
+            from transformers import AutoModel, AutoTokenizer
+            bert_embedding.tokenizer = AutoTokenizer.from_pretrained(params["bert_model_dirpath_or_name"])
+            bert_embedding.model = AutoModel.from_pretrained(params["bert_model_dirpath_or_name"])
 
         embedding_types: List[TokenEmbeddings] = [bert_embedding]
         embeddings: StackedEmbeddings = StackedEmbeddings(embeddings=embedding_types)
