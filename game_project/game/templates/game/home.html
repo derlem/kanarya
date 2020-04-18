@@ -1,6 +1,8 @@
 {% extends 'game/base.html' %}
 {% block content %}
-	
-	<h1>Kanarya Home Screen</h1>
 
+		<h3> {{ sentence }} </h3>
+		<a class="btn btn-outline-info mb-4" href=" {% url 'game-home' %} ">Next Sentence</a>
+
+	
 {% endblock content %}
