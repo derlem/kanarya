@@ -1,8 +1,15 @@
 {% extends 'game/base.html' %}
 {% block content %}
+	
+	<h3> {{ sentence }} </h3>
+	<a class="btn btn-outline-info mb-4" href=" {% url 'game-home' %} ">Next Sentence</a>
+	
 
-		<h3> {{ sentence }} </h3>
-		<a class="btn btn-outline-info mb-4" href=" {% url 'game-home' %} ">Next Sentence</a>
-
+	<form method="POST">
+ 		{% csrf_token %}
+ 		<input type="submit" name="decision" value="yes">
+ 		<input type="submit" name="decision" value="no">
+	</form>
+	{{ decision }}
 	
 {% endblock content %}
