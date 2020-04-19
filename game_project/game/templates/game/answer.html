@@ -1,0 +1,21 @@
+{% extends 'game/base.html' %}
+{% block content %}
+	
+	{% if answer %}
+
+		<h2>Doğru Cevap</h2>
+
+	{% else %}
+
+		<h2>Yanlış Cevap</h2>>
+
+	{% endif %}
+	
+	
+
+	<p>  {{full_sentence}}  </p>
+	<!-- <p> {{ full_sentence }}  </p> -->
+	<a class="btn btn-outline-info mb-4" href=" {% url 'question' %} ">Next Sentence</a>
+	
+	
+{% endblock content %}
