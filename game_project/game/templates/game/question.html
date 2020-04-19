@@ -2,9 +2,9 @@
 {% block content %}
 	
 	<p> {{ half_sentence }} <b>({{clitic}})</b> </p>
-	<!-- <p> {{ full_sentence }}  </p> -->
+	<!--
 	<a class="btn btn-outline-info mb-4" href=" {% url 'question' %} ">Next Sentence</a>
-	
+	-->
 
 	<form method="POST">
  		{% csrf_token %}
@@ -14,6 +14,7 @@
  		-->
  		<button type="submit" name="decision" value="ADJACENT" >Bitişik Yazılmalı</button>
  		<button type="submit" name="decision" value="SEPARATE" >Ayrı Yazılmalı</button>
+ 		
 	</form>
 	{{ decision }}
 	

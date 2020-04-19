@@ -37,17 +37,9 @@ def question(request):
 			decision.sentence_idx = context['sentence_idx']
 			decision.save()
 
-			#print(decision.user)
-			#print(decision.sentence_idx)
-			#print(decision.decision)
-
 			status = context['status']
 
 			request.session['full_sentence'] = context['full_sentence']
-
-
-			#print('Half Sentence: ' + context['half_sentence'])
-			#print('Full Sentence: ' + context['full_sentence'])
 
 			# if the user answer is correct
 			if decision.decision == status.name:
@@ -56,12 +48,6 @@ def question(request):
 				request.session['answer'] = False
 
 			return redirect('answer')
-
-			#val = form.cleaned_data.get("btn")
-			#decision = form.cleaned_data.get("decision")
-			#context['decision'] = decision
-
-			# Redirect
 	else:
 		form = DecisionForm()
 	return render(request, 'game/question.html',context)
@@ -75,8 +61,10 @@ def answer(request):
 
 	}
 
-	print('full_sentence: ' + context['full_sentence'])
-	print('answer:'  + str(type(context['answer'])))
+	if context['answer']:
+		messages.success(request, f'Doğru Cevap')
+	else:
+		messages.error(request, f'Yanlış Cevap')
 
 	return render(request, 'game/answer.html', context)
 
