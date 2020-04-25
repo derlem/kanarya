@@ -8,13 +8,16 @@ from django.utils.timezone import utc
 
 import csv
 import linecache
+import os.path
 
 def load_game(apps, schema_editor):
 
     Sentence = apps.get_model("game", "Sentence")
 
     #path_to_data = "/home/tony/Desktop/491/kanarya/game_project/game/static/game/sentences.csv"
-    path_to_data = "../static/game/sentences.csv"
+    #path_to_data = "../static/game/sentences.csv"
+
+    path_to_data = os.path.dirname(__file__) + '/../static/game/sentences.csv'
 
     f = open(path_to_data, 'r')
 
