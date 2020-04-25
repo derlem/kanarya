@@ -9,6 +9,9 @@ from .forms import ActivityForm
 
 from .models import Sentence, Question, Activity, Decision, Report
 
+go_next = True
+hint_question = Question()
+
 ### Apply login required
 def question(request):
 		
@@ -24,22 +27,28 @@ def question(request):
 
 	context = {
 		'half_text': half_text,
-		'clitic': clitic
+		'clitic': clitic,
+		'hints': []
 	}
 
+	global go_next 
+	global hint_question
+	
 	if request.method == 'POST':
 
 		form = ActivityForm(request.POST)
 
 		if form.is_valid():
-
-			request.user.profile.last_seen_sentence_idx += 1
-			request.user.profile.save()
 			
-			question = Question(user=request.user,
+			# Create the question once for each sentence !
+			if go_next:
+				question = Question(user=request.user,
 						sentence=sentence)
 
-			question.save()
+				question.save()
+			else:
+				#question = request.session['question']
+				question = hint_question
 
 			activity = form.save(commit=False)
 			activity.question = question
@@ -47,24 +56,50 @@ def question(request):
 
 			activity.save()
 
-			decision = Decision(question=question,
-								name = activity.name)
-
-			decision.save()
-
 			request.session['full_text'] = text
 
 			if activity.name == "SKIP":
+
+				request.user.profile.last_seen_sentence_idx += 1
+				request.user.profile.save()
+				go_next = True
+
+				decision = Decision(question=question,
+								name = activity.name)
+
+				decision.save()
+
 				return redirect('question')
+
 			elif activity.name == "HINT":
-				pass
+
+				set_hints(context['hints'], question.hint_count, text, pos)
+				question.hint_count += 1
+
+				#request.session['question'] = question
+				#request.session['activity'] = activity
+				hint_question = question
+
+				go_next = False
+
+				return render(request, 'game/question.html',context)
+
 			elif activity.name == status:
+
 				request.session['answer'] = True
 				request.user.profile.correct_answer_count += 1
+
 			else:
 				request.session['answer'] = False
 
 
+			decision = Decision(question=question,
+								name = activity.name)
+
+			decision.save()
+			go_next = True
+			request.user.profile.last_seen_sentence_idx += 1
+			request.user.profile.save()
 			return redirect('answer')
 	else:
 		form = ActivityForm()
@@ -116,4 +151,13 @@ def get_half_text(full_text, pos, status):
 	half_sentence = half_sentence[1:]
 
 	return half_sentence
+
+def set_hints(hint_list, hint_count, text, pos):
+	
+	words = text.split()
+	hint_start_idx = pos + 1
+	hint_end_idx = hint_start_idx + hint_count + 1
+
+	for word in words[hint_start_idx:hint_end_idx]:
+		hint_list.append(word)
 

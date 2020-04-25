@@ -23,6 +23,7 @@ class Test(models.Model):
 class Question(models.Model):
 	sentence = models.ForeignKey(Sentence, on_delete=models.CASCADE)
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	hint_count = models.IntegerField(default=0)
 
 class Activity(models.Model):
 	question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -31,7 +32,7 @@ class Activity(models.Model):
 
 
 class Decision(models.Model):
-	question = models.ForeignKey(Question, on_delete=models.CASCADE)
+	question = models.OneToOneField(Question, on_delete=models.CASCADE)
 	name = models.CharField(max_length=10) # SEPARATE, ADJACENT, SKIP
 
 
