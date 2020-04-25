@@ -32,6 +32,9 @@ def question(request):
 		form = ActivityForm(request.POST)
 
 		if form.is_valid():
+
+			request.user.profile.last_seen_sentence_idx += 1
+			request.user.profile.save()
 			
 			question = Question(user=request.user,
 						sentence=sentence)
@@ -51,16 +54,16 @@ def question(request):
 
 			request.session['full_text'] = text
 
-			if decision.name == status:
+			if activity.name == "SKIP":
+				return redirect('question')
+			elif activity.name == "HINT":
+				pass
+			elif activity.name == status:
 				request.session['answer'] = True
 				request.user.profile.correct_answer_count += 1
 			else:
 				request.session['answer'] = False
 
-			print("BEFORE: " + str(request.user.profile.last_seen_sentence_idx))
-			request.user.profile.last_seen_sentence_idx += 1
-			print("AFTER: " + str(request.user.profile.last_seen_sentence_idx))
-			request.user.profile.save()
 
 			return redirect('answer')
 	else:
