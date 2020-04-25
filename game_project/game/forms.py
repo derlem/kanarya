@@ -1,11 +1,9 @@
 from django import forms
-from .models import  Decision
+from .models import Activity
 
 #class DecisionForm(forms.Form):
-class DecisionForm(forms.ModelForm):
-
-	#btn = forms.CharField(max_length=100)
+class ActivityForm(forms.ModelForm):
 
 	class Meta:
-		model = Decision
-		fields = ['decision']
+		model = Activity
+		fields = ['name']

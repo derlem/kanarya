@@ -5,58 +5,74 @@ from django.contrib import messages
 import csv
 import linecache
 import random
-import subprocess
-from .forms import DecisionForm
+from .forms import ActivityForm
 
-from enum import Enum
-class Status(Enum):
-	ADJACENT = 0
-	SEPARATE = 1
-
-# Get rid of global variables, Find better ways
-is_posted = False
-is_first = True
-current_sentence_info = {}
+from .models import Sentence, Question, Activity, Decision, Report
 
 ### Apply login required
 def question(request):
-	
-	global is_posted
+		
+	last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
+	sentence = get_sentence(last_seen_sentence_idx + 1)
 
-	context = get_sentence()
-	#print('sentence_idx: ' + str(context['sentence_idx']) )
+	text = sentence.text
+	status = sentence.status
+	clitic = sentence.clitic
+	pos = sentence.pos
+
+	half_text = get_half_text(text, pos, status)
+
+	context = {
+		'half_text': half_text,
+		'clitic': clitic
+	}
+
 	if request.method == 'POST':
 
-		is_posted = True
-
-		form = DecisionForm(request.POST)
+		form = ActivityForm(request.POST)
 
 		if form.is_valid():
-			decision = form.save(commit=False)
-			decision.user = request.user
-			decision.sentence_idx = context['sentence_idx']
+			
+			question = Question(user=request.user,
+						sentence=sentence)
+
+			question.save()
+
+			activity = form.save(commit=False)
+			activity.question = question
+			# date posted ?
+
+			activity.save()
+
+			decision = Decision(question=question,
+								name = activity.name)
+
 			decision.save()
 
-			status = context['status']
+			request.session['full_text'] = text
 
-			request.session['full_sentence'] = context['full_sentence']
-
-			# if the user answer is correct
-			if decision.decision == status.name:
+			if decision.name == status:
 				request.session['answer'] = True
+				request.user.profile.correct_answer_count += 1
 			else:
 				request.session['answer'] = False
 
+			print("BEFORE: " + str(request.user.profile.last_seen_sentence_idx))
+			request.user.profile.last_seen_sentence_idx += 1
+			print("AFTER: " + str(request.user.profile.last_seen_sentence_idx))
+			request.user.profile.save()
+
 			return redirect('answer')
 	else:
-		form = DecisionForm()
+		form = ActivityForm()
 	return render(request, 'game/question.html',context)
+	
 
 def answer(request):
 	
 	context = {
 
-		'full_sentence': request.session.get('full_sentence') ,
+		'full_text': request.session.get('full_text') ,
 		'answer': request.session.get('answer')
 
 	}
@@ -69,81 +85,23 @@ def answer(request):
 	return render(request, 'game/answer.html', context)
 
 
+	
+def get_sentence(sentence_idx):
 
-# Return a random sentence from the dataset	
-def get_sentence():
-
-	global current_sentence_info
-	global is_first
-	global is_posted
-
-	if not is_first and not is_posted:
-
-		return current_sentence_info
-
-	# ! Find a better way
-	path_to_data = "/home/tony/Desktop/491/kanarya/game_project/game/static/game/sentences.csv"
-	# Hard-coded: Find a generic way
-	num_of_sentences = 38026
-	line_num = random.randint(1,38026)
-	line = linecache.getline(path_to_data, line_num)
-	sentence_idx = list(csv.reader([line]))[0][0]
-	sentence = list(csv.reader([line]))[0][1]
-	pos = int(list(csv.reader([line]))[0][2])	
+	sentence = Sentence.objects.all()[sentence_idx]
+	return sentence
 
 
+def get_half_text(full_text, pos, status):
 
-	sentence_info = {
-		'sentence_idx': sentence_idx,
-		'full_sentence': sentence,
-		'pos': pos
-	}
-
-	status = get_status(sentence_info)
-
-	sentence_info['status'] = status
-
-	half_sentence = get_half_sentence(sentence_info)
-
-	sentence_info['half_sentence'] = half_sentence
-
-	clitic = get_clitic(sentence_info)
-
-	sentence_info['clitic'] = clitic
-
-
-	# Find a better way
-	current_sentence_info = sentence_info
-	is_first = False
-	is_posted = False
-
-	return sentence_info
-
-def get_clitic(sentence_info):
-
-	full_sentence = sentence_info['full_sentence']
-	pos = sentence_info['pos']
-
-	words = full_sentence.split()
-
-	word_deda = words[pos]
-
-	return word_deda[-2:]
-
-def get_half_sentence(sentence_info):
-
-	full_sentence = sentence_info['full_sentence']
-	pos = sentence_info['pos']
-	status = sentence_info['status']
-
-	words = full_sentence.split()
+	words = full_text.split()
 
 	half_sentence = ""
 	for idx, word in enumerate(words):
 
 		if idx == pos:
 
-			if status == Status.ADJACENT:
+			if status == 'ADJACENT':
 				half_sentence = half_sentence + " " + word[:-2] # Exclude de/da/te/ta
 				break
 			else:
@@ -156,22 +114,3 @@ def get_half_sentence(sentence_info):
 
 	return half_sentence
 
-
-
-		
-
-
-
-# Returns if the deda is separate or adjacent
-def get_status(sentence_info):
-
-	full_sentence = sentence_info['full_sentence']
-	pos = sentence_info['pos']
-	
-	words = full_sentence.split()
-
-	# if separate
-	if len(words[pos]) == 2:
-		return Status.SEPARATE
-	else:
-		return Status.ADJACENT

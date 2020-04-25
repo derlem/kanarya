@@ -1,7 +1,7 @@
 {% extends 'game/base.html' %}
 {% block content %}
 	
-	<p style="font-size:30px"> {{ half_sentence }} <b>({{clitic}})</b> </p>
+	<p style="font-size:30px"> {{ half_text }} <b>({{clitic}})</b> </p>
 	<!--
 	<a class="btn btn-outline-info mb-4" href=" {% url 'question' %} ">Next Sentence</a>
 	-->
@@ -12,8 +12,10 @@
  		<input type="submit" name="decision" value="yes">
  		<input type="submit" name="decision" value="no">
  		-->
- 		<button type="submit" name="decision" value="ADJACENT" class="btn btn-outline-info mb-4">Bitişik Yazılmalı</button>
- 		<button type="submit" name="decision" value="SEPARATE" class="btn btn-outline-info mb-4">Ayrı Yazılmalı</button>
+ 		<button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4">Bitişik Yazılmalı</button>
+ 		<button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4">Ayrı Yazılmalı</button>
+ 		<button type="submit" name="name" value="HINT" class="btn btn-outline-info mb-4">İpucu Ver</button>
+ 		<button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4">Bu cümleyi geç</button>
 
 	</form>
 	{{ decision }}
