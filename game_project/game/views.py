@@ -12,6 +12,14 @@ from .models import Sentence, Question, Activity, Decision, Report
 go_next = True
 current_question = Question()
 
+def home(request):
+
+	return render(request, 'game/home.html')
+
+def about(request):
+
+	return render(request, 'game/about.html')
+
 ### Apply login required
 def question(request):
 		
