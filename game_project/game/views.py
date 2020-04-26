@@ -39,7 +39,7 @@ def question(request):
 
 	correct_answer_count = request.user.profile.correct_answer_count
 
-	success_rate = round((correct_answer_count / last_seen_sentence_idx) * 100, 1)
+	success_rate = round((correct_answer_count / (last_seen_sentence_idx-1)) * 100, 1)
 
 	context = {
 		'half_text': half_text,
@@ -47,7 +47,7 @@ def question(request):
 		'deda_separate': deda_separate,
 		'deda_adjacent': deda_adjacent,
 		'correct_answer_count': correct_answer_count,
-		'last_seen_sentence_idx': last_seen_sentence_idx,
+		'last_seen_sentence_idx': last_seen_sentence_idx - 1,
 		'success_rate': success_rate,
 		'hints': []
 	}
@@ -113,7 +113,7 @@ def question(request):
 
 
 			request.session['correct_answer_count'] = correct_answer_count
-			request.session['last_seen_sentence_idx'] = last_seen_sentence_idx
+			request.session['last_seen_sentence_idx'] = last_seen_sentence_idx - 1
 			request.session['success_rate'] = success_rate
 
 			decision = Decision(question=question,
@@ -164,6 +164,45 @@ def answer(request):
 
 
 	return render(request, 'game/answer.html', context)
+
+
+def stats(request):
+
+	decision_count = len(Decision.objects.all())
+
+	skip_count = 0
+
+	correct_answer_count = 0
+
+	for decision in Decision.objects.all():
+
+		status = decision.question.sentence.status
+		answer = decision.name
+
+		if answer == status:
+			correct_answer_count += 1
+
+		if answer == 'SKIP':
+			skip_count += 1
+
+	incorrect_answer_count = decision_count - correct_answer_count - skip_count
+
+	success_rate = round((correct_answer_count / decision_count), 2)*100
+
+	print(success_rate)
+
+	context = {
+
+		'decision_count': decision_count,
+		'skip_count': skip_count,
+		'correct_answer_count': correct_answer_count,
+		'incorrect_answer_count': incorrect_answer_count,
+		'success_rate': success_rate,
+
+	}
+
+	return render(request, 'game/stats.html', context)
+
 
 
 	

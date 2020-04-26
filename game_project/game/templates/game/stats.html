@@ -1,0 +1,41 @@
+{% extends 'game/base.html' %}
+{% block content %}
+
+	
+	<div>
+
+		<table>
+		  <tr>
+		    <th>Metric</th>
+		    <th>Value</th>
+		  </tr>
+		  <tr>
+		    <td>Number of Decisions</td>
+		    <td> {{ decision_count }} </td>
+		  </tr>
+		  <tr>
+		    <td>Number of Correct Answers</td>
+		    <td> {{correct_answer_count}} </td>
+		  </tr>
+		  <tr>
+		    <td>Number of InCorrect Answers</td>
+		    <td> {{incorrect_answer_count}} </td>
+		  </tr>
+		  <tr>
+		    <td>Number of Skips</td>
+		    <td> {{ skip_count }} </td>
+		  </tr>
+		  <tr>
+		    <td>Success Rate</td>
+		    <td> {{ success_rate }} %</td>
+		  </tr>
+		</table>
+
+	</div>
+
+	
+	
+
+	
+	
+{% endblock content %}
