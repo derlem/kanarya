@@ -95,3 +95,31 @@ a.article-title:hover {
   bottom:10px;
   right:10px;
 }
+
+.progressdiv {
+  position: absolute;
+  top: 75px;
+  right: 75px;
+  padding: 20px;
+  width: 250px;
+  text-align: center;
+  border-radius: 25px;
+  border: 2px solid #06ecf7;
+}
+
+.questiondiv {
+  background-color: white ;
+  color: black;
+  margin-top: 200px;
+  margin-right: 30px;
+  margin-left: 30px;
+  margin-bottom: 50px;
+  border-radius: 25px;
+  border: 2px solid #73AD21;
+
+}
+
+.centeritems{
+  text-align: center;
+}
+

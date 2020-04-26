@@ -1,27 +1,71 @@
 {% extends 'game/base.html' %}
 {% block content %}
+	<!--
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	-->
+	<div class="progressdiv">
 
-	<p style="font-size:30px"> 
+		<h4> Success Rate </h4>
 
-		{{ half_text }} <b>({{clitic}})</b>
+		<div class="progress">
 
-		{% for hint in hints %}
+ 			<div class="progress-bar progress-bar-danger" style="width: 75%;">
+ 
+ 				75%
+ 
+ 			</div>
+ 		</div>
 
-			{{ hint }}
+ 		<div>
 
-		{% endfor %}
+			<p> 6/8 </p>
 
-	</p>
+		</div>	
 
+	</div>
 
-	<form method="POST">
- 		{% csrf_token %}
+	<div class="questiondiv">
 
- 		<button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4">Bitişik Yazılmalı</button>
- 		<button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4">Ayrı Yazılmalı</button>
- 		<button type="submit" name="name" value="HINT" class="btn btn-outline-info mb-4">İpucu Ver</button>
- 		<button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4">Bu cümleyi geç</button>
+		<div class="centeritems">
 
-	</form>
+			<p style="font-size:30px"> 
+
+				{{ half_text }} <b>({{clitic}})</b>
+
+				{{ deda_separate }}
+				{{ deda_adjacent }}
+
+				{% for hint in hints %}
+
+					{{ hint }}
+
+				{% endfor %}
+
+			</p>
+
+		</div>
+
+		<div class="centeritems">
+
+			<form method="POST">
+		 		{% csrf_token %}
+
+		 		<button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4">Bitişik Yazılmalı</button>
+		 		<button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4">Ayrı Yazılmalı</button>
+		 		<button type="submit" name="name" value="HINT" class="btn btn-outline-info mb-4">İpucu Ver</button>
+		 		<button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4">Bu cümleyi geç</button>
+
+			</form>
+
+		</div>		
+
+	</div>
+
+	
+	
+
+	
 	
 {% endblock content %}
