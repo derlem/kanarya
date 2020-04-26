@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import csv
 import linecache
@@ -20,7 +21,7 @@ def about(request):
 
 	return render(request, 'game/about.html')
 
-### Apply login required
+@login_required
 def question(request):
 		
 	last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
@@ -127,7 +128,7 @@ def question(request):
 		form = ActivityForm()
 	return render(request, 'game/question.html',context)
 	
-
+@login_required
 def answer(request):
 	
 	context = {
