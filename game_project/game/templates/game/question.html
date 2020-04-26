@@ -1,5 +1,15 @@
 {% extends 'game/base.html' %}
+{% load static %}
 {% block content %}
+
+
+	<div class="content">
+
+		<img height="315" width="306" src="{% static 'game/canary-bird.png' %}" >
+
+	</div>
+
+	
 
 	<div class="progressdiv">
 
@@ -22,7 +32,7 @@
 
 	</div>
 
-	<div class="questiondiv">
+	<div class="questiondiv" style="z-index: 2">
 
 		<div class="centeritems">
 

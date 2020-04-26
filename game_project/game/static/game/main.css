@@ -116,6 +116,7 @@ a.article-title:hover {
   left: 30px;
   border-radius: 25px;
   border: 2px solid #73AD21;
+  z-index: 10;
 
 }
 
@@ -147,4 +148,21 @@ td, th {
 
 tr:nth-child(even) {
   background-color: #dddddd;
+}
+
+.logo {
+
+  position: absolute;
+  top: 75px;
+  left: 75px;
+
+}
+
+.content {
+    top: 80px;
+    left: 0px;
+    table-layout: fixed;
+    border-collapse: collapse;
+    z-index: 20;
+    position:absolute;
 }
