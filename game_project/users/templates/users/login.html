@@ -1,32 +1,44 @@
 {% extends 'game/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-	<div class="content-section">
-		<form method="POST">
-			{% csrf_token %}
 
-			<fieldset class="form-group">
+	<main role="main" class="container" >
+	  <div class="row">
+	    <div class="col-md-8">
+	    	
+	    	<div class="content-section">
+				<form method="POST">
+					{% csrf_token %}
 
-				<legend class="border-bottom mb-4">
-					Log In
-				</legend>
-				{{ form|crispy }}
-			</fieldset>
+					<fieldset class="form-group">
 
-			<div class="form-group">
-				<button class="btn btn-outline-info", type="submit">Log in</button>
-				<small class="text-muted ml-2">
-					<a href="{% url 'password_reset' %}">Forgot Password?</a>
-				</small>
+						<legend class="border-bottom mb-4">
+							Log In
+						</legend>
+						{{ form|crispy }}
+					</fieldset>
+
+					<div class="form-group">
+						<button class="btn btn-outline-info", type="submit">Log in</button>
+						<small class="text-muted ml-2">
+							<a href="{% url 'password_reset' %}">Forgot Password?</a>
+						</small>
+					</div>
+
+				</form>
+
+				<div class="border-top pt-3">
+					<small class="text-muted">
+						Need an account? <a class="ml-2" href="{% url 'register' %}">Sign up Now</a>
+					</small>
+				</div>
+
 			</div>
 
-		</form>
+	    </div>
+	  </div>
+	</main>
 
-		<div class="border-top pt-3">
-			<small class="text-muted">
-				Need an account? <a class="ml-2" href="{% url 'register' %}">Sign up Now</a>
-			</small>
-		</div>
 
-	</div>
+	
 {% endblock content %}
