@@ -5,12 +5,12 @@ from django.contrib import messages
 import csv
 import linecache
 import random
-from .forms import ActivityForm
+from .forms import ActivityForm, ReportForm
 
 from .models import Sentence, Question, Activity, Decision, Report
 
 go_next = True
-hint_question = Question()
+current_question = Question()
 
 ### Apply login required
 def question(request):
@@ -32,7 +32,7 @@ def question(request):
 	}
 
 	global go_next 
-	global hint_question
+	global current_question
 	
 	if request.method == 'POST':
 
@@ -48,7 +48,7 @@ def question(request):
 				question.save()
 			else:
 				#question = request.session['question']
-				question = hint_question
+				question = current_question
 
 			activity = form.save(commit=False)
 			activity.question = question
@@ -57,6 +57,7 @@ def question(request):
 			activity.save()
 
 			request.session['full_text'] = text
+			current_question = question
 
 			if activity.name == "SKIP":
 
@@ -78,7 +79,7 @@ def question(request):
 
 				#request.session['question'] = question
 				#request.session['activity'] = activity
-				hint_question = question
+				#current_question = question
 
 				go_next = False
 
@@ -115,10 +116,27 @@ def answer(request):
 
 	}
 
-	if context['answer']:
-		messages.success(request, f'Doğru Cevap')
+	if request.method == 'POST':
+
+		form = ReportForm(request.POST)
+
+		if form.is_valid():
+
+			report = form.save(commit=False)
+			report.question = current_question # ?
+			report.save()
+
+			return redirect('question')
+
 	else:
-		messages.error(request, f'Yanlış Cevap')
+
+		if context['answer']:
+			messages.success(request, f'Doğru Cevap')
+		else:
+			messages.error(request, f'Yanlış Cevap')
+
+		form = ReportForm()
+
 
 	return render(request, 'game/answer.html', context)
 

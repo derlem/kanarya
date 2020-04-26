@@ -82,3 +82,16 @@ a.article-title:hover {
 .account-heading {
   font-size: 2.5rem;
 }
+
+.textdiv{
+  display:inline-block;
+  position:relative;
+}
+
+.textbutton{
+  background-color: #f73106 ;
+  color: white;
+  position:absolute;
+  bottom:10px;
+  right:10px;
+}

@@ -1,22 +1,58 @@
 {% extends 'game/base.html' %}
+{% load crispy_forms_tags %}
 {% block content %}
+
+	
+
+
+	<div align="center">
+
+		<p style="font-size:30px">  {{full_text}}  </p>
+		<a class="btn btn-outline-info mb-4" href=" {% url 'question' %} ">Next Sentence</a>
+
+		<fieldset >
+			
+      <!--
+			<legend>
+				Hata Bildir
+			</legend>
+      -->
+
+      <h3>Hata Bildir</h3>
+			
+			<form  method="POST" id="reportform"> 
+    			{% csrf_token %} 
+    	
+          <div class="textdiv">
+
+            <textarea rows="4" cols="50" name="text" form="reportform" placeholder="Hata mesajını giriniz..."></textarea>
+
+            <button type="submit" class="textbutton">Hata Bildir</button>
+
+          </div>
+
+    			
+
+			</form>
+
+		</fieldset>
+
+	</div>
+
+	
+	
+	
+	
 	<!--
-	{% if answer %}
+	<form  method="POST" > 
+    	{% csrf_token %} 
+    	
+        <input type="text" name="text" placeholder="whatever you want"> 
+    	
 
-		<h2>Doğru Cevap</h2>
+    	<input type="submit" value="submit" class="default"/>  # Gönder
 
-	{% else %}
-
-		<h2>Yanlış Cevap</h2>>
-
-	{% endif %}
+	</form>
 	-->
-	
-	
-
-	<p style="font-size:30px">  {{full_text}}  </p>
-	<!-- <p> {{ full_sentence }}  </p> -->
-	<a class="btn btn-outline-info mb-4" href=" {% url 'question' %} ">Next Sentence</a>
-	
 	
 {% endblock content %}
