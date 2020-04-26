@@ -33,9 +33,14 @@ def question(request):
 
 	half_text = get_half_text(text, pos, status)
 
+	deda_separate = get_separate(text, pos, status)
+	deda_adjacent = get_adjacent(text, pos, status)
+
 	context = {
 		'half_text': half_text,
 		'clitic': clitic,
+		'deda_separate': deda_separate,
+		'deda_adjacent': deda_adjacent,
 		'hints': []
 	}
 
@@ -177,6 +182,25 @@ def get_half_text(full_text, pos, status):
 	half_sentence = half_sentence[1:]
 
 	return half_sentence
+
+def get_separate(text, pos, status):
+
+	words = text.split()
+
+	if status == "SEPARATE":
+		return words[pos-1] + " " + words[pos]
+	else:
+		return words[pos][:-2] + " " +  words[pos][-2:]
+
+def get_adjacent(text, pos, status):
+
+	words = text.split()
+
+	if status == "SEPARATE":
+		return words[pos-1]  + words[pos]
+	else:
+		return words[pos]
+
 
 def set_hints(hint_list, hint_count, text, pos):
 	
