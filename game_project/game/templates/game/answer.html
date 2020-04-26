@@ -3,8 +3,63 @@
 {% block content %}
 
 	
+	<div class="progressdiv">
+
+		<h4> Success Rate </h4>
+
+		<div class="progress">
+
+ 			<div class="progress-bar progress-bar-danger" style="width: {{ 'success_rate' }}%;">
+ 
+ 				{{ success_rate }}
+ 
+ 			</div>
+ 		</div>
+
+ 		<div>
+
+			<p>  {{ correct_answer_count }}/ {{ last_seen_sentence_idx }} </p>
+
+		</div>	
+
+	</div>
+
+	<div class="questiondiv">
+
+		<div class="centeritems">
+
+			<p style="font-size:30px">  {{full_text}}  </p>
+
+		</div>
+
+		<div class="centeritems">
+
+			<a class="btn btn-outline-info mb-4" href=" {% url 'question' %} ">Next Sentence</a>
+
+		</div>	
+
+	</div>
+
+	<div align="center" class="reportdiv">
+
+		<h3>Hata Bildir</h3>
+	
+		<form  method="POST" id="reportform"> 
+   			{% csrf_token %} 
+    	
+       		<div class="textdiv">
+
+           		<textarea rows="4" cols="50" name="text" form="reportform" placeholder="Hata mesajını giriniz..."></textarea>
+
+           		<button type="submit" class="textbutton">Hata Bildir</button>
+
+       		</div> 	
+		</form>
+
+	</div>	
 
 
+	<!--
 	<div align="center">
 
 		<p style="font-size:30px">  {{full_text}}  </p>
@@ -12,12 +67,6 @@
 
 		<fieldset >
 			
-      <!--
-			<legend>
-				Hata Bildir
-			</legend>
-      -->
-
       <h3>Hata Bildir</h3>
 			
 			<form  method="POST" id="reportform"> 
@@ -39,20 +88,6 @@
 
 	</div>
 
-	
-	
-	
-	
-	<!--
-	<form  method="POST" > 
-    	{% csrf_token %} 
-    	
-        <input type="text" name="text" placeholder="whatever you want"> 
-    	
-
-    	<input type="submit" value="submit" class="default"/>  # Gönder
-
-	</form>
 	-->
 	
 {% endblock content %}

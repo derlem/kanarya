@@ -1,26 +1,22 @@
 {% extends 'game/base.html' %}
 {% block content %}
-	<!--
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-	-->
+
 	<div class="progressdiv">
 
 		<h4> Success Rate </h4>
 
 		<div class="progress">
 
- 			<div class="progress-bar progress-bar-danger" style="width: 75%;">
+ 			<div class="progress-bar progress-bar-danger" style="width: {{ 'success_rate' }}%;">
  
- 				75%
+ 				{{ success_rate }}
  
  			</div>
  		</div>
 
  		<div>
 
-			<p> 6/8 </p>
+			<p>  {{ correct_answer_count }}/ {{ last_seen_sentence_idx }} </p>
 
 		</div>	
 
@@ -33,9 +29,6 @@
 			<p style="font-size:30px"> 
 
 				{{ half_text }} <b>({{clitic}})</b>
-
-				{{ deda_separate }}
-				{{ deda_adjacent }}
 
 				{% for hint in hints %}
 

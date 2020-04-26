@@ -108,12 +108,12 @@ a.article-title:hover {
 }
 
 .questiondiv {
+  position: absolute;
   background-color: white ;
   color: black;
-  margin-top: 200px;
-  margin-right: 30px;
-  margin-left: 30px;
-  margin-bottom: 50px;
+  top: 300px;
+  right: 30px;
+  left: 30px;
   border-radius: 25px;
   border: 2px solid #73AD21;
 
@@ -123,3 +123,11 @@ a.article-title:hover {
   text-align: center;
 }
 
+.reportdiv{
+
+  position: absolute;
+  top: 500px;
+  right: 30px;
+  left: 30px;
+
+}

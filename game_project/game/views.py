@@ -36,11 +36,18 @@ def question(request):
 	deda_separate = get_separate(text, pos, status)
 	deda_adjacent = get_adjacent(text, pos, status)
 
+	correct_answer_count = request.user.profile.correct_answer_count
+
+	success_rate = round((correct_answer_count / last_seen_sentence_idx) * 100, 1)
+
 	context = {
 		'half_text': half_text,
 		'clitic': clitic,
 		'deda_separate': deda_separate,
 		'deda_adjacent': deda_adjacent,
+		'correct_answer_count': correct_answer_count,
+		'last_seen_sentence_idx': last_seen_sentence_idx,
+		'success_rate': success_rate,
 		'hints': []
 	}
 
@@ -90,10 +97,6 @@ def question(request):
 				set_hints(context['hints'], question.hint_count, text, pos)
 				question.hint_count += 1
 
-				#request.session['question'] = question
-				#request.session['activity'] = activity
-				#current_question = question
-
 				go_next = False
 
 				return render(request, 'game/question.html',context)
@@ -102,10 +105,15 @@ def question(request):
 
 				request.session['answer'] = True
 				request.user.profile.correct_answer_count += 1
+				request.user.profile.save()
 
 			else:
 				request.session['answer'] = False
 
+
+			request.session['correct_answer_count'] = correct_answer_count
+			request.session['last_seen_sentence_idx'] = last_seen_sentence_idx
+			request.session['success_rate'] = success_rate
 
 			decision = Decision(question=question,
 								name = activity.name)
@@ -125,7 +133,10 @@ def answer(request):
 	context = {
 
 		'full_text': request.session.get('full_text') ,
-		'answer': request.session.get('answer')
+		'answer': request.session.get('answer'),
+		'correct_answer_count': request.session.get('correct_answer_count'),
+		'last_seen_sentence_idx': request.session.get('last_seen_sentence_idx') ,
+		'success_rate': request.session.get('success_rate') ,
 
 	}
 
