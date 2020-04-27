@@ -39,7 +39,7 @@ def question(request):
 
 	correct_answer_count = request.user.profile.correct_answer_count
 
-	success_rate = round((correct_answer_count / (last_seen_sentence_idx-1)) * 100, 1)
+	success_rate = round((correct_answer_count / (last_seen_sentence_idx)) * 100, 1)
 
 	context = {
 		'half_text': half_text,
@@ -47,7 +47,7 @@ def question(request):
 		'deda_separate': deda_separate,
 		'deda_adjacent': deda_adjacent,
 		'correct_answer_count': correct_answer_count,
-		'last_seen_sentence_idx': last_seen_sentence_idx - 1,
+		'last_seen_sentence_idx': last_seen_sentence_idx,
 		'success_rate': success_rate,
 		'hints': []
 	}
@@ -113,7 +113,7 @@ def question(request):
 
 
 			request.session['correct_answer_count'] = correct_answer_count
-			request.session['last_seen_sentence_idx'] = last_seen_sentence_idx - 1
+			request.session['last_seen_sentence_idx'] = last_seen_sentence_idx
 			request.session['success_rate'] = success_rate
 
 			decision = Decision(question=question,
