@@ -3,8 +3,8 @@
 First, create a **python3** virtual environment. If you have `virtualenvwrapper` installed in your computer, you can create and activate a virtual environment with the following commands:
 
 ```console
-mkvirtualenv kanarya_game
-workon kanarya_game
+$ mkvirtualenv kanarya_game
+$ workon kanarya_game
 ```
 
 Afterwards, clone the repo, install the requirements and run the migrations:
