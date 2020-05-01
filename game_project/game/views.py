@@ -13,7 +13,10 @@ from .models import Sentence, Question, Activity, Decision, Report
 go_next = True
 current_question = Question()
 
+
 def home(request):
+
+	request.session['question_num'] = 1
 
 	return render(request, 'game/home.html')
 
@@ -23,7 +26,11 @@ def about(request):
 
 @login_required
 def question(request):
-		
+
+	if request.session['question_num'] > 20:
+		request.session['question_num'] = 1
+		return render(request, 'game/test_end.html')
+
 	last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
 	sentence = get_sentence(last_seen_sentence_idx + 1)
 
@@ -41,6 +48,8 @@ def question(request):
 
 	success_rate = round((correct_answer_count / (last_seen_sentence_idx)) * 100, 1)
 
+	question_num = request.session['question_num']
+
 	context = {
 		'half_text': half_text,
 		'clitic': clitic,
@@ -49,6 +58,7 @@ def question(request):
 		'correct_answer_count': correct_answer_count,
 		'last_seen_sentence_idx': last_seen_sentence_idx,
 		'success_rate': success_rate,
+		'question_num': question_num,
 		'hints': []
 	}
 
@@ -56,6 +66,8 @@ def question(request):
 	global current_question
 	
 	if request.method == 'POST':
+
+		request.session['question_num'] += 1
 
 		form = ActivityForm(request.POST)
 
@@ -128,6 +140,7 @@ def question(request):
 		form = ActivityForm()
 	return render(request, 'game/question.html',context)
 	
+	
 @login_required
 def answer(request):
 	
@@ -165,6 +178,8 @@ def answer(request):
 
 	return render(request, 'game/answer.html', context)
 
+def test_end(request):
+	pass
 
 def stats(request):
 
@@ -204,6 +219,18 @@ def stats(request):
 	return render(request, 'game/stats.html', context)
 
 
+# Returns 20 new sentences
+def get_test(sentence_idx):
+
+	test = []
+
+	start_idx = sentence_idx
+	end_idx = sentence_idx + 20
+
+	for sentence in Sentence.objects.all()[start_idx, end_idx]:
+		test.append(sentence)
+
+	return test
 
 	
 def get_sentence(sentence_idx):
