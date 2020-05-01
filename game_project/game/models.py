@@ -2,6 +2,8 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+import json
+
 # All the sentences in the system. Prepopulated, static table
 class Sentence(models.Model):
 	index = models.IntegerField()

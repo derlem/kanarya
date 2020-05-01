@@ -10,13 +10,10 @@ from .forms import ActivityForm, ReportForm
 
 from .models import Sentence, Question, Activity, Decision, Report
 
-go_next = True
-current_question = Question()
-
-
 def home(request):
 
 	request.session['question_num'] = 1
+	request.session['go_next_question'] = True
 
 	return render(request, 'game/home.html')
 
@@ -40,14 +37,10 @@ def question(request):
 	pos = sentence.pos
 
 	half_text = get_half_text(text, pos, status)
-
 	deda_separate = get_separate(text, pos, status)
 	deda_adjacent = get_adjacent(text, pos, status)
-
 	correct_answer_count = request.user.profile.correct_answer_count
-
 	success_rate = round((correct_answer_count / (last_seen_sentence_idx)) * 100, 1)
-
 	question_num = request.session['question_num']
 
 	context = {
@@ -61,27 +54,23 @@ def question(request):
 		'question_num': question_num,
 		'hints': []
 	}
-
-	global go_next 
-	global current_question
 	
 	if request.method == 'POST':
-
-		request.session['question_num'] += 1
 
 		form = ActivityForm(request.POST)
 
 		if form.is_valid():
 			
 			# Create the question once for each sentence !
-			if go_next:
+			if request.session['go_next_question']:
 				question = Question(user=request.user,
 						sentence=sentence)
-
+				
 				question.save()
+
 			else:
-				#question = request.session['question']
-				question = current_question
+				question_pk = request.session.get('question_pk')
+				question = Question.objects.filter(pk=question_pk)[0]
 
 			activity = form.save(commit=False)
 			activity.question = question
@@ -90,38 +79,44 @@ def question(request):
 			activity.save()
 
 			request.session['full_text'] = text
-			current_question = question
+			request.session['question_pk'] = question.pk
 
 			if activity.name == "SKIP":
 
+				request.session['go_next_question'] = True
+				request.session['question_num'] += 1
+
 				request.user.profile.last_seen_sentence_idx += 1
 				request.user.profile.save()
-				go_next = True
 
 				decision = Decision(question=question,
-								name = activity.name)
-
+									name = activity.name)
 				decision.save()
 
 				return redirect('question')
 
 			elif activity.name == "HINT":
 
+				request.session['go_next_question'] = False
+
 				set_hints(context['hints'], question.hint_count, text, pos)
 				question.hint_count += 1
-
-				go_next = False
+				question.save()
 
 				return render(request, 'game/question.html',context)
 
-			elif activity.name == status:
+			else: 
 
-				request.session['answer'] = True
-				request.user.profile.correct_answer_count += 1
-				request.user.profile.save()
+				request.session['question_num'] += 1
 
-			else:
-				request.session['answer'] = False
+				if activity.name == status:
+
+					request.session['answer'] = True
+					request.user.profile.correct_answer_count += 1
+					request.user.profile.save()
+
+				else:
+					request.session['answer'] = False
 
 
 			request.session['correct_answer_count'] = correct_answer_count
@@ -132,7 +127,7 @@ def question(request):
 								name = activity.name)
 
 			decision.save()
-			go_next = True
+			request.session['go_next_question'] = True
 			request.user.profile.last_seen_sentence_idx += 1
 			request.user.profile.save()
 			return redirect('answer')
@@ -161,7 +156,10 @@ def answer(request):
 		if form.is_valid():
 
 			report = form.save(commit=False)
-			report.question = current_question # ?
+			question_pk = request.session.get('question_pk')
+			question = Question.objects.filter(pk=question_pk)[0]
+			report.question = question
+			#report.question = current_question # ?
 			report.save()
 
 			return redirect('question')
