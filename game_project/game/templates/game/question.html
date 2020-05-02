@@ -5,10 +5,11 @@
 
 	<div class="content">
 
-		<h3>{{question_num}} : {{mode}} </h3>
+		<h3>{{question_num}} : {{mode}} - {{type}} </h3>
 
+		<!--
 		<img height="315" width="306" src="{% static 'game/canary-bird.png' %}" >
-
+		-->
 	</div>
 
 	
@@ -58,6 +59,22 @@
 				{% elif mode == "MODE_3" %}
 
 					<b>({{clitic}})</b> {{ second_half_text }}
+
+				{% elif mode == "MODE_4" %}
+
+					{% if type == "TYPE_1" %}
+
+						{{ first_text }} ______ <b>({{clitic}})</b> {{ second_text }}
+
+					{% elif type == "TYPE_2" %}
+
+						{{ first_text }} ______ {{ second_text }} <b>({{deda_adjacent}} vs {{deda_separate}})</b> {{ third_text }}
+
+					{% elif type == "TYPE_3" %}
+
+						{{ first_text }} <b>({{deda_adjacent}} vs {{deda_separate}})</b> {{ second_text }} _______ {{ third_text }}
+
+					{% endif %}
 
 				{% endif %}
 

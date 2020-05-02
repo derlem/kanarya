@@ -11,11 +11,12 @@ class Sentence(models.Model):
 	pos = models.IntegerField()
 	status = models.TextField()
 	clitic = models.CharField(max_length=2) # de/da/te/ta
-	
+
 class Question(models.Model):
 	sentence = models.ForeignKey(Sentence, on_delete=models.CASCADE)
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	mode = models.TextField(default="MODE_1")
+	relative_mask_pos = models.IntegerField(default=0) # Nonzero only for mode 4
 	hint_count = models.IntegerField(default=0)
 
 class Activity(models.Model):

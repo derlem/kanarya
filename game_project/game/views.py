@@ -12,10 +12,13 @@ from .models import Sentence, Question, Activity, Decision, Report
 
 from enum import Enum
 
+QUESTION_PER_TEST = 30
+
 class MODE_THRESHOLD(Enum):
 	MODE_1 = 8
 	MODE_2 = 16
-	MODE_3 = 20
+	MODE_3 = 24
+	MODE_4 = QUESTION_PER_TEST
 
 def home(request):
 
@@ -31,13 +34,6 @@ def about(request):
 @login_required
 def question(request):
 
-	'''
-	if request.session['question_num'] > 20:
-		request.session['question_num'] = 1
-		return render(request, 'game/test_end.html')
-
-	'''
-
 	last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
 	sentence = get_sentence(last_seen_sentence_idx + 1)
 
@@ -46,10 +42,6 @@ def question(request):
 	clitic = sentence.clitic
 	pos = sentence.pos
 
-	
-	#first_half_text = get_first_half_text(text, pos, status)
-	#deda_separate = get_separate(text, pos, status)
-	#deda_adjacent = get_adjacent(text, pos, status)
 	correct_answer_count = request.user.profile.correct_answer_count
 	success_rate = round((correct_answer_count / (last_seen_sentence_idx)) * 100, 1)
 	question_num = request.session['question_num']
@@ -62,32 +54,25 @@ def question(request):
 		'hints': []
 	}
 	
-
 	if request.session['question_num'] < MODE_THRESHOLD.MODE_1.value:
 		
-		context['mode'] = 'MODE_1'
-		context['first_half_text'] = get_first_half_text(text, pos, status)
-		context['deda_separate'] = get_separate(text, pos, status)
-		context['deda_adjacent'] = get_adjacent(text, pos, status)
+		get_mode_1_context(context, text, pos, status)
 
 	elif request.session['question_num'] < MODE_THRESHOLD.MODE_2.value:
 		
-		context['mode'] = 'MODE_2'
-		context['second_half_text'] = get_second_half_text(text, pos, status)
-		context['deda_separate'] = get_separate(text, pos, status)
-		context['deda_adjacent'] = get_adjacent(text, pos, status)
-
+		get_mode_2_context(context, text, pos, status)
 
 	elif request.session['question_num'] < MODE_THRESHOLD.MODE_3.value:
 		
-		context['mode'] = 'MODE_3'
-		context['second_half_text'] = get_second_half_text(text, pos, status)
-		context['clitic'] = clitic
+		get_mode_3_context(context, text, pos, status)
+
+	elif request.session['question_num'] < MODE_THRESHOLD.MODE_4.value:
+
+		get_mode_4_context(context, text, pos, status)
 
 	else:
 		request.session['question_num'] = 1
 		return render(request, 'game/test_end.html')
-
 
 	
 	if request.method == 'POST':
@@ -108,6 +93,8 @@ def question(request):
 				question = Question.objects.filter(pk=question_pk)[0]
 
 			question.mode = context['mode']
+			if context['mode'] == 'MODE_4':
+				question.relative_mask_pos = context['relative_mask_pos']
 			question.save()
 
 			activity = form.save(commit=False)
@@ -254,11 +241,6 @@ def stats(request):
 
 	return render(request, 'game/stats.html', context)
 
-
-# Set context according to the mode
-def set_context(mode):
-	pass
-
 # Returns 20 new sentences
 def get_test(sentence_idx):
 
@@ -348,3 +330,141 @@ def set_hints(hint_list, hint_count, text, pos):
 	for word in words[hint_start_idx:hint_end_idx]:
 		hint_list.append(word)
 
+def get_mode_1_context(context, text, pos, status):
+
+	context['mode'] = 'MODE_1'
+	context['first_half_text'] = get_first_half_text(text, pos, status)
+	context['deda_separate'] = get_separate(text, pos, status)
+	context['deda_adjacent'] = get_adjacent(text, pos, status)
+
+def get_mode_2_context(context, text, pos, status):
+
+	context['mode'] = 'MODE_2'
+	context['second_half_text'] = get_second_half_text(text, pos, status)
+	context['deda_separate'] = get_separate(text, pos, status)
+	context['deda_adjacent'] = get_adjacent(text, pos, status)
+
+def get_mode_3_context(context, text, pos, status):
+
+	tokens = text.split()
+	clitic = tokens[pos][-2:]
+
+	context['mode'] = 'MODE_3'
+	context['second_half_text'] = get_second_half_text(text, pos, status)
+	context['clitic'] = clitic
+
+def get_mode_4_context(context, text, pos, status):
+
+	tokens = full_tokenize(text, pos, status)
+		
+	if status  == "ADJACENT":
+		pos += 1
+
+	mask_pos = random.randint(0, len(tokens)-1)
+	# Do not mask the clitic
+	while(mask_pos == pos):
+		mask_pos = random.randint(0, len(tokens)-1)
+
+	relative_mask_pos = mask_pos - pos
+	context['relative_mask_pos'] = relative_mask_pos
+
+	if mask_pos < pos:
+		
+		# first_text ____(de) second_text
+		if mask_pos == pos-1:
+			
+			first_text = ""
+			second_text = ""
+
+			for token in tokens[:pos-1]:
+				first_text += " " + token
+			first_text = first_text[1:]
+
+			for token in tokens[pos+1:]:
+				second_text += " " + token
+			second_text = second_text[1:]
+
+			clitic = tokens[pos]
+
+			context['type'] = 'TYPE_1'
+			context['first_text'] = first_text
+			context['second_text'] = second_text
+			context['clitic'] = clitic
+
+
+
+		# first_text ___ second_text (deda_adjacent and deda_separate) third_text
+		else:
+
+			first_text, second_text, third_text = "","",""
+			
+			for token in tokens[:mask_pos]:
+				first_text += " " + token
+			first_text = first_text[1:]
+
+			for token in tokens[mask_pos+1:pos-1]:
+				second_text += " " + token
+			second_text = second_text[1:]
+
+			for token in tokens[pos+1:]:
+				third_text += " " + token
+			third_text = third_text[1:]
+
+			deda_separate = tokens[pos-1] + " " + tokens[pos]
+			deda_adjacent = tokens[pos-1] + tokens[pos]
+
+			context['type'] = 'TYPE_2'
+			context['first_text'] = first_text
+			context['second_text'] = second_text
+			context['third_text'] = third_text
+			context['deda_separate'] = deda_separate
+			context['deda_adjacent'] = deda_adjacent
+
+
+	# first_text (deda_adjacent and deda_separate) second_text ____ third_text
+	else:
+		# Calculate the necessary strings
+		first_text, second_text, third_text = "","",""
+		deda_separate = tokens[pos-1] + " " + tokens[pos]
+		deda_adjacent = tokens[pos-1] + tokens[pos]
+
+		for token in tokens[:pos-1]:
+			first_text += " " + token
+		first_text = first_text[1:]
+
+		for token in tokens[pos+1:mask_pos]:
+			second_text += " " + token
+		second_text = second_text[1:]
+
+		for token in tokens[mask_pos+1:]:
+			third_text += " " + token
+		third_text = third_text[1:]
+
+		context['type'] = 'TYPE_3'
+		context['first_text'] = first_text
+		context['second_text'] = second_text
+		context['third_text'] = third_text
+		context['deda_separate'] = deda_separate
+		context['deda_adjacent'] = deda_adjacent
+
+	context['mode'] = 'MODE_4'
+	return context
+
+	
+
+
+def full_tokenize(text, pos, status):
+
+	words = text.split()
+
+	if status == "SEPARATE":
+		return words
+	else:
+		prev_word = words[pos][:-2]
+		clitic = words[pos][-2:]
+
+		words[pos] = prev_word
+
+		words.insert(pos+1, clitic)
+
+		return words
