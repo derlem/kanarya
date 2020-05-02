@@ -5,7 +5,7 @@
 
 	<div class="content">
 
-		<h3>{{question_num}}</h3>
+		<h3>{{question_num}} : {{mode}} </h3>
 
 		<img height="315" width="306" src="{% static 'game/canary-bird.png' %}" >
 
@@ -38,15 +38,38 @@
 
 		<div class="centeritems">
 
-			<p style="font-size:30px"> 
+			<p style="font-size:30px">
 
-				{{ half_text }} <b>({{clitic}})</b>
+				{% if mode == "MODE_1" %}
+
+					{{ first_half_text }} (<b>{{deda_adjacent}} vs {{deda_separate}}</b>)
+
+					{% for hint in hints %}
+
+						{{ hint }}
+
+					{% endfor %}
+					
+
+				{% elif mode == "MODE_2" %}
+ 
+					(<b>{{deda_adjacent}} vs {{deda_separate}}</b>) {{ second_half_text }}
+
+				{% elif mode == "MODE_3" %}
+
+					<b>({{clitic}})</b> {{ second_half_text }}
+
+				{% endif %}
+
+				<!--
+				{{ first_half_text }} <b>({{clitic}})</b>
 
 				{% for hint in hints %}
 
 					{{ hint }}
 
 				{% endfor %}
+				-->
 
 			</p>
 

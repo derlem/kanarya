@@ -11,20 +11,11 @@ class Sentence(models.Model):
 	pos = models.IntegerField()
 	status = models.TextField()
 	clitic = models.CharField(max_length=2) # de/da/te/ta
-
-'''
-class Session(models.Model):
-	user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-
-class Test(models.Model):
-	#session = models.ForeignKey(Session, on_delete=models.CASCADE)
-	user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-'''
+	
 class Question(models.Model):
 	sentence = models.ForeignKey(Sentence, on_delete=models.CASCADE)
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	mode = models.TextField(default="MODE_1")
 	hint_count = models.IntegerField(default=0)
 
 class Activity(models.Model):

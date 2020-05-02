@@ -10,6 +10,13 @@ from .forms import ActivityForm, ReportForm
 
 from .models import Sentence, Question, Activity, Decision, Report
 
+from enum import Enum
+
+class MODE_THRESHOLD(Enum):
+	MODE_1 = 8
+	MODE_2 = 16
+	MODE_3 = 20
+
 def home(request):
 
 	request.session['question_num'] = 1
@@ -24,9 +31,12 @@ def about(request):
 @login_required
 def question(request):
 
+	'''
 	if request.session['question_num'] > 20:
 		request.session['question_num'] = 1
 		return render(request, 'game/test_end.html')
+
+	'''
 
 	last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
 	sentence = get_sentence(last_seen_sentence_idx + 1)
@@ -36,24 +46,49 @@ def question(request):
 	clitic = sentence.clitic
 	pos = sentence.pos
 
-	half_text = get_half_text(text, pos, status)
-	deda_separate = get_separate(text, pos, status)
-	deda_adjacent = get_adjacent(text, pos, status)
+	
+	#first_half_text = get_first_half_text(text, pos, status)
+	#deda_separate = get_separate(text, pos, status)
+	#deda_adjacent = get_adjacent(text, pos, status)
 	correct_answer_count = request.user.profile.correct_answer_count
 	success_rate = round((correct_answer_count / (last_seen_sentence_idx)) * 100, 1)
 	question_num = request.session['question_num']
 
 	context = {
-		'half_text': half_text,
-		'clitic': clitic,
-		'deda_separate': deda_separate,
-		'deda_adjacent': deda_adjacent,
 		'correct_answer_count': correct_answer_count,
 		'last_seen_sentence_idx': last_seen_sentence_idx,
 		'success_rate': success_rate,
 		'question_num': question_num,
 		'hints': []
 	}
+	
+
+	if request.session['question_num'] < MODE_THRESHOLD.MODE_1.value:
+		
+		context['mode'] = 'MODE_1'
+		context['first_half_text'] = get_first_half_text(text, pos, status)
+		context['deda_separate'] = get_separate(text, pos, status)
+		context['deda_adjacent'] = get_adjacent(text, pos, status)
+
+	elif request.session['question_num'] < MODE_THRESHOLD.MODE_2.value:
+		
+		context['mode'] = 'MODE_2'
+		context['second_half_text'] = get_second_half_text(text, pos, status)
+		context['deda_separate'] = get_separate(text, pos, status)
+		context['deda_adjacent'] = get_adjacent(text, pos, status)
+
+
+	elif request.session['question_num'] < MODE_THRESHOLD.MODE_3.value:
+		
+		context['mode'] = 'MODE_3'
+		context['second_half_text'] = get_second_half_text(text, pos, status)
+		context['clitic'] = clitic
+
+	else:
+		request.session['question_num'] = 1
+		return render(request, 'game/test_end.html')
+
+
 	
 	if request.method == 'POST':
 
@@ -71,6 +106,9 @@ def question(request):
 			else:
 				question_pk = request.session.get('question_pk')
 				question = Question.objects.filter(pk=question_pk)[0]
+
+			question.mode = context['mode']
+			question.save()
 
 			activity = form.save(commit=False)
 			activity.question = question
@@ -217,6 +255,10 @@ def stats(request):
 	return render(request, 'game/stats.html', context)
 
 
+# Set context according to the mode
+def set_context(mode):
+	pass
+
 # Returns 20 new sentences
 def get_test(sentence_idx):
 
@@ -237,27 +279,46 @@ def get_sentence(sentence_idx):
 	return sentence
 
 
-def get_half_text(full_text, pos, status):
+def get_first_half_text(full_text, pos, status):
 
 	words = full_text.split()
 
-	half_sentence = ""
+	first_half_text = ""
 	for idx, word in enumerate(words):
 
 		if idx == pos:
 
 			if status == 'ADJACENT':
-				half_sentence = half_sentence + " " + word[:-2] # Exclude de/da/te/ta
+				#first_half_text = first_half_text + " " + word[:-2] # Exclude de/da/te/ta
 				break
 			else:
 				break
 
 		else:
-			half_sentence = half_sentence + " " + word
 
-	half_sentence = half_sentence[1:]
+			# Do not take the preceding word
+			if idx == pos - 1 and status == "SEPARATE":
+				pass
+			else: 
+				first_half_text = first_half_text + " " + word
 
-	return half_sentence
+	first_half_text = first_half_text[1:]
+
+	return first_half_text
+
+def get_second_half_text(full_text, pos, status):
+
+	words = full_text.split()
+
+	second_half_text = ""
+	for word in words[pos+1:]:
+		second_half_text += " " + word
+
+	second_half_text = second_half_text[1:]
+
+	return second_half_text
+
+
 
 def get_separate(text, pos, status):
 
