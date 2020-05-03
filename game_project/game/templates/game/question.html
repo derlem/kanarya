@@ -7,7 +7,8 @@
         }
         .branch_view {
             margin: auto;
-            margin-top: 40vh;
+            margin-left: 75vh;
+            margin-right: 75vh;
             display: flex;
             flex-direction: row;
         }
@@ -19,7 +20,9 @@
         }
 
         .right_container {
-            
+            display: grid;
+            padding: 10px;
+            padding-right: 6px;
         }
 
         .small_container {
@@ -29,6 +32,10 @@
         .left_text {
             margin: auto;
             max-width: 75vw;
+        }
+        .right_text {
+            margin: auto;
+            max-width: 75vw;   
         }
 
         .highlightme {
@@ -93,19 +100,23 @@
                         <div class='small_container'>
                             <span><b>{{deda_separate}}</b></span>
                         </div>
+
+
                           </div>
                     </div>
-                    <!--{{ first_half_text }} (<b>{{deda_adjacent}} vs {{deda_separate}}</b>) -->
-
                     {% for hint in hints %}
 
                     <span class="highlightme">{{ hint }}</span>
 
                     {% endfor %}
+                    <!--{{ first_half_text }} (<b>{{deda_adjacent}} vs {{deda_separate}}</b>) -->
+
                     
 
                 {% elif mode == "MODE_2" %}
  
+
+
                     (<b>{{deda_adjacent}} vs {{deda_separate}}</b>) {{ second_half_text }}
 
                 {% elif mode == "MODE_3" %}
@@ -123,6 +134,7 @@
                         {{ first_text }} ______ {{ second_text }} <b>({{deda_adjacent}} vs {{deda_separate}})</b> {{ third_text }}
 
                     {% elif type == "TYPE_3" %}
+
 
                         {{ first_text }} <b>({{deda_adjacent}} vs {{deda_separate}})</b> {{ second_text }} _______ {{ third_text }}
 
