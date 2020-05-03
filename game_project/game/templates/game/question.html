@@ -7,8 +7,8 @@
         }
         .branch_view {
             margin: auto;
-            margin-left: 75vh;
-            margin-right: 75vh;
+            margin-left: 10vh;
+            margin-right: 10vh;
             display: flex;
             flex-direction: row;
         }
@@ -20,9 +20,7 @@
         }
 
         .right_container {
-            display: grid;
-            padding: 10px;
-            padding-right: 6px;
+
         }
 
         .small_container {
@@ -90,54 +88,153 @@
                 {% if mode == "MODE_1" %}
 
                     <div class='branch_view'>
+
                         <div class='left_container'>
                             <span class='left_text text'>{{first_half_text}}</span>
                         </div>
-                       <div class='right_container'>
-                         <div class='small_container'>
-                            <span><b>{{deda_adjacent}}</b></span>
-                          </div>
-                        <div class='small_container'>
-                            <span><b>{{deda_separate}}</b></span>
+
+                        <div class='right_container'>
+                            <div class='small_container'>
+                                <span><b>{{deda_adjacent}}</b></span>
+                            </div>
+
+                            <div class='small_container'>
+                                <span><b>{{deda_separate}}</b></span>
+                            </div>
+                            
                         </div>
 
+                        <div class='left_container'>
+                            <span class='left_text text'>
+                                {% for hint in hints %}
 
-                          </div>
+                                    <span class="highlightme">{{ hint }}</span>
+
+                                {% endfor %}
+                            </span>
+                        </div>
+                        
                     </div>
-                    {% for hint in hints %}
-
-                    <span class="highlightme">{{ hint }}</span>
-
-                    {% endfor %}
+                    
                     <!--{{ first_half_text }} (<b>{{deda_adjacent}} vs {{deda_separate}}</b>) -->
 
                     
 
                 {% elif mode == "MODE_2" %}
  
+                    <div class='branch_view'>
 
+                        <div class='left_container'>
+                            <span class='left_text text'> </span>
+                        </div>
 
+                        <div class='right_container'>
+                            <div class='small_container'>
+                                <span><b>{{deda_adjacent}}</b></span>
+                            </div>
+
+                            <div class='small_container'>
+                                <span><b>{{deda_separate}}</b></span>
+                            </div>
+
+                        </div>
+
+                        <div class='left_container'>
+                            <span class='left_text text'>{{ second_half_text }}</span>
+                        </div>
+
+                    </div>
+                    <!--
                     (<b>{{deda_adjacent}} vs {{deda_separate}}</b>) {{ second_half_text }}
+                    -->
 
                 {% elif mode == "MODE_3" %}
 
+                    <div class='branch_view'>
+
+                        <div class='left_container'>
+                            <span class='left_text text'> <b>({{clitic}})</b> {{ second_half_text }} </span>
+                        </div>
+
+                    </div>
+                    <!--
                     <b>({{clitic}})</b> {{ second_half_text }}
+                    -->
 
                 {% elif mode == "MODE_4" %}
 
                     {% if type == "TYPE_1" %}
 
+                        <div class='branch_view'>
+
+                            <div class='left_container'>
+                                <span class='left_text text'> {{ first_text }} ______ <b>({{clitic}})</b> {{ second_text }} </span>
+                            </div>
+
+                        </div>
+
+                        <!--
                         {{ first_text }} ______ <b>({{clitic}})</b> {{ second_text }}
+                        -->
 
                     {% elif type == "TYPE_2" %}
 
+
+                        <div class='branch_view'>
+
+                            <div class='left_container'>
+                                <span class='left_text text'> {{ first_text }} ______ {{ second_text }} </span>
+                            </div>
+
+                            <div class='right_container'>
+                                <div class='small_container'>
+                                    <span><b>{{deda_adjacent}}</b></span>
+                                </div>
+
+                                <div class='small_container'>
+                                    <span><b>{{deda_separate}}</b></span>
+                                </div>
+
+                            </div>
+
+                            <div class='left_container'>
+                                <span class='left_text text'> {{ third_text }} </span>
+                            </div>
+
+                        </div>
+
+                        <!--
                         {{ first_text }} ______ {{ second_text }} <b>({{deda_adjacent}} vs {{deda_separate}})</b> {{ third_text }}
+                        -->
 
                     {% elif type == "TYPE_3" %}
 
+                        <div class='branch_view'>
 
+                            <div class='left_container'>
+                                <span class='left_text text'> {{ first_text }} </span>
+                            </div>
+
+                            <div class='right_container'>
+                                <div class='small_container'>
+                                    <span><b>{{deda_adjacent}}</b></span>
+                                </div>
+
+                                <div class='small_container'>
+                                    <span><b>{{deda_separate}}</b></span>
+                                </div>
+
+                            </div>
+
+                            <div class='left_container'>
+                                <span class='left_text text'> {{ second_text }} _______ {{ third_text }} </span>
+                            </div>
+
+                        </div>
+
+                        <!--
                         {{ first_text }} <b>({{deda_adjacent}} vs {{deda_separate}})</b> {{ second_text }} _______ {{ third_text }}
-
+                        -->
                     {% endif %}
 
                 {% endif %}
