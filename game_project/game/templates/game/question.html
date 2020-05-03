@@ -1,116 +1,168 @@
+<style type="text/css">
+        body {
+            margin: 0px;
+            height: 100vh;
+            width: 100vw;
+            display: grid;
+        }
+        .branch_view {
+            margin: auto;
+            margin-top: 40vh;
+            display: flex;
+            flex-direction: row;
+        }
+        
+        .left_container {
+            display: grid;
+            padding: 10px;
+            padding-right: 6px;
+        }
+
+        .right_container {
+            
+        }
+
+        .small_container {
+            padding: 6px;
+        }
+
+        .left_text {
+            margin: auto;
+            max-width: 75vw;
+        }
+
+        .highlightme {
+         background-color:#FFFF00;
+        }
+        
+</style>
+
 {% extends 'game/base.html' %}
 {% load static %}
 {% block content %}
 
 
-	<div class="content">
+    <div class="content">
 
-		<h3>{{question_num}} : {{mode}} - {{type}} </h3>
+        <h3>{{question_num}} : {{mode}} - {{type}} </h3>
 
-		<!--
-		<img height="315" width="306" src="{% static 'game/canary-bird.png' %}" >
-		-->
-	</div>
+        <!--
+        <img height="315" width="306" src="{% static 'game/canary-bird.png' %}" >
+        -->
+    </div>
 
-	
+    
 
-	<div class="progressdiv">
+    <div class="progressdiv">
 
-		<h4> Success Rate </h4>
+        <h4> Success Rate </h4>
 
-		<div class="progress">
+        <div class="progress">
 
- 			<div class="progress-bar progress-bar-danger" style="width: {{ success_rate }}%;">
+            <div class="progress-bar progress-bar-danger" style="width: {{ success_rate }}%;">
  
- 				{{ success_rate }}
+                {{ success_rate }}
  
- 			</div>
- 		</div>
+            </div>
+        </div>
 
- 		<div>
+        <div>
 
-			<p>  {{ correct_answer_count }}/ {{ last_seen_sentence_idx }} </p>
+            <p>  {{ correct_answer_count }}/ {{ last_seen_sentence_idx }} </p>
 
-		</div>	
+        </div>  
 
-	</div>
+    </div>
 
-	<div class="questiondiv" style="z-index: 2">
+    <div class="questiondiv" style="z-index: 2">
 
-		<div class="centeritems">
+        <div class="centeritems">
 
-			<p style="font-size:30px">
+            <p style="font-size:30px">
 
-				{% if mode == "MODE_1" %}
+                {% if mode == "MODE_1" %}
 
-					{{ first_half_text }} (<b>{{deda_adjacent}} vs {{deda_separate}}</b>)
+                    <div class='branch_view'>
+                        <div class='left_container'>
+                            <span class='left_text text'>{{first_half_text}}</span>
+                        </div>
+                       <div class='right_container'>
+                         <div class='small_container'>
+                            <span><b>{{deda_adjacent}}</b></span>
+                          </div>
+                        <div class='small_container'>
+                            <span><b>{{deda_separate}}</b></span>
+                        </div>
+                          </div>
+                    </div>
+                    <!--{{ first_half_text }} (<b>{{deda_adjacent}} vs {{deda_separate}}</b>) -->
 
-					{% for hint in hints %}
+                    {% for hint in hints %}
 
-						{{ hint }}
+                    <span class="highlightme">{{ hint }}</span>
 
-					{% endfor %}
-					
+                    {% endfor %}
+                    
 
-				{% elif mode == "MODE_2" %}
+                {% elif mode == "MODE_2" %}
  
-					(<b>{{deda_adjacent}} vs {{deda_separate}}</b>) {{ second_half_text }}
+                    (<b>{{deda_adjacent}} vs {{deda_separate}}</b>) {{ second_half_text }}
 
-				{% elif mode == "MODE_3" %}
+                {% elif mode == "MODE_3" %}
 
-					<b>({{clitic}})</b> {{ second_half_text }}
+                    <b>({{clitic}})</b> {{ second_half_text }}
 
-				{% elif mode == "MODE_4" %}
+                {% elif mode == "MODE_4" %}
 
-					{% if type == "TYPE_1" %}
+                    {% if type == "TYPE_1" %}
 
-						{{ first_text }} ______ <b>({{clitic}})</b> {{ second_text }}
+                        {{ first_text }} ______ <b>({{clitic}})</b> {{ second_text }}
 
-					{% elif type == "TYPE_2" %}
+                    {% elif type == "TYPE_2" %}
 
-						{{ first_text }} ______ {{ second_text }} <b>({{deda_adjacent}} vs {{deda_separate}})</b> {{ third_text }}
+                        {{ first_text }} ______ {{ second_text }} <b>({{deda_adjacent}} vs {{deda_separate}})</b> {{ third_text }}
 
-					{% elif type == "TYPE_3" %}
+                    {% elif type == "TYPE_3" %}
 
-						{{ first_text }} <b>({{deda_adjacent}} vs {{deda_separate}})</b> {{ second_text }} _______ {{ third_text }}
+                        {{ first_text }} <b>({{deda_adjacent}} vs {{deda_separate}})</b> {{ second_text }} _______ {{ third_text }}
 
-					{% endif %}
+                    {% endif %}
 
-				{% endif %}
+                {% endif %}
 
-				<!--
-				{{ first_half_text }} <b>({{clitic}})</b>
+                <!--
+                {{ first_half_text }} <b>({{clitic}})</b>
 
-				{% for hint in hints %}
+                {% for hint in hints %}
 
-					{{ hint }}
+                    {{ hint }}
 
-				{% endfor %}
-				-->
+                {% endfor %}
+                -->
 
-			</p>
+            </p>
 
-		</div>
+        </div>
 
-		<div class="centeritems">
+        <div class="centeritems">
 
-			<form method="POST">
-		 		{% csrf_token %}
+            <form method="POST">
+                {% csrf_token %}
 
-		 		<button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4">Bitişik Yazılmalı</button>
-		 		<button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4">Ayrı Yazılmalı</button>
-		 		<button type="submit" name="name" value="HINT" class="btn btn-outline-info mb-4">İpucu Ver</button>
-		 		<button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4">Bu cümleyi geç</button>
+                <button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4">Bitişik Yazılmalı</button>
+                <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4">Ayrı Yazılmalı</button>
+                <button type="submit" name="name" value="HINT" class="btn btn-outline-info mb-4">İpucu Ver</button>
+                <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4">Bu cümleyi geç</button>
 
-			</form>
+            </form>
 
-		</div>		
+        </div>      
 
-	</div>
+    </div>
 
-	
-	
+    
+    
 
-	
-	
+    
+    
 {% endblock content %}

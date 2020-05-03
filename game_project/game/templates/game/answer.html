@@ -1,3 +1,8 @@
+<style>
+body { background-color:blue; }
+.highlightme { background-color:#FFFF00; }
+p { background-color:#FFFFFF; }
+</style>
 {% extends 'game/base.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
@@ -35,7 +40,8 @@
 
 		<div class="centeritems">
 
-			<p style="font-size:30px">  {{full_text}}  </p>
+			<p style="font-size:30px">  {{half_text}} <span class="highlightme"><b>{{de_da_word}}</b></span> {{rest_of_sentence}} </p>
+			<!-- <p style="font-size:30px">  {{full_text}}  </p> -->
 
 		</div>
 
