@@ -14,10 +14,15 @@ from enum import Enum
 
 QUESTION_PER_TEST = 30
 
+QUESTION_NUM_MODE_1 = 5
+QUESTION_NUM_MODE_2 = 5
+QUESTION_NUM_MODE_3 = 5
+QUESTION_NUM_MODE_4 = 5
+
 class MODE_THRESHOLD(Enum):
-    MODE_1 = 8
-    MODE_2 = 16
-    MODE_3 = 24
+    MODE_1 = QUESTION_NUM_MODE_1
+    MODE_2 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2
+    MODE_3 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3
     MODE_4 = QUESTION_PER_TEST
 
 def home(request):
@@ -37,7 +42,7 @@ def question(request):
     last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
     sentence = get_sentence(last_seen_sentence_idx + 1)
 
-    text = sentence.text
+    full_text = sentence.text
     status = sentence.status
     clitic = sentence.clitic
     pos = sentence.pos
@@ -56,19 +61,19 @@ def question(request):
     
     if request.session['question_num'] < MODE_THRESHOLD.MODE_1.value:
         
-        get_mode_1_context(context, text, pos, status)
+        get_mode_1_context(context, full_text, pos, status)
 
     elif request.session['question_num'] < MODE_THRESHOLD.MODE_2.value:
         
-        get_mode_2_context(context, text, pos, status)
+        get_mode_2_context(context, full_text, pos, status)
 
     elif request.session['question_num'] < MODE_THRESHOLD.MODE_3.value:
         
-        get_mode_3_context(context, text, pos, status)
+        get_mode_3_context(context, full_text, pos, status)
 
     elif request.session['question_num'] < MODE_THRESHOLD.MODE_4.value:
 
-        get_mode_4_context(context, text, pos, status)
+        get_mode_4_context(context, full_text, pos, status)
 
     else:
         request.session['question_num'] = 1
@@ -103,7 +108,7 @@ def question(request):
 
             activity.save()
 
-            request.session['full_text'] = text
+            request.session['full_text'] = full_text
             request.session['question_pk'] = question.pk
 
             if activity.name == "SKIP":
@@ -124,7 +129,7 @@ def question(request):
 
                 request.session['go_next_question'] = False
 
-                set_hints(context['hints'], question.hint_count, text, pos)
+                set_hints(context['hints'], question.hint_count, full_text, pos)
                 question.hint_count += 1
                 question.save()
 
@@ -167,12 +172,12 @@ def answer(request):
     last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
     sentence = get_sentence(last_seen_sentence_idx)
 
-    text = sentence.text
+    full_text = sentence.text
     status = sentence.status
     clitic = sentence.clitic
     pos = sentence.pos
 
-    first_text, highlighted_text, second_text = get_answer_text(text, pos, status)
+    first_text, highlighted_text, second_text = get_answer_text(full_text, pos, status)
     
     context = {
 
@@ -277,6 +282,7 @@ def get_first_half_text(full_text, pos, status):
     words = full_text.split()
 
     first_half_text = ""
+    
     for idx, word in enumerate(words):
 
         if idx == pos:
@@ -296,7 +302,7 @@ def get_first_half_text(full_text, pos, status):
                 first_half_text = first_half_text + " " + word
 
     first_half_text = first_half_text[1:]
-
+    
     return first_half_text
 
 def get_second_half_text(full_text, pos, status):
@@ -313,18 +319,18 @@ def get_second_half_text(full_text, pos, status):
 
 
 
-def get_separate(text, pos, status):
+def get_separate(full_text, pos, status):
 
-    words = text.split()
+    words = full_text.split()
 
     if status == "SEPARATE":
         return words[pos-1] + " " + words[pos]
     else:
         return words[pos][:-2] + " " +  words[pos][-2:]
 
-def get_adjacent(text, pos, status):
+def get_adjacent(full_text, pos, status):
 
-    words = text.split()
+    words = full_text.split()
 
     if status == "SEPARATE":
         return words[pos-1]  + words[pos]
@@ -332,41 +338,41 @@ def get_adjacent(text, pos, status):
         return words[pos]
 
 
-def set_hints(hint_list, hint_count, text, pos):
+def set_hints(hint_list, hint_count, full_text, pos):
     
-    words = text.split()
+    words = tefull_textxt.split()
     hint_start_idx = pos + 1
     hint_end_idx = hint_start_idx + hint_count + 1
 
     for word in words[hint_start_idx:hint_end_idx]:
         hint_list.append(word)
 
-def get_mode_1_context(context, text, pos, status):
+def get_mode_1_context(context, full_text, pos, status):
 
     context['mode'] = 'MODE_1'
-    context['first_half_text'] = get_first_half_text(text, pos, status)
-    context['deda_separate'] = get_separate(text, pos, status)
-    context['deda_adjacent'] = get_adjacent(text, pos, status)
+    context['first_half_text'] = get_first_half_text(full_text, pos, status)
+    context['deda_separate'] = get_separate(full_text, pos, status)
+    context['deda_adjacent'] = get_adjacent(full_text, pos, status)
 
-def get_mode_2_context(context, text, pos, status):
+def get_mode_2_context(context, full_text, pos, status):
 
     context['mode'] = 'MODE_2'
-    context['second_half_text'] = get_second_half_text(text, pos, status)
-    context['deda_separate'] = get_separate(text, pos, status)
-    context['deda_adjacent'] = get_adjacent(text, pos, status)
+    context['second_half_text'] = get_second_half_text(full_text, pos, status)
+    context['deda_separate'] = get_separate(full_text, pos, status)
+    context['deda_adjacent'] = get_adjacent(full_text, pos, status)
 
-def get_mode_3_context(context, text, pos, status):
+def get_mode_3_context(context, full_text, pos, status):
 
-    tokens = text.split()
+    tokens = full_text.split()
     clitic = tokens[pos][-2:]
 
     context['mode'] = 'MODE_3'
-    context['second_half_text'] = get_second_half_text(text, pos, status)
+    context['second_half_text'] = get_second_half_text(full_text, pos, status)
     context['clitic'] = clitic
 
-def get_mode_4_context(context, text, pos, status):
+def get_mode_4_context(context, full_text, pos, status):
 
-    tokens = full_tokenize(text, pos, status)
+    tokens = full_tokenize(full_text, pos, status)
         
     if status  == "ADJACENT":
         pos += 1
@@ -464,9 +470,9 @@ def get_mode_4_context(context, text, pos, status):
     
 
 # Treat the clitic as a separate token even if status is adjacent
-def full_tokenize(text, pos, status):
+def full_tokenize(full_text, pos, status):
 
-    words = text.split()
+    words = full_text.split()
 
     if status == "SEPARATE":
         return words
