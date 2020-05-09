@@ -16,14 +16,16 @@ QUESTION_NUM_MODE_1 = 5
 QUESTION_NUM_MODE_2 = 5
 QUESTION_NUM_MODE_3 = 5
 QUESTION_NUM_MODE_4 = 5
+QUESTION_NUM_MODE_5 = 5
 
-QUESTION_PER_TEST = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4
+QUESTION_PER_TEST = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4 + QUESTION_NUM_MODE_5
 
 class MODE_THRESHOLD(Enum):
     MODE_1 = QUESTION_NUM_MODE_1
     MODE_2 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2
     MODE_3 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3
     MODE_4 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4
+    MODE_5 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4 + QUESTION_NUM_MODE_5
 
 def home(request):
 
@@ -87,6 +89,10 @@ def question(request):
     elif request.session['question_idx'] <= MODE_THRESHOLD.MODE_4.value:
 
         get_mode_4_context(context, full_text, pos, status)
+
+    elif request.session['question_idx'] <= MODE_THRESHOLD.MODE_5.value:
+
+        get_mode_5_context(context, full_text, pos, status)
 
     else:
         # Set test start settings
@@ -493,7 +499,29 @@ def get_mode_4_context(context, full_text, pos, status):
     context['second_half_text'] = get_second_half_text(full_text, pos, status)
     context['clitic'] = clitic
 
+
+def get_mode_5_context(context, full_text, pos, status):
+
+    tokens = full_tokenize(full_text, pos, status)
+
+    if status  == "ADJACENT":
+        pos += 1
+
+    clitic = tokens[pos][-2:]
+
+    first_text = ""
+
+    for token in tokens[:pos-1]:
+        first_text += " " + token
+    first_text = first_text[1:]
+
+    context['mode'] = 'MODE_5'
+    context['clitic'] = clitic
+    context['first_text'] = first_text
     
+
+
+
 
 # Treat the clitic as a separate token even if status is adjacent
 def full_tokenize(full_text, pos, status):
