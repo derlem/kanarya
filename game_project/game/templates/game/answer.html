@@ -1,8 +1,3 @@
-<style>
-body { background-color:blue; }
-.highlightme { background-color:#FFFF00; }
-p { background-color:#FFFFFF; }
-</style>
 {% extends 'game/base.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
@@ -40,7 +35,7 @@ p { background-color:#FFFFFF; }
 
 		<div class="centeritems">
 
-			<p style="font-size:30px">  {{first_text}} <span class="highlightme"><b>{{highlighted_text}}</b></span> {{second_text}} </p>
+			<p>  {{first_text}} <span class="highlight_text"><b>{{highlighted_text}}</b></span> {{second_text}} </p>
 			
 		</div>
 
@@ -69,37 +64,5 @@ p { background-color:#FFFFFF; }
 		</form>
 
 	</div>	
-
-
-	<!--
-	<div align="center">
-
-		<p style="font-size:30px">  {{full_text}}  </p>
-		<a class="btn btn-outline-info mb-4" href=" {% url 'question' %} ">Next Sentence</a>
-
-		<fieldset >
-			
-      <h3>Hata Bildir</h3>
-			
-			<form  method="POST" id="reportform"> 
-    			{% csrf_token %} 
-    	
-          <div class="textdiv">
-
-            <textarea rows="4" cols="50" name="text" form="reportform" placeholder="Hata mesajını giriniz..."></textarea>
-
-            <button type="submit" class="textbutton">Hata Bildir</button>
-
-          </div>
-
-    			
-
-			</form>
-
-		</fieldset>
-
-	</div>
-
-	-->
 	
 {% endblock content %}

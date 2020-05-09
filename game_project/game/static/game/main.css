@@ -166,3 +166,7 @@ tr:nth-child(even) {
     z-index: 20;
     position:absolute;
 }
+
+.highlight_text {
+  background-color:#FFFF00;
+}

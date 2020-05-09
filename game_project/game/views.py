@@ -484,7 +484,6 @@ def full_tokenize(text, pos, status):
 
 def get_answer_text(full_text, pos, status):
 
-    print("full_text: " + full_text)
     tokens = full_tokenize(full_text, pos, status)
 
     # Update the pos
