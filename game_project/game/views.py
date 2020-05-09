@@ -172,14 +172,13 @@ def answer(request):
     clitic = sentence.clitic
     pos = sentence.pos
 
-    half_text, de_da_word, rest_of_sentence = get_answer_text(text, pos, status)
+    first_text, highlighted_text, second_text = get_answer_text(text, pos, status)
     
     context = {
 
-        'half_text' : half_text ,
-        'de_da_word' : de_da_word ,
-        'rest_of_sentence' : rest_of_sentence ,
-        'full_text': request.session.get('full_text') ,
+        'first_text' : first_text ,
+        'highlighted_text' : highlighted_text ,
+        'second_text' : second_text ,
         'answer': request.session.get('answer'),
         'correct_answer_count': request.session.get('correct_answer_count'),
         'last_seen_sentence_idx': request.session.get('last_seen_sentence_idx') ,
@@ -197,7 +196,6 @@ def answer(request):
             question_pk = request.session.get('question_pk')
             question = Question.objects.filter(pk=question_pk)[0]
             report.question = question
-            #report.question = current_question # ?
             report.save()
 
             return redirect('question')
@@ -465,7 +463,7 @@ def get_mode_4_context(context, text, pos, status):
 
     
 
-
+# Treat the clitic as a separate token even if status is adjacent
 def full_tokenize(text, pos, status):
 
     words = text.split()
@@ -486,49 +484,37 @@ def full_tokenize(text, pos, status):
 
 def get_answer_text(full_text, pos, status):
 
-    words = full_text.split()
-    half_sentence = ""
-    de_da_word = ""
-    rest_of_sentence = ""
-    seperate_bool = False
+    print("full_text: " + full_text)
+    tokens = full_tokenize(full_text, pos, status)
 
-    for idx, word in enumerate(words):
+    # Update the pos
+    if status  == "ADJACENT":
+        pos += 1
 
-        if idx == pos:
+    # Construct highlighted text
+    if status == "ADJACENT":
+        highlighted_text = tokens[pos - 1] + tokens[pos]
+    else:
+        highlighted_text = tokens[pos - 1] + " " + tokens[pos]
 
-            if status == 'ADJACENT':# Exclude de/da/te/ta
-                break
-            else:
-                break
-        if idx == (pos-1):
-            if status != 'ADJACENT':
-                break
+    # Construct first and second text
+    first_text, second_text = "", ""
+    for idx, token in enumerate(tokens):
 
-        else:
-            half_sentence = half_sentence + " " + word
+        if idx < (pos - 1):
 
-    half_sentence = half_sentence[1:]    
+            first_text += " " + token
+
+        if idx > (pos):
+
+            second_text += " " + token
+
+    first_text = first_text[1:]
+    second_text = second_text[1:]
+
+    return first_text, highlighted_text, second_text
 
 
-    for idx, word in enumerate(words):
-
-        if idx == (pos-1):
-            if status != 'ADJACENT':
-                de_da_word = word
-                seperate_bool = True
-
-        if idx == pos:
-            if status == 'ADJACENT':
-                de_da_word = word
-            else:
-                de_da_word = de_da_word + " " + word
-        
-        if idx > pos:
-            rest_of_sentence = rest_of_sentence + " " + word
-
-    rest_of_sentence = rest_of_sentence[1:]
-
-    return half_sentence, de_da_word, rest_of_sentence  
 
 
 
