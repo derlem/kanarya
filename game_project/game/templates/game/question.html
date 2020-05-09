@@ -5,7 +5,7 @@
 
     <div class="content">
 
-        <h3>{{question_num}} : {{mode}} - {{type}} </h3>
+        <h3>{{question_idx}} : {{mode}} - {{type}} </h3>
 
         <!--
         <img height="315" width="306" src="{% static 'game/canary-bird.png' %}" >
@@ -29,7 +29,7 @@
 
         <div>
 
-            <p>  {{ correct_answer_count }}/ {{ last_seen_sentence_idx }} </p>
+            <p>  {{ correct_answer_count_for_current_test }}/ {{ solved_question_num }} </p>
 
         </div>  
 
@@ -43,97 +43,27 @@
 
                 {% if mode == "MODE_1" %}
 
-                    <div class='branch_view'>
-
-                        <div class='left_container'>
-                            <span class='left_text text'>{{first_half_text}}</span>
-                        </div>
-
-                        <div class='right_container'>
-                            <div class='small_container'>
-                                <span><b>{{deda_adjacent}}</b></span>
-                            </div>
-
-                            <div class='small_container'>
-                                <span><b>{{deda_separate}}</b></span>
-                            </div>
-                            
-                        </div>
-
-                        <div class='left_container'>
-                            <span class='left_text text'>
-
-                                <!--
-                                {% for hint in hints %}
-
-                                    <span class="highlightme">{{ hint }}</span>
-
-                                {% endfor %}
-                                -->
-
-                                &emsp;*&emsp;*&emsp;*&emsp;
-
-                            </span>
-                        </div>
-                        
-                    </div>
-                {% elif mode == "MODE_2" %}
- 
-                    <div class='branch_view'>
-
-                        <div class='left_container'>
-                            <span class='left_text text'>&emsp;*&emsp;*&emsp;*&emsp;</span>
-                        </div>
-
-                        <div class='right_container'>
-                            <div class='small_container'>
-                                <span><b>{{deda_adjacent}}</b></span>
-                            </div>
-
-                            <div class='small_container'>
-                                <span><b>{{deda_separate}}</b></span>
-                            </div>
-
-                        </div>
-
-                        <div class='left_container'>
-                            <span class='left_text text'>{{ second_half_text }}</span>
-                        </div>
-
-                    </div>
-
-                {% elif mode == "MODE_3" %}
-
-                    <div class='branch_view'>
-
-                        <div class='left_container'>
-                            <span class='left_text text'>&emsp;*&emsp;*&emsp;*&emsp;</span>
-                        </div>
-
-                        <div class='right_container'>
-                            <div class='small_container'>
-                                <span><b>______{{clitic}}</b></span>
-                            </div>
-
-                            <div class='small_container'>
-                                <span><b>______&nbsp;&nbsp;{{clitic}}</b></span>
-                            </div>
-
-                        </div>
-
-                        <div class='left_container'>
-                            <span class='left_text text'>{{ second_half_text }}</span>
-                        </div>
-                    </div>
-
-                {% elif mode == "MODE_4" %}
-
                     {% if type == "TYPE_1" %}
 
                         <div class='branch_view'>
 
                             <div class='left_container'>
-                                <span class='left_text text'> {{ first_text }} ______ <b>({{clitic}})</b> {{ second_text }} </span>
+                                <span class='left_text text'> {{ first_text }} </span>
+                            </div>
+
+                            <div class='right_container'>
+                                <div class='small_container'>
+                                    <span><b>______{{clitic}}</b></span>
+                                </div>
+
+                                <div class='small_container'>
+                                    <span><b>______&nbsp;&nbsp;{{clitic}}</b></span>
+                                </div>
+
+                            </div>
+
+                            <div class='left_container'>
+                                <span class='left_text text'> {{ second_text }} </span>
                             </div>
 
                         </div>
@@ -189,6 +119,85 @@
 
                         </div>
                     {% endif %}
+
+                {% elif mode == "MODE_2" %}
+
+                    <div class='branch_view'>
+
+                        <div class='left_container'>
+                            <span class='left_text text'>{{first_half_text}}</span>
+                        </div>
+
+                        <div class='right_container'>
+                            <div class='small_container'>
+                                <span><b>{{deda_adjacent}}</b></span>
+                            </div>
+
+                            <div class='small_container'>
+                                <span><b>{{deda_separate}}</b></span>
+                            </div>
+                            
+                        </div>
+
+                        <div class='left_container'>
+                            <span class='left_text text'>
+
+                                &emsp;*&emsp;*&emsp;*&emsp;
+
+                            </span>
+                        </div>
+                        
+                    </div>
+ 
+                {% elif mode == "MODE_3" %}
+
+                    <div class='branch_view'>
+
+                        <div class='left_container'>
+                            <span class='left_text text'>&emsp;*&emsp;*&emsp;*&emsp;</span>
+                        </div>
+
+                        <div class='right_container'>
+                            <div class='small_container'>
+                                <span><b>{{deda_adjacent}}</b></span>
+                            </div>
+
+                            <div class='small_container'>
+                                <span><b>{{deda_separate}}</b></span>
+                            </div>
+
+                        </div>
+
+                        <div class='left_container'>
+                            <span class='left_text text'>{{ second_half_text }}</span>
+                        </div>
+
+                    </div>
+
+
+                {% elif mode == "MODE_4" %}
+
+                    <div class='branch_view'>
+
+                        <div class='left_container'>
+                            <span class='left_text text'>&emsp;*&emsp;*&emsp;*&emsp;</span>
+                        </div>
+
+                        <div class='right_container'>
+                            <div class='small_container'>
+                                <span><b>______{{clitic}}</b></span>
+                            </div>
+
+                            <div class='small_container'>
+                                <span><b>______&nbsp;&nbsp;{{clitic}}</b></span>
+                            </div>
+
+                        </div>
+
+                        <div class='left_container'>
+                            <span class='left_text text'>{{ second_half_text }}</span>
+                        </div>
+                    </div>
 
                 {% endif %}
             </p>

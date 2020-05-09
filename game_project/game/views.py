@@ -12,22 +12,27 @@ from .models import Sentence, Question, Activity, Decision, Report
 
 from enum import Enum
 
-QUESTION_PER_TEST = 30
-
 QUESTION_NUM_MODE_1 = 5
 QUESTION_NUM_MODE_2 = 5
 QUESTION_NUM_MODE_3 = 5
 QUESTION_NUM_MODE_4 = 5
 
+QUESTION_PER_TEST = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4
+
 class MODE_THRESHOLD(Enum):
     MODE_1 = QUESTION_NUM_MODE_1
     MODE_2 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2
     MODE_3 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3
-    MODE_4 = QUESTION_PER_TEST
+    MODE_4 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4
 
 def home(request):
 
-    request.session['question_num'] = 1
+    # Set new test settings
+    request.session['question_idx'] = 1
+    request.session['correct_answer_count_for_current_test'] = 0
+    request.session['solved_question_num'] = 0
+    request.session['success_rate'] = 0
+
     request.session['go_next_question'] = True
 
     return render(request, 'game/home.html')
@@ -39,47 +44,61 @@ def about(request):
 @login_required
 def question(request):
 
+    # Current question index according the user progress
     last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
-    sentence = get_sentence(last_seen_sentence_idx + 1)
 
+    # Get the current question 
+    sentence = get_sentence(last_seen_sentence_idx + 1)
     full_text = sentence.text
     status = sentence.status
     clitic = sentence.clitic
     pos = sentence.pos
 
-    correct_answer_count = request.user.profile.correct_answer_count
-    success_rate = round((correct_answer_count / (last_seen_sentence_idx)) * 100, 1)
-    question_num = request.session['question_num']
+    # Get Progress Info
+    question_idx = request.session['question_idx']
+    correct_answer_count_for_current_test = request.session.get('correct_answer_count_for_current_test')
+    solved_question_num = request.session.get('solved_question_num')
+    success_rate = request.session.get('success_rate')
+    
 
+    # Set initial context
     context = {
-        'correct_answer_count': correct_answer_count,
-        'last_seen_sentence_idx': last_seen_sentence_idx,
+        'question_idx': question_idx,
+        'hints': [],
+        'correct_answer_count_for_current_test': request.session.get('correct_answer_count_for_current_test'),
+        'solved_question_num': solved_question_num,
         'success_rate': success_rate,
-        'question_num': question_num,
-        'hints': []
     }
     
-    if request.session['question_num'] < MODE_THRESHOLD.MODE_1.value:
+    # Set modal context
+
+    if request.session['question_idx'] <= MODE_THRESHOLD.MODE_1.value:
         
         get_mode_1_context(context, full_text, pos, status)
 
-    elif request.session['question_num'] < MODE_THRESHOLD.MODE_2.value:
+    elif request.session['question_idx'] <= MODE_THRESHOLD.MODE_2.value:
         
         get_mode_2_context(context, full_text, pos, status)
 
-    elif request.session['question_num'] < MODE_THRESHOLD.MODE_3.value:
+    elif request.session['question_idx'] <= MODE_THRESHOLD.MODE_3.value:
         
         get_mode_3_context(context, full_text, pos, status)
 
-    elif request.session['question_num'] < MODE_THRESHOLD.MODE_4.value:
+    elif request.session['question_idx'] <= MODE_THRESHOLD.MODE_4.value:
 
         get_mode_4_context(context, full_text, pos, status)
 
     else:
-        request.session['question_num'] = 1
+        # Set test start settings
+        request.session['question_idx'] = 1
+        request.session['correct_answer_count_for_current_test'] = 0
+        request.session['solved_question_num'] = 0
+        request.session['success_rate'] = 0
+
         return render(request, 'game/test_end.html')
 
-    
+
+    # Process the POST request
     if request.method == 'POST':
 
         form = ActivityForm(request.POST)
@@ -98,7 +117,7 @@ def question(request):
                 question = Question.objects.filter(pk=question_pk)[0]
 
             question.mode = context['mode']
-            if context['mode'] == 'MODE_4':
+            if context['mode'] == 'MODE_1':
                 question.relative_mask_pos = context['relative_mask_pos']
             question.save()
 
@@ -111,10 +130,15 @@ def question(request):
             request.session['full_text'] = full_text
             request.session['question_pk'] = question.pk
 
+            request.session['solved_question_num'] += 1
+            
+            
+
             if activity.name == "SKIP":
 
                 request.session['go_next_question'] = True
-                request.session['question_num'] += 1
+                request.session['question_idx'] += 1
+                request.session['success_rate'] = round((request.session.get('correct_answer_count_for_current_test') / request.session.get('solved_question_num')) * 100, 1)
 
                 request.user.profile.last_seen_sentence_idx += 1
                 request.user.profile.save()
@@ -128,6 +152,7 @@ def question(request):
             elif activity.name == "HINT":
 
                 request.session['go_next_question'] = False
+                request.session['success_rate'] = round((request.session.get('correct_answer_count_for_current_test') / request.session.get('solved_question_num')) * 100, 1)
 
                 set_hints(context['hints'], question.hint_count, full_text, pos)
                 question.hint_count += 1
@@ -137,22 +162,24 @@ def question(request):
 
             else: 
 
-                request.session['question_num'] += 1
+                request.session['question_idx'] += 1
 
                 if activity.name == status:
 
                     request.session['answer'] = True
+
+                    request.session['correct_answer_count_for_current_test'] += 1
+                    request.session['success_rate'] = round((request.session.get('correct_answer_count_for_current_test') / request.session.get('solved_question_num')) * 100, 1)
+
                     request.user.profile.correct_answer_count += 1
                     request.user.profile.save()
 
                 else:
                     request.session['answer'] = False
+                    request.session['success_rate'] = round((request.session.get('correct_answer_count_for_current_test') / request.session.get('solved_question_num')) * 100, 1)
 
 
-            request.session['correct_answer_count'] = correct_answer_count
-            request.session['last_seen_sentence_idx'] = last_seen_sentence_idx
-            request.session['success_rate'] = success_rate
-
+            
             decision = Decision(question=question,
                                 name = activity.name)
 
@@ -185,10 +212,9 @@ def answer(request):
         'highlighted_text' : highlighted_text ,
         'second_text' : second_text ,
         'answer': request.session.get('answer'),
-        'correct_answer_count': request.session.get('correct_answer_count'),
-        'last_seen_sentence_idx': request.session.get('last_seen_sentence_idx') ,
-        'success_rate': request.session.get('success_rate') ,
-
+        'correct_answer_count_for_current_test': request.session.get('correct_answer_count_for_current_test'),
+        'solved_question_num': request.session.get('solved_question_num'),
+        'success_rate': request.session.get('success_rate'),
     }
 
     if request.method == 'POST':
@@ -349,29 +375,6 @@ def set_hints(hint_list, hint_count, full_text, pos):
 
 def get_mode_1_context(context, full_text, pos, status):
 
-    context['mode'] = 'MODE_1'
-    context['first_half_text'] = get_first_half_text(full_text, pos, status)
-    context['deda_separate'] = get_separate(full_text, pos, status)
-    context['deda_adjacent'] = get_adjacent(full_text, pos, status)
-
-def get_mode_2_context(context, full_text, pos, status):
-
-    context['mode'] = 'MODE_2'
-    context['second_half_text'] = get_second_half_text(full_text, pos, status)
-    context['deda_separate'] = get_separate(full_text, pos, status)
-    context['deda_adjacent'] = get_adjacent(full_text, pos, status)
-
-def get_mode_3_context(context, full_text, pos, status):
-
-    tokens = full_text.split()
-    clitic = tokens[pos][-2:]
-
-    context['mode'] = 'MODE_3'
-    context['second_half_text'] = get_second_half_text(full_text, pos, status)
-    context['clitic'] = clitic
-
-def get_mode_4_context(context, full_text, pos, status):
-
     tokens = full_tokenize(full_text, pos, status)
         
     if status  == "ADJACENT":
@@ -464,8 +467,31 @@ def get_mode_4_context(context, full_text, pos, status):
         context['deda_separate'] = deda_separate
         context['deda_adjacent'] = deda_adjacent
 
-    context['mode'] = 'MODE_4'
+    context['mode'] = 'MODE_1'
     return context
+
+def get_mode_2_context(context, full_text, pos, status):
+
+    context['mode'] = 'MODE_2'
+    context['first_half_text'] = get_first_half_text(full_text, pos, status)
+    context['deda_separate'] = get_separate(full_text, pos, status)
+    context['deda_adjacent'] = get_adjacent(full_text, pos, status)
+
+def get_mode_3_context(context, full_text, pos, status):
+
+    context['mode'] = 'MODE_3'
+    context['second_half_text'] = get_second_half_text(full_text, pos, status)
+    context['deda_separate'] = get_separate(full_text, pos, status)
+    context['deda_adjacent'] = get_adjacent(full_text, pos, status)
+
+def get_mode_4_context(context, full_text, pos, status):
+
+    tokens = full_text.split()
+    clitic = tokens[pos][-2:]
+
+    context['mode'] = 'MODE_4'
+    context['second_half_text'] = get_second_half_text(full_text, pos, status)
+    context['clitic'] = clitic
 
     
 
