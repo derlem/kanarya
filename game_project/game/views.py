@@ -17,8 +17,14 @@ QUESTION_NUM_MODE_2 = 5
 QUESTION_NUM_MODE_3 = 5
 QUESTION_NUM_MODE_4 = 5
 QUESTION_NUM_MODE_5 = 5
+QUESTION_NUM_MODE_6 = 5
 
-QUESTION_PER_TEST = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4 + QUESTION_NUM_MODE_5
+QUESTION_PER_TEST =(QUESTION_NUM_MODE_1 +
+                    QUESTION_NUM_MODE_2 + 
+                    QUESTION_NUM_MODE_3 +
+                    QUESTION_NUM_MODE_4 + 
+                    QUESTION_NUM_MODE_5 +
+                    QUESTION_NUM_MODE_6)
 
 class MODE_THRESHOLD(Enum):
     MODE_1 = QUESTION_NUM_MODE_1
@@ -26,6 +32,7 @@ class MODE_THRESHOLD(Enum):
     MODE_3 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3
     MODE_4 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4
     MODE_5 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4 + QUESTION_NUM_MODE_5
+    MODE_6 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4 + QUESTION_NUM_MODE_5 + QUESTION_NUM_MODE_6
 
 def home(request):
 
@@ -94,6 +101,10 @@ def question(request):
 
         get_mode_5_context(context, full_text, pos, status)
 
+    elif request.session['question_idx'] <= MODE_THRESHOLD.MODE_6.value:
+
+        get_mode_6_context(context, full_text, pos, status)
+
     else:
         # Set test start settings
         request.session['question_idx'] = 1
@@ -125,7 +136,12 @@ def question(request):
             question.mode = context['mode']
             if context['mode'] == 'MODE_1':
                 question.relative_mask_pos = context['relative_mask_pos']
+
+            if context['mode'] == 'MODE_6':
+                question.relative_unmask_pos = context['relative_unmask_pos']
             question.save()
+
+
 
             activity = form.save(commit=False)
             activity.question = question
@@ -519,6 +535,75 @@ def get_mode_5_context(context, full_text, pos, status):
     context['clitic'] = clitic
     context['first_text'] = first_text
     
+def get_mode_6_context(context, full_text, pos, status):
+
+    tokens = full_tokenize(full_text, pos, status)
+
+    if status  == "ADJACENT":
+        pos += 1
+
+    unmask_pos = random.randint(0, len(tokens)-1)
+    # Do not unmask the clitic, it will be visible in any case
+    while(unmask_pos == pos):
+        unmask_pos = random.randint(0, len(tokens)-1)
+
+    relative_unmask_pos = unmask_pos - pos
+    context['relative_unmask_pos'] = relative_unmask_pos
+    context['mode'] = 'MODE_6'
+
+    # Do not forget to the record the relative_unmask_pos
+
+    print(full_text)
+
+    if unmask_pos < pos:
+        
+        if unmask_pos == pos-1:
+
+            context['type'] = 'TYPE_1'
+            context['first_masked_num'] = unmask_pos
+            context['deda_adjacent'] = tokens[pos - 1] + tokens[pos]
+            context['deda_separate'] = tokens[pos - 1] + " " + tokens[pos]
+            context['second_masked_num'] = len(tokens) - pos - 1
+
+            print(context['type'])
+            print("first_masked_num: " + str(context['first_masked_num']))
+            print("deda_adjacent: " + context['deda_adjacent'])
+            print("deda_separate: " + context['deda_separate'])
+            print("second_masked_num: " + str(context['second_masked_num']))
+
+        else:
+
+            context['type'] = 'TYPE_2'
+            context['first_masked_num'] = unmask_pos 
+            context['unmasked_word'] = tokens[unmask_pos]
+            context['second_masked_num'] = pos - unmask_pos - 2
+            context['clitic'] = tokens[pos]
+            context['third_masked_num'] = len(tokens) - pos - 1
+
+            print(context['type'])
+            print("first_masked_num: " + str(context['first_masked_num']))
+            print("unmasked_word: " + context['unmasked_word'])
+            print("second_masked_num: " + str(context['second_masked_num']))
+            print("clitic: " + context['clitic'])
+            print("third_masked_num: " + str(context['third_masked_num']))
+
+    else:
+
+        context['type'] = 'TYPE_3'
+        context['first_masked_num'] = pos - 1
+        context['clitic'] = tokens[pos]
+        context['second_masked_num'] = unmask_pos - pos - 1
+        context['unmasked_word'] = tokens[unmask_pos]
+        context['third_masked_num'] = len(tokens) - unmask_pos - 1
+
+        print(context['type'])
+        print("first_masked_num: " + str(context['first_masked_num']))
+        print("clitic: " + context['clitic'])
+        print("second_masked_num: " + str(context['second_masked_num']))
+        print("unmasked_word: " + context['unmasked_word'])        
+        print("third_masked_num: " + str(context['third_masked_num']))
+
+    return context
 
 
 

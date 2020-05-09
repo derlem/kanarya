@@ -214,10 +214,173 @@
 
                             <div class='small_container'>
                                 <span><b>______&nbsp;&nbsp;{{clitic}}</b></span>
+                            </div>                            
+
+                        </div>
+
+                        <div class='left_container'>
+                            <span class='left_text text'>&emsp;*&emsp;*&emsp;*&emsp;</span>
+                        </div>
+                    </div>
+
+                {% elif mode == "MODE_6" %}
+
+                    {% if type == "TYPE_1" %}
+
+                        <div class='branch_view'>
+
+                            <div class='left_container'>
+                                <span class='left_text text'>
+
+                                    {% with ''|center:first_masked_num as range %}
+                                        {% for masked_word in range %}
+
+                                            ____&nbsp;
+
+                                        {% endfor %}
+                                    {% endwith %}
+
+                                </span>
+                            </div>
+
+                            <div class='right_container'>
+                                <div class='small_container'>
+                                    <span><b>{{deda_adjacent}}</b></span>
+                                </div>
+
+                                <div class='small_container'>
+                                    <span><b>{{deda_separate}}</b></span>
+                                </div>
+
+                            </div>
+
+                            <div class='left_container'>
+                                <span class='left_text text'> 
+
+                                    {% with ''|center:second_masked_num as range %}
+                                        {% for masked_word in range %}
+
+                                            ____&nbsp;
+
+                                        {% endfor %}
+                                    {% endwith %}
+
+                                </span>
                             </div>
 
                         </div>
-                    </div>
+
+                    {% elif type == "TYPE_2" %}
+
+
+                        <div class='branch_view'>
+
+                            <div class='left_container'>
+                                <span class='left_text text'> 
+
+                                    {% with ''|center:first_masked_num as range %}
+                                        {% for masked_word in range %}
+
+                                            ____&nbsp;
+
+                                        {% endfor %}
+                                    {% endwith %}
+
+                                    {{ unmasked_word }}
+
+                                    {% with ''|center:second_masked_num as range %}
+                                        {% for masked_word in range %}
+
+                                            ____&nbsp;
+
+                                        {% endfor %}
+                                    {% endwith %}
+
+                                </span>
+                            </div>
+
+                            <div class='right_container'>
+                                <div class='small_container'>
+                                    <span><b>_____{{clitic}}</b></span>
+                                </div>
+
+                                <div class='small_container'>
+                                    <span><b>_____&nbsp;&nbsp;{{clitic}}</b></span>
+                                </div>
+
+                            </div>
+
+                            <div class='left_container'>
+                                <span class='left_text text'>
+
+                                    {% with ''|center:third_masked_num as range %}
+                                        {% for masked_word in range %}
+
+                                            ____&nbsp;
+
+                                        {% endfor %}
+                                    {% endwith %}
+
+                                </span>
+                            </div>
+
+                        </div>
+
+                    {% elif type == "TYPE_3" %}
+
+                        <div class='branch_view'>
+
+                            <div class='left_container'>
+                                <span class='left_text text'>
+
+                                    {% with ''|center:first_masked_num as range %}
+                                        {% for masked_word in range %}
+
+                                            ____&nbsp;
+
+                                        {% endfor %}
+                                    {% endwith %}
+
+                                </span>
+                            </div>
+
+                            <div class='right_container'>
+                                <div class='small_container'>
+                                    <span><b>_____{{clitic}}</b></span>
+                                </div>
+
+                                <div class='small_container'>
+                                    <span><b>_____&nbsp;&nbsp;{{clitic}}</b></span>
+                                </div>
+
+                            </div>
+
+                            <div class='left_container'>
+                                <span class='left_text text'>
+
+                                    {% with ''|center:second_masked_num as range %}
+                                        {% for masked_word in range %}
+
+                                            ____&nbsp;
+
+                                        {% endfor %}
+                                    {% endwith %}
+
+                                    {{ unmasked_word }}
+
+                                    {% with ''|center:third_masked_num as range %}
+                                        {% for masked_word in range %}
+
+                                            ____&nbsp;
+
+                                        {% endfor %}
+                                    {% endwith %}
+
+                                </span>
+                            </div>
+
+                        </div>
+                    {% endif %}
 
                 {% endif %}
             </p>

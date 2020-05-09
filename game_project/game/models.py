@@ -16,7 +16,8 @@ class Question(models.Model):
 	sentence = models.ForeignKey(Sentence, on_delete=models.CASCADE)
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	mode = models.TextField(default="MODE_1")
-	relative_mask_pos = models.IntegerField(default=0) # Nonzero only for mode 4
+	relative_mask_pos = models.IntegerField(default=0) # Nonzero only for mode 1
+	relative_unmask_pos = models.IntegerField(default=0) # Nonzero only for mode 6
 	hint_count = models.IntegerField(default=0)
 
 class Activity(models.Model):
