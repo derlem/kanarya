@@ -91,7 +91,7 @@ def question(request):
     # Set initial context
     context = {
         'question_idx': question_idx,
-        'hints': [],
+        #'hints': [],
         'correct_answer_count_for_current_test': request.session.get('correct_answer_count_for_current_test'),
         'solved_question_num': solved_question_num,
         'success_rate': success_rate,
@@ -171,9 +171,8 @@ def question(request):
 
             request.session['full_text'] = full_text
             request.session['question_pk'] = question.pk
-
             request.session['solved_question_num'] += 1
-            
+            request.session['activity'] = activity.name
             
 
             if activity.name == "SKIP":
@@ -191,16 +190,21 @@ def question(request):
 
                 return redirect('question')
 
-            elif activity.name == "HINT":
+            #elif activity.name == "HINT":
+            elif activity.name == "INDECISIVE":
 
-                request.session['go_next_question'] = False
+                
+                request.session['go_next_question'] = True
                 request.session['success_rate'] = round((request.session.get('correct_answer_count_for_current_test') / request.session.get('solved_question_num')) * 100, 1)
-
-                set_hints(context['hints'], question.hint_count, full_text, pos)
-                question.hint_count += 1
-                question.save()
-
-                return render(request, 'game/question.html',context)
+                request.session['question_idx'] += 1
+                request.session['success_rate'] = round((request.session.get('correct_answer_count_for_current_test') / request.session.get('solved_question_num')) * 100, 1)
+                
+                # HINT RELATED LINES
+                #request.session['go_next_question'] = False
+                #set_hints(context['hints'], question.hint_count, full_text, pos)
+                #question.hint_count += 1
+                #question.save()
+                #return render(request, 'game/question.html',context)
 
             else: 
 
@@ -275,10 +279,12 @@ def answer(request):
 
     else:
 
-        if context['answer']:
-            messages.success(request, f'Doğru Cevap')
-        else:
-            messages.error(request, f'Yanlış Cevap')
+        # If indecisive, do not show a message
+        if request.session.get('activity') != 'INDECISIVE':
+            if context['answer']:
+                messages.success(request, f'Doğru Cevap')
+            else:
+                messages.error(request, f'Yanlış Cevap')
 
         form = ReportForm()
 
@@ -405,7 +411,7 @@ def get_adjacent(full_text, pos, status):
     else:
         return words[pos]
 
-
+"""
 def set_hints(hint_list, hint_count, full_text, pos):
     
     words = full_text.split()
@@ -414,6 +420,7 @@ def set_hints(hint_list, hint_count, full_text, pos):
 
     for word in words[hint_start_idx:hint_end_idx]:
         hint_list.append(word)
+"""
 
 def get_mode_1_context(context, full_text, pos, status):
 

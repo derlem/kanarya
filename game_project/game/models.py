@@ -18,17 +18,17 @@ class Question(models.Model):
 	mode = models.TextField(default="MODE_1")
 	relative_mask_pos = models.IntegerField(default=0) # Nonzero only for mode 1
 	relative_unmask_pos = models.IntegerField(default=0) # Nonzero only for mode 6
-	hint_count = models.IntegerField(default=0)
+	#hint_count = models.IntegerField(default=0)
 
 class Activity(models.Model):
 	question = models.ForeignKey(Question, on_delete=models.CASCADE)
 	created_at = models.DateTimeField(default=timezone.now())
-	name = models.CharField(max_length=10) # HINT, SEPARATE, ADJACENT, SKIP, REPORT
+	name = models.CharField(max_length=10) # INDECISIVE, SEPARATE, ADJACENT, SKIP, REPORT
 
 
 class Decision(models.Model):
 	question = models.OneToOneField(Question, on_delete=models.CASCADE)
-	name = models.CharField(max_length=10) # SEPARATE, ADJACENT, SKIP
+	name = models.CharField(max_length=10) # SEPARATE, ADJACENT, INDECISIVE, SKIP
 
 
 class Report(models.Model):
