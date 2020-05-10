@@ -99,7 +99,7 @@ a.article-title:hover {
 .progressdiv {
   position: absolute;
   top: 75px;
-  right: 75px;
+  right: 30px;
   padding: 20px;
   width: 250px;
   text-align: center;
