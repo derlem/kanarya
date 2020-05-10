@@ -177,8 +177,50 @@ tr:nth-child(even) {
   margin: 0 auto;
   text-align: center;
   border: 1px solid black;
+  overflow: hidden;
+
+}
+
+.mode_label_heading {
+
+  margin: 0 auto;
+}
+
+.img_help {
+
+  height: 4%;
+  width: 4%;
+
+}
+
+.box {
+  display: flex;
+  width: 50%;
+  margin: 0 auto;
+  border: 1px solid black;
+  text-align: center;
+  position: relative;
+}
 
 
+.box .tooltiptext {
+    visibility: hidden;
+    width: 50%;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    right: 0px;
+    top: 50px;
+    z-index: 1;
+}
+
+.box:hover .tooltiptext {
+    visibility: visible;
 }
 
 // Branchig view style
