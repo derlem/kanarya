@@ -26,6 +26,15 @@ QUESTION_PER_TEST =(QUESTION_NUM_MODE_1 +
                     QUESTION_NUM_MODE_5 +
                     QUESTION_NUM_MODE_6)
 
+mode_labels = {
+    'MODE_1': 'SEVİYE 1',
+    'MODE_2': 'SEVİYE 2',
+    'MODE_3': 'SEVİYE 3',
+    'MODE_4': 'SEVİYE 4',
+    'MODE_5': 'SEVİYE 5',
+    'MODE_6': 'SEVİYE 6',
+}
+
 class MODE_THRESHOLD(Enum):
     MODE_1 = QUESTION_NUM_MODE_1
     MODE_2 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2
@@ -77,6 +86,7 @@ def question(request):
         'correct_answer_count_for_current_test': request.session.get('correct_answer_count_for_current_test'),
         'solved_question_num': solved_question_num,
         'success_rate': success_rate,
+        'QUESTION_PER_TEST': QUESTION_PER_TEST
     }
     
     # Set modal context
@@ -114,7 +124,7 @@ def question(request):
 
         return render(request, 'game/test_end.html')
 
-
+    context['mode_label'] = mode_labels[context['mode']]
     # Process the POST request
     if request.method == 'POST':
 
@@ -388,7 +398,7 @@ def get_adjacent(full_text, pos, status):
 
 def set_hints(hint_list, hint_count, full_text, pos):
     
-    words = tefull_textxt.split()
+    words = full_text.split()
     hint_start_idx = pos + 1
     hint_end_idx = hint_start_idx + hint_count + 1
 

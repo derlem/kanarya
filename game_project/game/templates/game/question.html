@@ -2,21 +2,38 @@
 {% load static %}
 {% block content %}
 
+    
 
-    <div class="content">
 
-        <h3>{{question_idx}} : {{mode}} - {{type}} </h3>
+    <div class="content" style="left: 30px">
+
+        <h1 display="inline" float="left">{{question_idx}}/{{QUESTION_PER_TEST}}:</h1>
 
         <!--
+        <p style="font-size:30px" > MOD 1 </p>>
+
+        <p> Bu oyun modunda cümledeki bir kelime rastgele silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir. </p>
+
+        
         <img height="315" width="306" src="{% static 'game/canary-bird.png' %}" >
         -->
+    </div>
+
+    <div class="mode_label">
+
+        <h2>
+        
+            {{mode_label}}
+
+        </h2>
+
     </div>
 
     
 
     <div class="progressdiv">
 
-        <h4> Success Rate </h4>
+        <h4> Başarı Oranı </h4>
 
         <div class="progress">
 

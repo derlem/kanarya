@@ -171,6 +171,16 @@ tr:nth-child(even) {
   background-color:#FFFF00;
 }
 
+.mode_label {
+
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+  border: 1px solid black;
+
+
+}
+
 // Branchig view style
 <style type="text/css">
         body {
