@@ -265,5 +265,14 @@ tr:nth-child(even) {
         .highlightme {
          background-color:#FFFF00;
         }
+
+        .image_move_left {
+          float:left;
+          clear:left;
+        }
+        .image_move_right {
+          float:right;
+          clear:right;
+        }        
         
 </style>
