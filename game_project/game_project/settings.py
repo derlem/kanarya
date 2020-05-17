@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'spellchecker.apps.SpellcheckerConfig',
     'users.apps.UsersConfig',
     'game.apps.GameConfig',
     'crispy_forms',

@@ -1,0 +1,25 @@
+{% extends 'game/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+	
+	<div class="centeritems">
+
+		<!--
+        <form method="POST">
+            {% csrf_token %}
+
+            <label for="your_name">Your name: </label>
+			<input id="your_name" type="text" name="your_name" maxlength="100" required>
+
+        </form>
+    	-->
+
+        <form method="POST">
+        	{% csrf_token %}
+		    <p>Cümle: <input style="width: 500px" type="text" name="sentence"></p>
+		    <p><input type="submit" value="submit"></p>
+		</form>
+
+    </div> 
+
+{% endblock content %}

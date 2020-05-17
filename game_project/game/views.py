@@ -1,3 +1,8 @@
+# Memory Monitor
+import os
+import psutil
+process = psutil.Process(os.getpid())
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -236,6 +241,8 @@ def question(request):
             return redirect('answer')
     else:
         form = ActivityForm()
+
+    print("\nIn the game: " + str(process.memory_info().rss/(1024*1024)) + " MB\n")
     return render(request, 'game/question.html',context)
     
     
