@@ -49,6 +49,10 @@ def query(request):
 
 def answer(request):
 	
+	if request.method == 'POST':
+
+		return redirect('spellchecker_query')
+
 	sentence = request.session.get('sentence')
 
 	labeled_words = spellchecker(sentence)

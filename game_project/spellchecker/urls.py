@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns = [
 	
-	path('query/', views.query, name='query'),
+	path('query/', views.query, name='spellchecker_query'),
 	path('answer/', views.answer, name='spellchecker_answer')
 
 ]

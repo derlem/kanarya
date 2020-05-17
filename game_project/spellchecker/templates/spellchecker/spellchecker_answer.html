@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 	
-	<div style="position: relative; text-align: center; top: 20%; left: 25%; right: 25%; border: 1px solid #dddddd">
+	<div style="position: absolute; text-align: center; top: 20%; left: 25%; right: 25%; border: 1px solid #dddddd">
 
 		
         {% for entry in labeled_words %}
@@ -34,7 +34,7 @@
     <br>
     <br>
 
-    <div align="center">
+    <div style="position: absolute; text-align: center; top: 30%; left: 25%; right: 25%;">
 
 
         <form method="POST">
@@ -45,7 +45,12 @@
 
         </form>
 
+        <form method="POST">
+                {% csrf_token %}
 
+                <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4">Başka bir cümle dene</button>
+
+            </form>
 
     </div>  
         
