@@ -1,6 +1,9 @@
 from django import forms
 from .models import Activity, Report
 
+from users.models import Profile
+
+
 #class DecisionForm(forms.Form):
 class ActivityForm(forms.ModelForm):
 
@@ -13,3 +16,7 @@ class ReportForm(forms.ModelForm):
 	class Meta:
 		model = Report
 		fields = ['text']
+
+class OnamForm(forms.Form):
+	onam = forms.CharField(max_length=5) # True or False
+

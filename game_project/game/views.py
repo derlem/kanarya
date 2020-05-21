@@ -11,7 +11,8 @@ from django.contrib import messages
 import csv
 import linecache
 import random
-from .forms import ActivityForm, ReportForm
+import distutils
+from .forms import ActivityForm, ReportForm, OnamForm
 
 from .models import Sentence, Question, Activity, Decision, Report
 
@@ -75,6 +76,10 @@ def about(request):
 
 @login_required
 def question(request):
+
+
+    if not request.user.profile.onam:
+        return redirect('onamformu')
 
     # Current question index according the user progress
     last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
@@ -338,18 +343,32 @@ def stats(request):
 
     return render(request, 'game/stats.html', context)
 
-# Returns 20 new sentences
-def get_test(sentence_idx):
+def onamformu(request):
 
-    test = []
+    if request.user.profile.onam:
+        return redirect('home')
 
-    start_idx = sentence_idx
-    end_idx = sentence_idx + 20
+    if request.method == 'POST':
 
-    for sentence in Sentence.objects.all()[start_idx, end_idx]:
-        test.append(sentence)
+        form = OnamForm(request.POST)
+        
+        if form.is_valid():
+            
+            onam = bool(distutils.util.strtobool(form.cleaned_data['onam']))
+            request.user.profile.onam = onam
+            request.user.profile.isOnamSubmitted = True
+            request.user.profile.save()
 
-    return test
+            if onam == True:
+                messages.success(request, f'Teşekkürler. Artık soruları çözmeye başlayabilirsiniz!')
+            else:
+                messages.error(request, f'Onam formunu okuyup kabul etmeden maalesef çalışmamıza katılamazsınız.')
+            return redirect('home')
+
+    else:
+        form = ReportForm()
+
+    return render(request, 'game/onamformu.html')
 
     
 def get_sentence(sentence_idx):

@@ -6,17 +6,14 @@ from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 def register(request):
 
 	if request.method == 'POST':
-		#form = UserCreationForm(request.POST)
 		form = UserRegisterForm(request.POST)
 		if form.is_valid():
 			form.save()
 			username = form.cleaned_data.get('username')
-			#messages.success(request, f'Account created for {username}!')
-			messages.success(request, f'Your account has been created. Now you are able to login')
-			#return redirect('blog-home')
+			messages.success(request, f'Hesabınız başarıyla oluşturuldu. Araştırmamıza katılabilmeniz için aşağıdaki onam formunu okuyup onaylamanız gerekmektedir.')
+
 			return redirect('login')
 	else: 
-		#form = UserCreationForm()
 		form = UserRegisterForm()
 
 	return render(request, 'users/register.html', {'form': form})

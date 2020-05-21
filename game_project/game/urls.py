@@ -11,5 +11,6 @@ urlpatterns = [
 	path('answer/', views.answer, name='answer'),
 	path('test_end/', views.test_end, name='test-end'),
 	path('stats/', views.stats, name='stats'),
+	path('onamformu/', views.onamformu, name='onamformu')
 
 ]

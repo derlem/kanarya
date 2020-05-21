@@ -8,6 +8,9 @@ class Profile(models.Model):
 	last_seen_sentence_idx = models.IntegerField(default=1)
 	correct_answer_count = models.IntegerField(default=0)
 
+	onam = models.BooleanField(default=False)
+	isOnamSubmitted = models.BooleanField(default=False)
+
 	def __str__(self):
 		return f'{self.user.username} Profile'
 
