@@ -223,6 +223,46 @@ tr:nth-child(even) {
     visibility: visible;
 }
 
+.rightbox {
+  display: flex;
+  width: 20%;
+  height: 40%;
+  left: 90%;
+  //right: 10%;
+  //margin: 0 auto;
+  //text-align: center;
+  position: relative;
+}
+
+
+.rightbox .tooltiptext2 {
+    visibility: hidden;
+    width: 50%;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    //right: 0px;
+    top: 50px;
+    left: 0px;
+    z-index: 1;
+}
+
+.rightbox:hover .tooltiptext2 {
+    visibility: visible;
+}
+
+.img_help2 {
+
+  height: 15%;
+  width: 15%;
+
+}
+
 // Branchig view style
 <style type="text/css">
         body {

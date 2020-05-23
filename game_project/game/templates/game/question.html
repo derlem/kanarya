@@ -3,7 +3,10 @@
 {% block content %}
 
     
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <div class="content" style="left: 30px">
 
@@ -19,39 +22,182 @@
         -->
     </div>
 
-    <div class="box">
+    <div class="container">
+      <div class="progress">
 
-        <h2 class="mode_label_heading">
         
-            {{mode_label}}
+        {% if question_idx > 0 %}
 
-        </h2>
+            {% if question_idx <= 5 %}
 
-        <img class="img_help" src="{% static 'game/question_mark.png' %}" >
-        <span class="tooltiptext"> {{mode_description}} </span>
+                {% with ''|center:question_idx as range %}
+                    {% for bar in range %}
+                        <div class="progress-bar" role="progressbar" style="width:3.33%">|</div>
+                    {% endfor %}
+                {% endwith %}
 
+            {% else %}
+
+                {% for i in '01234'|make_list %}
+                    <div class="progress-bar" role="progressbar" style="width:3.33%">|</div>
+                {% endfor %}
+
+            {% endif %}
+
+        {% endif %}
+
+        {% if question_idx > 5 %}
+
+           
+            {% if question_idx <= 10 %}
+
+                
+                {% with bar_num=question_idx|add:"-5" %}
+
+                    {% with ''|center:bar_num as range %}
+                        {% for bar in range %}
+                            <div class="progress-bar bg-info" role="progressbar" style="width:3.33%">|</div>
+                        {% endfor %}
+                    {% endwith %}
+
+
+                {% endwith %}
+
+                
+            {% else %}
+                
+                {% for i in '01234'|make_list %}
+                    <div class="progress-bar bg-info" role="progressbar" style="width:3.33%">|</div>
+                {% endfor %}
+
+            {% endif %}
+
+
+        {% endif %}
+
+        {% if question_idx > 10 %}
+
+           
+            {% if question_idx <= 15 %}
+
+                
+                {% with bar_num=question_idx|add:"-10" %}
+
+                    {% with ''|center:bar_num as range %}
+                        {% for bar in range %}
+                            <div class="progress-bar bg-success" role="progressbar" style="width:3.33%">|</div>
+                        {% endfor %}
+                    {% endwith %}
+
+
+                {% endwith %}
+
+                
+            {% else %}
+                
+                {% for i in '01234'|make_list %}
+                    <div class="progress-bar bg-success" role="progressbar" style="width:3.33%">|</div>
+                {% endfor %}
+
+            {% endif %}
+
+
+        {% endif %}
+
+        {% if question_idx > 15 %}
+
+           
+            {% if question_idx <= 20 %}
+
+                
+                {% with bar_num=question_idx|add:"-15" %}
+
+                    {% with ''|center:bar_num as range %}
+                        {% for bar in range %}
+                            <div class="progress-bar progress-bar-success" role="progressbar" style="width:3.33%">|</div>
+                        {% endfor %}
+                    {% endwith %}
+
+
+                {% endwith %}
+
+                
+            {% else %}
+                
+                {% for i in '01234'|make_list %}
+                    <div class="progress-bar progress-bar-success" role="progressbar" style="width:3.33%">|</div>
+                {% endfor %}
+
+            {% endif %}
+
+
+        {% endif %}
+
+        {% if question_idx > 20 %}
+
+           
+            {% if question_idx <= 25 %}
+
+                
+                {% with bar_num=question_idx|add:"-20" %}
+
+                    {% with ''|center:bar_num as range %}
+                        {% for bar in range %}
+                            <div class="progress-bar bg-warning" role="progressbar" style="width:3.33%">|</div>
+                        {% endfor %}
+                    {% endwith %}
+
+
+                {% endwith %}
+
+                
+            {% else %}
+                
+                {% for i in '01234'|make_list %}
+                    <div class="progress-bar bg-warning" role="progressbar" style="width:3.33%">|</div>
+                {% endfor %}
+
+            {% endif %}
+
+
+        {% endif %}
+
+        {% if question_idx > 25 %}
+
+           
+            {% if question_idx <= 30 %}
+
+                
+                {% with bar_num=question_idx|add:"-25" %}
+
+                    {% with ''|center:bar_num as range %}
+                        {% for bar in range %}
+                            <div class="progress-bar bg-danger" role="progressbar" style="width:3.33%">|</div>
+                        {% endfor %}
+                    {% endwith %}
+
+
+                {% endwith %}
+
+                
+            {% else %}
+                
+                {% for i in '01234'|make_list %}
+                    <div class="progress-bar bg-danger" role="progressbar" style="width:3.33%">|</div>
+                {% endfor %}
+
+            {% endif %}
+
+
+        {% endif %}
+
+      </div>
     </div>
 
-    
+    <div class="rightbox">
 
-    <div class="progressdiv">
-
-        <h4> Başarı Oranı </h4>
-
-        <div class="progress">
-
-            <div class="progress-bar progress-bar-danger" style="width: {{ success_rate }}%;">
- 
-                {{ success_rate }}
- 
-            </div>
-        </div>
-
-        <div>
-
-            <p>  {{ correct_answer_count_for_current_test }}/ {{ solved_question_num }} </p>
-
-        </div>  
+        <img class="img_help2" src="{% static 'game/question_mark.png' %}" >
+        <span class="tooltiptext2"> {{mode_description}} </span>
 
     </div>
 
@@ -544,6 +690,8 @@
         </div>      
 
     </div>
+
+    
 
     
     
