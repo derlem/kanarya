@@ -2,24 +2,28 @@
 {% load crispy_forms_tags %}
 {% block content %}
 	
-	<div class="centeritems">
 
-		<!--
-        <form method="POST">
-            {% csrf_token %}
+	<div class="spellchecker">
 
-            <label for="your_name">Your name: </label>
-			<input id="your_name" type="text" name="your_name" maxlength="100" required>
+		<h1>Yazım Denetleyicisi</h1>
 
-        </form>
-    	-->
+		<br>
+		<br>
 
-        <form method="POST">
+
+		<form method="POST">
         	{% csrf_token %}
-		    <p>Cümle: <input style="width: 500px" type="text" name="sentence"></p>
-		    <p><input type="submit" value="Denetle"></p>
+
+            <textarea  style="width: 80%;" name="sentence" rows="4" cols="50"  name="sentence" placeholder="Denemek için içinde de/da ek ya da bağlacı geçen bir cümle yazın..."></textarea>
+
+		    <!--<p>Cümle: <input style="width: 500px" type="text" name="sentence"></p>-->
+
+		    <br>
+		    <br>
+
+		    <p><input class="btn btn-outline-info mb-4" type="submit" value="Denetle"></p>
 		</form>
 
-    </div> 
+	</div>
 
 {% endblock content %}

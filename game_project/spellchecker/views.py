@@ -7,6 +7,7 @@ from flair.models import SequenceTagger
 from flair.data import Sentence
 from django.contrib.staticfiles import finders
 
+from .models import Query
 
 url = finders.find('best-model.pt')
 flair.device = torch.device('cpu')
@@ -24,8 +25,13 @@ def query(request):
             sentence = form.cleaned_data['sentence']
 
             request.session['sentence'] = sentence
+            """
+            query = Query(sentence=sentence, user=request.user)
+            query.save()
 
-            
+            request.session['query_pk'] = query.pk
+            """
+
             return redirect('spellchecker_answer')
 
 
@@ -46,8 +52,12 @@ def answer(request):
 
 	labeled_words = spellchecker(sentence)
 
+	"""
+	query_pk = request.session.get('query_pk')
+	query = Query.objects.filter(pk=query_pk)[0]
 
-	#query = Query()
+	query.
+	"""
 
 
 	context = {
