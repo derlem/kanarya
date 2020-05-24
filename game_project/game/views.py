@@ -7,6 +7,7 @@ import csv
 import linecache
 import random
 import distutils
+import os
 from .forms import ActivityForm, ReportForm, OnamForm, ProfForm
 
 from .models import Sentence, Question, Activity, Decision, Report
@@ -75,6 +76,9 @@ def question(request):
 
     if not request.user.profile.onam:
         return redirect('onamformu')
+
+    if request.user.profile.last_seen_prof_idx < 11:
+        return redirect('proficiency')
 
     # Current question index according the user progress
     last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
@@ -308,7 +312,8 @@ def proficiency(request):
     print("Question index: " + str(question_index))
 
     context = {
-        "text": text
+        "text": text,
+        "question_index": question_index
     }
 
     if request.method == 'POST':
@@ -327,12 +332,12 @@ def proficiency(request):
             request.user.profile.last_seen_prof_idx += 1
             request.user.profile.save()
 
-            """ Do not show result for now.
-            if onam == True:
-                messages.success(request, f'Teşekkürler. Artık soruları çözmeye başlayabilirsiniz!')
+            
+            if answer == status:
+                messages.success(request, f'Doğru Cevap')
             else:
-                messages.error(request, f'Onam formunu okuyup kabul etmeden maalesef çalışmamıza katılamazsınız.')
-            """
+                messages.error(request, f'Yanlış Cevap')
+            
 
             return redirect('proficiency')
 
