@@ -91,8 +91,19 @@ def question(request):
     # Current question index according the user progress
     last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
 
+    
     # Get the current question 
     sentence = get_sentence(last_seen_sentence_idx + 1)
+
+    # A temporary workaround to solve the alignment of long sentences
+    while len(sentence.text) > 200:
+        print("Long sentence avoided. Length: " + str(sentence.text))
+        request.user.profile.last_seen_sentence_idx  += 1
+        request.user.profile.save()
+        last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
+        sentence = get_sentence(last_seen_sentence_idx + 1)
+
+
     full_text = sentence.text
     status = sentence.status
     clitic = sentence.clitic
