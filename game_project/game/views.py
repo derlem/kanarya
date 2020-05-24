@@ -159,7 +159,8 @@ def question(request):
         request.session['solved_question_num'] = 0
         request.session['success_rate'] = 0
 
-        return render(request, 'game/test_end.html')
+        #return render(request, 'game/test_end.html')
+        return redirect('test_end')
 
     context['mode_label'] = mode_labels[context['mode']]
     context['mode_description'] = mode_descriptions[context['mode']]
@@ -397,7 +398,10 @@ def prof_end(request):
     pass
 
 def test_end(request):
-    pass
+    
+    messages.success(request, f'Test bitti, çok teşekkürler!')
+
+    return render(request, 'game/test_end.html')
 
 def stats(request):
 
@@ -441,6 +445,8 @@ def onamformu(request):
     if request.user.profile.onam:
         return redirect('home')
 
+
+
     if request.method == 'POST':
 
         form = OnamForm(request.POST)
@@ -460,6 +466,8 @@ def onamformu(request):
             return redirect('home')
 
     else:
+
+        messages.info(request, f'Araştırmamıza katılabilmeniz için onam formunu okuyup kabul etmeniz gerekir.')
         form = ReportForm()
 
     return render(request, 'game/onamformu.html')

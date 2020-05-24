@@ -31,14 +31,16 @@
 
 		    <div style="text-align: center">
 		    	
-		    	<a class="btn btn-outline-info"  href=" {% url 'proficiency' %} ">Ön bilgi testini çöz</a>
+		    	
 
 		    	{% if is_prof_done == True %}
 
+		    		<button class="btn btn-outline-info"  href=" {% url 'proficiency' %}" disabled>Ön bilgi testini çöz</button>
 		    		<a class="btn btn-outline-info" href=" {% url 'question' %} ">Araştırmaya başla!</a>
 
 		    	{% else %}
 
+		    		<a class="btn btn-outline-info"  href=" {% url 'proficiency' %} ">Ön bilgi testini çöz</a>
 		    		<button class="btn btn-outline-info" href=" {% url 'question' %} " disabled>Araştırmaya başla!</button>
 
 		    	{% endif %}
