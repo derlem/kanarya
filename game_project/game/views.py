@@ -6,7 +6,7 @@ from django.contrib import messages
 import csv
 import linecache
 import random
-import distutils
+#import distutils
 import os
 from .forms import ActivityForm, ReportForm, OnamForm, ProfForm
 
@@ -334,7 +334,8 @@ def proficiency(request):
         
         if form.is_valid():
             
-            answer = bool(distutils.util.strtobool(form.cleaned_data['answer']))
+            #answer = bool(distutils.util.strtobool(form.cleaned_data['answer']))
+            answer = str2bool(form.cleaned_data['answer'])
 
             # if the answer is true
             if answer == status:
@@ -371,7 +372,9 @@ def get_prof_question(question_index):
 
     index = list(csv.reader([current_row]))[0][0]
     text = list(csv.reader([current_row]))[0][1]
-    status = bool(distutils.util.strtobool(list(csv.reader([current_row]))[0][2]))
+    #status = bool(distutils.util.strtobool(list(csv.reader([current_row]))[0][2]))
+    status = str2bool(list(csv.reader([current_row]))[0][2])
+
 
     print(index)
     print(status)
@@ -433,7 +436,8 @@ def onamformu(request):
         
         if form.is_valid():
             
-            onam = bool(distutils.util.strtobool(form.cleaned_data['onam']))
+            #onam = bool(distutils.util.strtobool(form.cleaned_data['onam']))
+            onam = str2bool(form.cleaned_data['onam'])
             request.user.profile.onam = onam
             request.user.profile.isOnamSubmitted = True
             request.user.profile.save()
@@ -791,6 +795,6 @@ def get_answer_text(full_text, pos, status):
     return first_text, highlighted_text, second_text
 
 
+def str2bool(s):
 
-
-
+    return True if s == "true" or s == "True" else False
