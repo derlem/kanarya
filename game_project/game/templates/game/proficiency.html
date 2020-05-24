@@ -1,0 +1,38 @@
+{% extends 'game/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+	<div>
+
+		<div class="questiondiv">
+
+			<div class="centeritems">
+
+				<p>  {{text}} </p>
+				
+			</div>
+
+			<div class="centeritems">
+
+	            <form method="POST">
+	                {% csrf_token %}
+
+	                <button type="submit" name="answer" value="true" class="btn btn-outline-info mb-4">Doğru</button>
+	                <button type="submit" name="answer" value="false" class="btn btn-outline-info mb-4">Yanlış</button>
+
+	            </form>
+
+	        </div>
+
+		</div>
+
+
+
+	</div>
+
+	
+
+	
+	
+{% endblock content %}

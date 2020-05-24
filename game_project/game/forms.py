@@ -20,3 +20,7 @@ class ReportForm(forms.ModelForm):
 class OnamForm(forms.Form):
 	onam = forms.CharField(max_length=5) # True or False
 
+class ProfForm(forms.Form):
+
+	answer = forms.CharField(max_length=5) # True or False
+

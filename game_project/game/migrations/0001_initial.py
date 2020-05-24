@@ -9,6 +9,7 @@ from django.utils.timezone import utc
 import csv
 import linecache
 import os.path
+import distutils
 
 def load_game(apps, schema_editor):
 
@@ -46,6 +47,7 @@ def load_game(apps, schema_editor):
 def delete_game(apps, schema_editor):
     Sentence = apps.get_model("game", "Sentence")
     Sentence.objects.all().delete()
+
 
 def get_clitic(sentence_info):
 

@@ -1,10 +1,3 @@
-# Memory Monitor
-import os
-import psutil
-process = psutil.Process(os.getpid())
-
-print("Beginning: " + str(process.memory_info().rss/(1024*1024)) + " MB")
-
 from django.shortcuts import render, redirect
 from .forms import QueryForm
 from .models import Query
@@ -15,13 +8,9 @@ from flair.data import Sentence
 from django.contrib.staticfiles import finders
 
 
-print("After Imports: " + str(process.memory_info().rss/(1024*1024)) + " MB")
-
 url = finders.find('best-model.pt')
 flair.device = torch.device('cpu')
 classifier = SequenceTagger.load_from_file(url)
-
-print("After Loading Spellchecker: " + str(process.memory_info().rss/(1024*1024)) + " MB")
 
 def query(request):
 
@@ -57,8 +46,6 @@ def answer(request):
 
 	labeled_words = spellchecker(sentence)
 
-	
-	print("\nAfter Using Spellchecker: " + str(process.memory_info().rss/(1024*1024)) + " MB\n")
 
 	#query = Query()
 

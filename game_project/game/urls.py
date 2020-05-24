@@ -11,6 +11,8 @@ urlpatterns = [
 	path('answer/', views.answer, name='answer'),
 	path('test_end/', views.test_end, name='test-end'),
 	path('stats/', views.stats, name='stats'),
-	path('onamformu/', views.onamformu, name='onamformu')
+	path('onamformu/', views.onamformu, name='onamformu'),
+	path('proficiency/', views.proficiency, name='proficiency'),
+	path('prof_end/', views.prof_end, name='prof-end'),
 
 ]

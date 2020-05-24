@@ -1,8 +1,3 @@
-# Memory Monitor
-import os
-import psutil
-process = psutil.Process(os.getpid())
-
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -12,7 +7,7 @@ import csv
 import linecache
 import random
 import distutils
-from .forms import ActivityForm, ReportForm, OnamForm
+from .forms import ActivityForm, ReportForm, OnamForm, ProfForm
 
 from .models import Sentence, Question, Activity, Decision, Report
 
@@ -247,7 +242,6 @@ def question(request):
     else:
         form = ActivityForm()
 
-    print("\nIn the game: " + str(process.memory_info().rss/(1024*1024)) + " MB\n")
     return render(request, 'game/question.html',context)
     
     
@@ -302,6 +296,74 @@ def answer(request):
 
 
     return render(request, 'game/answer.html', context)
+
+def proficiency(request):
+
+    if request.user.profile.last_seen_prof_idx > 10:
+        return render(request, 'game/prof_end.html')
+
+    question_index = request.user.profile.last_seen_prof_idx
+    text, status = get_prof_question(question_index)
+
+    print("Question index: " + str(question_index))
+
+    context = {
+        "text": text
+    }
+
+    if request.method == 'POST':
+
+        form = ProfForm(request.POST)
+        
+        if form.is_valid():
+            
+            answer = bool(distutils.util.strtobool(form.cleaned_data['answer']))
+
+            # if the answer is true
+            if answer == status:
+                request.user.profile.prof_score += 1
+                request.user.profile.save()
+
+            request.user.profile.last_seen_prof_idx += 1
+            request.user.profile.save()
+
+            """ Do not show result for now.
+            if onam == True:
+                messages.success(request, f'Teşekkürler. Artık soruları çözmeye başlayabilirsiniz!')
+            else:
+                messages.error(request, f'Onam formunu okuyup kabul etmeden maalesef çalışmamıza katılamazsınız.')
+            """
+
+            return redirect('proficiency')
+
+    else:
+        form = ProfForm()
+
+    return render(request, 'game/proficiency.html', context)
+    
+
+def get_prof_question(question_index):
+
+    path_to_data = os.path.dirname(__file__) + '/static/game/ProficiencySentences.csv'
+
+    f = open(path_to_data, 'r')
+
+    all_lines = f.readlines()
+
+    current_row = all_lines[question_index -1]
+
+    index = list(csv.reader([current_row]))[0][0]
+    text = list(csv.reader([current_row]))[0][1]
+    status = bool(distutils.util.strtobool(list(csv.reader([current_row]))[0][2]))
+
+    print(index)
+    print(status)
+    print(text)
+
+    return text, status
+
+def prof_end(request):
+    pass
 
 def test_end(request):
     pass

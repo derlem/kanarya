@@ -35,4 +35,3 @@ class Report(models.Model):
 	question = models.OneToOneField(Question, on_delete=models.CASCADE) # This might be one-to-one
 	text = models.TextField()
 
-
