@@ -1,23 +1,55 @@
 {% extends 'game/base.html' %}
 {% block content %}
 
-	<div align="center">
+	<div class="container">
 
-		<h1>Oyun yönergesi</h1>
+		<article class="media content-section">
+		  <div class="media-body">
+		    <!--<h2><a class="article-title" href="#">Onam Formu</a></h2>-->
+		    <h2 style="text-align:center" >Araştırma Yönergesi</h2>
+		    <p class="article-content">
 
-		<br>
-		<br>
-		<br>
+		    	Merhabalar,
 
-		<a href=" {% url 'proficiency' %} ">Ön bilgi testini çöz</a>
+				Türkçe’deki “de/da” ek ve bağlaçlarının kullanımını etkileyen faktörleri araştırdığımız deneyimize hoş geldiniz.
 
-		<br>	
+				Aşağıdaki “Teste Başla” butonuna bastıktan sonra 30 soruluk bir testle karşılaşacaksınız. Her bir soru bir Türkçe cümleden oluşur ve her bir cümle en az bir tane “de/da” bağlacı ya da eki içerir. Size cümlenin bir kısmını gösterip bir kısmını göstermeyeceğiz ve sizden elinizdeki kadar bilgi ile “de/da” ek ya da bağlacının doğru yazımını tahmin etmenizi bekleyeceğiz.
 
-		<a href=" {% url 'question' %} ">Oyuna başla!</a>
+				Eğer “de/da”nın birleşik yazılması gerektiğini düşünüyorsanız “Birleşik Yazılmalı”, ayrı yazılması gerektiğini düşünüyorsanız “Ayrı Yazılmalı”, emin değilseniz “Kararsızım”, cevaplamak istemiyorsanız “Bu Cümleyi Geç” butonuna basmanız gerekir.
 
-		<br>
+				Göreceğiniz cümleler dergi, kitap, gazete gibi kaynaklardan otomatik olarak toplanmıştır. O yüzden yapısal ya da anlamsal olarak bozuk cümlelerle karşılaşabilirsiniz. Böyle durumlarda “Hata Bildir” kısmından bir açıklama yaparak ya da yapmayarak böyle durumları bize ulaştırabilirsiniz.
 
-		<a href=" {% url 'spellchecker_query' %} ">Yazım denetleyiciyi dene!</a>
+				Bir testte 30 soru vardır ve sınırsız sayıda test çözebilirsiniz. Ne kadar çok test çözerseniz Türkçe’nin bu müzmin sorununu çözmeye bir o kadar çok yaklaşırız :)
+
+				UYARI: Bu çalışma “de/da” ek ve bağlacının kullanımını etkileyen faktörleri anlamak amacıyla düzenlenmektedir. Herhangi bir şekilde kullanıcıların başarıları ölçülmemektedir.
+
+				İyi eğlenceler :)
+
+
+
+		    </p>
+
+		    <div style="text-align: center">
+		    	
+		    	<button class="btn btn-outline-info"  href=" {% url 'proficiency' %} ">Ön bilgi testini çöz</button>
+
+		    	{% if is_prof_done == True %}
+
+		    		<button class="btn btn-outline-info" href=" {% url 'question' %} ">Araştırmaya başla!</button>
+
+		    	{% else %}
+
+		    		<button class="btn btn-outline-info" href=" {% url 'question' %} " disabled>Araştırmaya başla!</button>
+
+		    	{% endif %}
+
+
+		    </div>
+
+		  </div>
+		</article>	
+
+		
 
 	</div>
 	

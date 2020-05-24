@@ -316,3 +316,8 @@ tr:nth-child(even) {
         }        
         
 </style>
+
+.disabled {
+  pointer-events: none;
+  cursor: default;
+}

@@ -64,7 +64,15 @@ def home(request):
 
     request.session['go_next_question'] = True
 
-    return render(request, 'game/home.html')
+    is_prof_done = request.user.profile.is_prof_done
+
+    context = {
+
+        "is_prof_done": is_prof_done
+
+    }
+
+    return render(request, 'game/home.html', context)
 
 def about(request):
 
@@ -304,6 +312,10 @@ def answer(request):
 def proficiency(request):
 
     if request.user.profile.last_seen_prof_idx > 10:
+
+        request.user.profile.is_prof_done = True
+        request.user.profile.save()
+
         return render(request, 'game/prof_end.html')
 
     question_index = request.user.profile.last_seen_prof_idx
