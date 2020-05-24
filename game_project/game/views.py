@@ -54,6 +54,7 @@ class MODE_THRESHOLD(Enum):
     MODE_5 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4 + QUESTION_NUM_MODE_5
     MODE_6 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4 + QUESTION_NUM_MODE_5 + QUESTION_NUM_MODE_6
 
+@login_required
 def home(request):
 
     # Set new test settings
@@ -321,6 +322,7 @@ def answer(request):
 
     return render(request, 'game/answer.html', context)
 
+@login_required
 def proficiency(request):
 
     if request.user.profile.last_seen_prof_idx > 10:
@@ -394,15 +396,18 @@ def get_prof_question(question_index):
 
     return text, status
 
+@login_required
 def prof_end(request):
     pass
 
+@login_required
 def test_end(request):
     
     messages.success(request, f'Test bitti, çok teşekkürler!')
 
     return render(request, 'game/test_end.html')
 
+@login_required
 def stats(request):
 
     decision_count = len(Decision.objects.all())
@@ -440,6 +445,7 @@ def stats(request):
 
     return render(request, 'game/stats.html', context)
 
+@login_required
 def onamformu(request):
 
     if request.user.profile.onam:

@@ -13,15 +13,15 @@
 					<fieldset class="form-group">
 
 						<legend class="border-bottom mb-4">
-							Log In
+							Giriş Yap
 						</legend>
 						{{ form|crispy }}
 					</fieldset>
 
 					<div class="form-group">
-						<button class="btn btn-outline-info", type="submit">Log in</button>
+						<button class="btn btn-outline-info", type="submit">Giriş Yap</button>
 						<small class="text-muted ml-2">
-							<a href="{% url 'password_reset' %}">Forgot Password?</a>
+							<a href="{% url 'password_reset' %}">Şifreni mi unuttun?</a>
 						</small>
 					</div>
 
@@ -29,7 +29,7 @@
 
 				<div class="border-top pt-3">
 					<small class="text-muted">
-						Need an account? <a class="ml-2" href="{% url 'register' %}">Sign up Now</a>
+						Hesabın mı yok? <a class="ml-2" href="{% url 'register' %}">Şimdi Kayıt Ol</a>
 					</small>
 				</div>
 
