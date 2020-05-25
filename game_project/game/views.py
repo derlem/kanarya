@@ -330,7 +330,8 @@ def proficiency(request):
         request.user.profile.is_prof_done = True
         request.user.profile.save()
 
-        return render(request, 'game/prof_end.html')
+        #return render(request, 'game/prof_end.html')
+        return redirect('prof_end')
 
     question_index = request.user.profile.last_seen_prof_idx
     text, status = get_prof_question(question_index)
@@ -398,7 +399,9 @@ def get_prof_question(question_index):
 
 @login_required
 def prof_end(request):
-    pass
+    messages.success(request, f'Ön bilgi testimiz sona erdi, çok teşekkürler!')
+
+    return render(request, 'game/prof_end.html')
 
 @login_required
 def test_end(request):

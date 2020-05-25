@@ -13,6 +13,6 @@ urlpatterns = [
 	path('stats/', views.stats, name='stats'),
 	path('onamformu/', views.onamformu, name='onamformu'),
 	path('proficiency/', views.proficiency, name='proficiency'),
-	path('prof_end/', views.prof_end, name='prof-end'),
+	path('prof_end/', views.prof_end, name='prof_end'),
 
 ]
