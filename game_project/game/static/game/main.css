@@ -120,6 +120,15 @@ a.article-title:hover {
 
 }
 
+.profquestiondesc {
+
+  position: absolute;
+  top: 250px;
+  right: 30px;
+  left: 30px;
+
+}
+
 .centeritems{
   text-align: center;
 }

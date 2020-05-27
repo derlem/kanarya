@@ -330,16 +330,13 @@ def proficiency(request):
         request.user.profile.is_prof_done = True
         request.user.profile.save()
 
-        #return render(request, 'game/prof_end.html')
         return redirect('prof_end')
 
     question_index = request.user.profile.last_seen_prof_idx
-    text, status = get_prof_question(question_index)
-
-    print("Question index: " + str(question_index))
+    labeled_words, condition = get_prof_question_context(question_index)
 
     context = {
-        "text": text,
+        "labeled_words": labeled_words,
         "question_index": question_index
     }
 
@@ -349,23 +346,22 @@ def proficiency(request):
         
         if form.is_valid():
             
-            #answer = bool(distutils.util.strtobool(form.cleaned_data['answer']))
             answer = str2bool(form.cleaned_data['answer'])
 
             # if the answer is true
-            if answer == status:
+            if answer == condition:
                 request.user.profile.prof_score += 1
                 request.user.profile.save()
 
             request.user.profile.last_seen_prof_idx += 1
             request.user.profile.save()
 
-            
-            if answer == status:
+            """
+            if answer == condition:
                 messages.success(request, f'Doğru Cevap')
             else:
                 messages.error(request, f'Yanlış Cevap')
-            
+            """
 
             return redirect('proficiency')
 
@@ -373,9 +369,8 @@ def proficiency(request):
         form = ProfForm()
 
     return render(request, 'game/proficiency.html', context)
-    
 
-def get_prof_question(question_index):
+def get_prof_question_context(question_index):
 
     path_to_data = os.path.dirname(__file__) + '/static/game/ProficiencySentences.csv'
 
@@ -387,15 +382,35 @@ def get_prof_question(question_index):
 
     index = list(csv.reader([current_row]))[0][0]
     text = list(csv.reader([current_row]))[0][1]
-    #status = bool(distutils.util.strtobool(list(csv.reader([current_row]))[0][2]))
-    status = str2bool(list(csv.reader([current_row]))[0][2])
+    condition = str2bool(list(csv.reader([current_row]))[0][2])
+    pos = int(list(csv.reader([current_row]))[0][3])
+    status = list(csv.reader([current_row]))[0][4]
 
+    words, labels = [], []
 
-    print(index)
-    print(status)
-    print(text)
+    tokens = text.split()
 
-    return text, status
+    for idx, token in enumerate(tokens):
+
+        if idx == pos:
+
+            if status == "SEPARATE":
+
+                words[idx-1] += " " + token
+                labels[idx-1] = True
+
+            else:
+
+                words.append(token)
+                labels.append(True)
+
+        else:
+            words.append(token)
+            labels.append(False)
+
+    labeled_words = [{'word':words[i],'label':labels[i]} for i in range(len(words))]
+
+    return labeled_words,  condition
 
 @login_required
 def prof_end(request):

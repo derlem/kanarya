@@ -15,10 +15,21 @@
 
 			<h2 class="mode_label_heading">
         
-	           Ön Bilgi Testi
+	           Isındırma Turu
 
 	        </h2>
 
+
+		</div>
+
+		<div class="profquestiondesc">
+
+			<div class="centeritems">
+
+				<p>Aşağıdaki cümledeki altı çizili kelimenin yazımı doğru mudur?</p>
+
+
+			</div>	
 
 		</div>
 
@@ -27,9 +38,23 @@
 
 			<div class="centeritems">
 
-				<p>  {{text}} </p>
+				{% for entry in labeled_words %}
+
+	                {% if entry.label == True %}
+
+	                    <u>{{entry.word}}</u>
+
+	                {% else %}
+
+	                    {{entry.word}}
+
+	                {% endif %}
+
+	            {% endfor  %}
 				
 			</div>
+
+			<br>
 
 			<div class="centeritems">
 
