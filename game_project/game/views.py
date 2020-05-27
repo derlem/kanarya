@@ -8,7 +8,7 @@ import linecache
 import random
 #import distutils
 import os
-from .forms import ActivityForm, ReportForm, OnamForm, ProfForm
+from .forms import ActivityForm, ReportForm, ProfForm
 
 from .models import Sentence, Question, Activity, Decision, Report
 
@@ -83,8 +83,8 @@ def about(request):
 def question(request):
 
 
-    if not request.user.profile.onam:
-        return redirect('onamformu')
+    #if not request.user.profile.onam:
+    #    return redirect('onamformu')
 
     if request.user.profile.last_seen_prof_idx < 11:
         return redirect('proficiency')
@@ -462,40 +462,6 @@ def stats(request):
     }
 
     return render(request, 'game/stats.html', context)
-
-@login_required
-def onamformu(request):
-
-    if request.user.profile.onam:
-        return redirect('home')
-
-
-
-    if request.method == 'POST':
-
-        form = OnamForm(request.POST)
-        
-        if form.is_valid():
-            
-            #onam = bool(distutils.util.strtobool(form.cleaned_data['onam']))
-            onam = str2bool(form.cleaned_data['onam'])
-            request.user.profile.onam = onam
-            request.user.profile.isOnamSubmitted = True
-            request.user.profile.save()
-
-            if onam == True:
-                messages.success(request, f'Teşekkürler. Artık soruları çözmeye başlayabilirsiniz!')
-            else:
-                messages.error(request, f'Onam formunu okuyup kabul etmeden maalesef çalışmamıza katılamazsınız.')
-            return redirect('home')
-
-    else:
-
-        messages.info(request, f'Araştırmamıza katılabilmeniz için onam formunu okuyup kabul etmeniz gerekir.')
-        form = ReportForm()
-
-    return render(request, 'game/onamformu.html')
-
     
 def get_sentence(sentence_idx):
 

@@ -8,12 +8,14 @@ class Profile(models.Model):
 	last_seen_sentence_idx = models.IntegerField(default=1)
 	correct_answer_count = models.IntegerField(default=0)
 
-	onam = models.BooleanField(default=False)
-	isOnamSubmitted = models.BooleanField(default=False)
+	#onam = models.BooleanField(default=False)
+	#isOnamSubmitted = models.BooleanField(default=False)
 
 	last_seen_prof_idx = models.IntegerField(default=1)
 	prof_score = models.IntegerField(default=0)
 	is_prof_done = models.BooleanField(default=False)
+
+	tos = models.BooleanField(default=False) # terms of service (onam formu)
 
 	def __str__(self):
 		return f'{self.user.username} Profile'

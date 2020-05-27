@@ -17,9 +17,6 @@ class ReportForm(forms.ModelForm):
 		model = Report
 		fields = ['text']
 
-class OnamForm(forms.Form):
-	onam = forms.CharField(max_length=5) # True or False
-
 class ProfForm(forms.Form):
 
 	answer = forms.CharField(max_length=5) # True or False

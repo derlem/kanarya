@@ -8,9 +8,16 @@ def register(request):
 	if request.method == 'POST':
 		form = UserRegisterForm(request.POST)
 		if form.is_valid():
+			"""
 			form.save()
 			username = form.cleaned_data.get('username')
 			messages.success(request, f'Hesabınız başarıyla oluşturuldu.')
+			"""
+
+			user = form.save()
+			user.refresh_from_db()
+			user.profile.tos = form.cleaned_data.get('tos')
+			user.save()
 
 			return redirect('login')
 	else: 
@@ -18,6 +25,9 @@ def register(request):
 
 	return render(request, 'users/register.html', {'form': form})
 
+def onamformu(request):
+
+	return render(request, 'users/onamformu.html')
 
 @login_required
 def profile(request):
