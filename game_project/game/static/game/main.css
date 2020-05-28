@@ -381,3 +381,10 @@ tr:nth-child(even) {
   //border: 1px solid #dddddd;
 
 }
+
+.progress-bar-purple {
+      background-color: purple !important;
+}
+.progress-bar-orange {
+      background-color: orange !important;
+}

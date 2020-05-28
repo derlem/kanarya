@@ -22,8 +22,10 @@
         -->
     </div>
 
-    <div class="container">
-      <div class="progress">
+    
+
+    <div class="container" style="width: 60%;">
+        <div class="progress">
 
         
         {% if question_idx > 0 %}
@@ -32,14 +34,15 @@
 
                 {% with ''|center:question_idx as range %}
                     {% for bar in range %}
-                        <div class="progress-bar" role="progressbar" style="width:3.33%">|</div>
+                        <!--<div class="progress-bar" role="progressbar" style="width:3.33%">|</div>-->
+                        <div class="progress-bar" role="progressbar" style="width:3.33%; background-color: #8e44ad  !important;">|</div>
                     {% endfor %}
                 {% endwith %}
 
             {% else %}
 
                 {% for i in '01234'|make_list %}
-                    <div class="progress-bar" role="progressbar" style="width:3.33%">|</div>
+                    <div class="progress-bar" role="progressbar" style="width:3.33%;  background-color: #8e44ad  !important;">|</div>
                 {% endfor %}
 
             {% endif %}
@@ -56,7 +59,7 @@
 
                     {% with ''|center:bar_num as range %}
                         {% for bar in range %}
-                            <div class="progress-bar bg-info" role="progressbar" style="width:3.33%">|</div>
+                            <div class="progress-bar" role="progressbar" style="width:3.33%;  background-color: #2a4ff6  !important;">|</div>
                         {% endfor %}
                     {% endwith %}
 
@@ -67,7 +70,7 @@
             {% else %}
                 
                 {% for i in '01234'|make_list %}
-                    <div class="progress-bar bg-info" role="progressbar" style="width:3.33%">|</div>
+                    <div class="progress-bar" role="progressbar" style="width:3.33%;  background-color: #2a4ff6  !important;">|</div>
                 {% endfor %}
 
             {% endif %}
@@ -85,7 +88,7 @@
 
                     {% with ''|center:bar_num as range %}
                         {% for bar in range %}
-                            <div class="progress-bar bg-success" role="progressbar" style="width:3.33%">|</div>
+                            <div class="progress-bar bg-success" role="progressbar" style="width:3.33%;  background-color: #239b56  !important;">|</div>
                         {% endfor %}
                     {% endwith %}
 
@@ -96,7 +99,7 @@
             {% else %}
                 
                 {% for i in '01234'|make_list %}
-                    <div class="progress-bar bg-success" role="progressbar" style="width:3.33%">|</div>
+                    <div class="progress-bar bg-success" role="progressbar" style="width:3.33%;  background-color: #239b56  !important;">|</div>
                 {% endfor %}
 
             {% endif %}
@@ -114,7 +117,7 @@
 
                     {% with ''|center:bar_num as range %}
                         {% for bar in range %}
-                            <div class="progress-bar progress-bar-success" role="progressbar" style="width:3.33%">|</div>
+                            <div class="progress-bar progress-bar-success" role="progressbar" style="width:3.33%;  background-color: #f4d03f  !important;">|</div>
                         {% endfor %}
                     {% endwith %}
 
@@ -125,7 +128,7 @@
             {% else %}
                 
                 {% for i in '01234'|make_list %}
-                    <div class="progress-bar progress-bar-success" role="progressbar" style="width:3.33%">|</div>
+                    <div class="progress-bar progress-bar-success" role="progressbar" style="width:3.33%;  background-color: #f4d03f  !important;">|</div>
                 {% endfor %}
 
             {% endif %}
@@ -143,7 +146,8 @@
 
                     {% with ''|center:bar_num as range %}
                         {% for bar in range %}
-                            <div class="progress-bar bg-warning" role="progressbar" style="width:3.33%">|</div>
+                            <div class="progress-bar bg-warning" role="progressbar" style="width:3.33%;  background-color: #e67e22
+  !important;">|</div>
                         {% endfor %}
                     {% endwith %}
 
@@ -154,7 +158,8 @@
             {% else %}
                 
                 {% for i in '01234'|make_list %}
-                    <div class="progress-bar bg-warning" role="progressbar" style="width:3.33%">|</div>
+                    <div class="progress-bar bg-warning" role="progressbar" style="width:3.33%;  background-color: #e67e22
+  !important;">|</div>
                 {% endfor %}
 
             {% endif %}
@@ -172,7 +177,7 @@
 
                     {% with ''|center:bar_num as range %}
                         {% for bar in range %}
-                            <div class="progress-bar bg-danger" role="progressbar" style="width:3.33%">|</div>
+                            <div class="progress-bar bg-danger" role="progressbar" style="width:3.33%;  background-color: red  !important;">|</div>
                         {% endfor %}
                     {% endwith %}
 
@@ -183,7 +188,7 @@
             {% else %}
                 
                 {% for i in '01234'|make_list %}
-                    <div class="progress-bar bg-danger" role="progressbar" style="width:3.33%">|</div>
+                    <div class="progress-bar bg-danger" role="progressbar" style="width:3.33%   ; background-color: red  !important;">|</div>
                 {% endfor %}
 
             {% endif %}
@@ -207,7 +212,7 @@
 
         <div class="centeritems">
 
-            <p>{{mode_description}}</p>
+            <p style="font-size:18px">{{mode_description}}</p>
 
         </div>  
 

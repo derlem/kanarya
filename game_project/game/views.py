@@ -166,9 +166,6 @@ def question(request):
     context['mode_label'] = mode_labels[context['mode']]
     context['mode_description'] = mode_descriptions[context['mode']]
 
-    # Pass the context to answer page
-    request.session['context'] = context
-
     # Process the POST request
     if request.method == 'POST':
 
@@ -204,7 +201,8 @@ def question(request):
             activity.save()
 
             # Pass the answer to the context
-            context['selected_button'] = activity.name
+            #context['selected_button'] = activity.name
+            request.session['selected_button'] = activity.name
 
             request.session['full_text'] = full_text
             request.session['question_pk'] = question.pk
@@ -272,6 +270,10 @@ def question(request):
             request.user.profile.save()
             return redirect('answer')
     else:
+
+        # Pass the context to answer page
+        request.session['context'] = context
+
         form = ActivityForm()
 
     return render(request, 'game/question.html',context)
@@ -302,6 +304,7 @@ def answer(request):
     context['correct_answer_count_for_current_test'] = request.session.get('correct_answer_count_for_current_test') # necessary?
     context['solved_question_num'] = request.session.get('solved_question_num')
     context['success_rate'] = request.session.get('success_rate')
+    context['selected_button'] = request.session.get('selected_button')
 
 
     if request.method == 'POST':
@@ -426,7 +429,7 @@ def get_prof_question_context(question_index):
 
 @login_required
 def prof_end(request):
-    messages.success(request, f'Ön bilgi testimiz sona erdi, çok teşekkürler!')
+    messages.success(request, f'Isındırma turumuz sona erdi, çok teşekkürler!')
 
     return render(request, 'game/prof_end.html')
 

@@ -18,8 +18,8 @@
 
     </div>
 
-    <div class="container">
-      <div class="progress">
+    <div class="container" style="width: 60%;">
+        <div class="progress">
 
         
         {% if question_idx > 0 %}
@@ -28,14 +28,15 @@
 
                 {% with ''|center:question_idx as range %}
                     {% for bar in range %}
-                        <div class="progress-bar" role="progressbar" style="width:3.33%">|</div>
+                        <!--<div class="progress-bar" role="progressbar" style="width:3.33%">|</div>-->
+                        <div class="progress-bar" role="progressbar" style="width:3.33%; background-color: #8e44ad  !important;">|</div>
                     {% endfor %}
                 {% endwith %}
 
             {% else %}
 
                 {% for i in '01234'|make_list %}
-                    <div class="progress-bar" role="progressbar" style="width:3.33%">|</div>
+                    <div class="progress-bar" role="progressbar" style="width:3.33%;  background-color: #8e44ad  !important;">|</div>
                 {% endfor %}
 
             {% endif %}
@@ -52,7 +53,7 @@
 
                     {% with ''|center:bar_num as range %}
                         {% for bar in range %}
-                            <div class="progress-bar bg-info" role="progressbar" style="width:3.33%">|</div>
+                            <div class="progress-bar" role="progressbar" style="width:3.33%;  background-color: #2a4ff6  !important;">|</div>
                         {% endfor %}
                     {% endwith %}
 
@@ -63,7 +64,7 @@
             {% else %}
                 
                 {% for i in '01234'|make_list %}
-                    <div class="progress-bar bg-info" role="progressbar" style="width:3.33%">|</div>
+                    <div class="progress-bar" role="progressbar" style="width:3.33%;  background-color: #2a4ff6  !important;">|</div>
                 {% endfor %}
 
             {% endif %}
@@ -81,7 +82,7 @@
 
                     {% with ''|center:bar_num as range %}
                         {% for bar in range %}
-                            <div class="progress-bar bg-success" role="progressbar" style="width:3.33%">|</div>
+                            <div class="progress-bar bg-success" role="progressbar" style="width:3.33%;  background-color: #239b56  !important;">|</div>
                         {% endfor %}
                     {% endwith %}
 
@@ -92,7 +93,7 @@
             {% else %}
                 
                 {% for i in '01234'|make_list %}
-                    <div class="progress-bar bg-success" role="progressbar" style="width:3.33%">|</div>
+                    <div class="progress-bar bg-success" role="progressbar" style="width:3.33%;  background-color: #239b56  !important;">|</div>
                 {% endfor %}
 
             {% endif %}
@@ -110,7 +111,7 @@
 
                     {% with ''|center:bar_num as range %}
                         {% for bar in range %}
-                            <div class="progress-bar progress-bar-success" role="progressbar" style="width:3.33%">|</div>
+                            <div class="progress-bar progress-bar-success" role="progressbar" style="width:3.33%;  background-color: #f4d03f  !important;">|</div>
                         {% endfor %}
                     {% endwith %}
 
@@ -121,7 +122,7 @@
             {% else %}
                 
                 {% for i in '01234'|make_list %}
-                    <div class="progress-bar progress-bar-success" role="progressbar" style="width:3.33%">|</div>
+                    <div class="progress-bar progress-bar-success" role="progressbar" style="width:3.33%;  background-color: #f4d03f  !important;">|</div>
                 {% endfor %}
 
             {% endif %}
@@ -139,7 +140,8 @@
 
                     {% with ''|center:bar_num as range %}
                         {% for bar in range %}
-                            <div class="progress-bar bg-warning" role="progressbar" style="width:3.33%">|</div>
+                            <div class="progress-bar bg-warning" role="progressbar" style="width:3.33%;  background-color: #e67e22
+  !important;">|</div>
                         {% endfor %}
                     {% endwith %}
 
@@ -150,7 +152,8 @@
             {% else %}
                 
                 {% for i in '01234'|make_list %}
-                    <div class="progress-bar bg-warning" role="progressbar" style="width:3.33%">|</div>
+                    <div class="progress-bar bg-warning" role="progressbar" style="width:3.33%;  background-color: #e67e22
+  !important;">|</div>
                 {% endfor %}
 
             {% endif %}
@@ -168,7 +171,7 @@
 
                     {% with ''|center:bar_num as range %}
                         {% for bar in range %}
-                            <div class="progress-bar bg-danger" role="progressbar" style="width:3.33%">|</div>
+                            <div class="progress-bar bg-danger" role="progressbar" style="width:3.33%;  background-color: red  !important;">|</div>
                         {% endfor %}
                     {% endwith %}
 
@@ -179,7 +182,7 @@
             {% else %}
                 
                 {% for i in '01234'|make_list %}
-                    <div class="progress-bar bg-danger" role="progressbar" style="width:3.33%">|</div>
+                    <div class="progress-bar bg-danger" role="progressbar" style="width:3.33%   ; background-color: red  !important;">|</div>
                 {% endfor %}
 
             {% endif %}
@@ -187,7 +190,7 @@
 
         {% endif %}
 
-      </div>
+        </div>
     </div>
 
     <!--
@@ -227,24 +230,14 @@
 
                             <div class='right_container'>
 
-                                <div class='small_container'>                                
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
-                                </div>
-                                    <span><b>______{{clitic}}</b></span>
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
-                                </div>                                    
+                                <div class='small_container'>     
+                                    <span><b>&#8599;   ______{{clitic}}   &#8600;</b></span>            
                                 </div>
 
                                 <div class='small_container'>
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
-                                </div>                                              
-                                    <span><b>______&nbsp;&nbsp;{{clitic}}</b></span>
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
-                                </div>                                     
+
+                                    <span><b>&#8600;   ______&nbsp;&nbsp;{{clitic}}   &#8599;</b></span>
+                                                          
                                 </div>
 
                             </div>
@@ -265,26 +258,16 @@
                             </div>
 
                             <div class='right_container'>
-
+                                
+                                <div class='small_container'>     
+                                    <span><b>&#8599;   {{deda_adjacent}}   &#8600;</b></span>            
+                                </div>
                                 <div class='small_container'>
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
-                                </div>
-                                    <span><b>{{deda_adjacent}}</b></span>
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
-                                </div>
+
+                                    <span><b>&#8600;   {{deda_separate}}   &#8599;</b></span>
+                                                          
                                 </div>
 
-                                <div class='small_container'>
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
-                                </div>
-                                    <span><b>{{deda_separate}}</b></span>
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
-                                </div>                                    
-                                </div>
 
                             </div>
 
@@ -304,26 +287,16 @@
 
                             <div class='right_container'>
                                 
+                                
+                                <div class='small_container'>     
+                                    <span><b>&#8599;   {{deda_adjacent}}   &#8600;</b></span>            
+                                </div>
                                 <div class='small_container'>
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
-                                </div>
-                                    <span><b>{{deda_adjacent}}</b></span>
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
-                                </div>
-                                </div>
 
-                                <div class='small_container'>
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
+                                    <span><b>&#8600;   {{deda_separate}}   &#8599;</b></span>
+                                                          
                                 </div>
-                                    <span><b>{{deda_separate}}</b></span>
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
-                                </div>                                    
-                                </div>
-
+                                
                             </div>
 
                             <div class='left_container'>
@@ -341,28 +314,19 @@
                             <span class='left_text text'>{{first_half_text}}</span>
                         </div>
 
-                        <div class='right_container'>
-                            <div class='small_container'>                                
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
+                            <div class='right_container'>
+                                
+                                
+                                <div class='small_container'>     
+                                    <span><b>&#8599;   {{deda_adjacent}}   &#8600;</b></span>            
                                 </div>
-                                    <span><b>{{deda_adjacent}}</b></span>
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
-                                </div>
-                            </div>
+                                <div class='small_container'>
 
-                            <div class='small_container'>
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
+                                    <span><b>&#8600;   {{deda_separate}}   &#8599;</b></span>
+                                                          
                                 </div>
-                                    <span><b>{{deda_separate}}</b></span>
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
-                                </div>
+                                
                             </div>
-                            
-                        </div>
 
                         <div class='left_container'>
                             <span class='left_text text'>
@@ -382,27 +346,19 @@
                             <span class='left_text text'>&emsp;*&emsp;*&emsp;*&emsp;</span>
                         </div>
 
-                        <div class='right_container'>
-                            <div class='small_container'>                                
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
+                            <div class='right_container'>
+                                
+                                
+                                <div class='small_container'>     
+                                    <span><b>&#8599;   {{deda_adjacent}}   &#8600;</b></span>            
                                 </div>
-                                    <span><b>{{deda_adjacent}}</b></span>
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
-                                </div>
-                            </div>
+                                <div class='small_container'>
 
-                            <div class='small_container'>
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
+                                    <span><b>&#8600;   {{deda_separate}}   &#8599;</b></span>
+                                                          
                                 </div>
-                                    <span><b>{{deda_separate}}</b></span>
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
-                                </div>
+                                
                             </div>
-                        </div>
 
                         <div class='left_container'>
                             <span class='left_text text'>{{ second_half_text }}</span>
@@ -419,29 +375,19 @@
                             <span class='left_text text'>&emsp;*&emsp;*&emsp;*&emsp;</span>
                         </div>
 
-                        <div class='right_container'>
-                            <div class='small_container'>
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
-                                </div>
-                                <span><b>______{{clitic}}</b></span>                             
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
-                                </div>
-                            </div>
+                            <div class='right_container'>
 
-                            <div class='small_container'>                                
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
+                                <div class='small_container'>     
+                                    <span><b>&#8599;   ______{{clitic}}   &#8600;</b></span>            
                                 </div>
-                                <span><b>______&nbsp;&nbsp;{{clitic}}</b></span>
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
+
+                                <div class='small_container'>
+
+                                    <span><b>&#8600;   ______&nbsp;&nbsp;{{clitic}}   &#8599;</b></span>
+                                                          
                                 </div>
 
                             </div>
-
-                        </div>
 
                         <div class='left_container'>
                             <span class='left_text text'>{{ second_half_text }}</span>
@@ -456,28 +402,19 @@
                             <span class='left_text text'>{{first_text}}</span>
                         </div>
 
-                        <div class='right_container'>
-                            <div class='small_container'>
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
+                            <div class='right_container'>
+
+                                <div class='small_container'>     
+                                    <span><b>&#8599;   ______{{clitic}}   &#8600;</b></span>            
                                 </div>
-                                <span><b>______{{clitic}}</b></span>                             
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
+
+                                <div class='small_container'>
+
+                                    <span><b>&#8600;   ______&nbsp;&nbsp;{{clitic}}   &#8599;</b></span>
+                                                          
                                 </div>
+
                             </div>
-
-                            <div class='small_container'>
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
-                                </div>
-                                <span><b>______&nbsp;&nbsp;{{clitic}}</b></span>
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
-                                </div>
-                            </div>                            
-
-                        </div>
 
                         <div class='left_container'>
                             <span class='left_text text'>&emsp;*&emsp;*&emsp;*&emsp;</span>
@@ -505,25 +442,17 @@
                             </div>
 
                             <div class='right_container'>
-                            <div class='small_container'>                                
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
+                                
+                                
+                                <div class='small_container'>     
+                                    <span><b>&#8599;   {{deda_adjacent}}   &#8600;</b></span>            
                                 </div>
-                                    <span><b>{{deda_adjacent}}</b></span>
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
-                                </div>
-                            </div>
+                                <div class='small_container'>
 
-                            <div class='small_container'>
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
+                                    <span><b>&#8600;   {{deda_separate}}   &#8599;</b></span>
+                                                          
                                 </div>
-                                    <span><b>{{deda_separate}}</b></span>
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
-                                </div>
-                            </div>
+                                
                             </div>
 
                             <div class='left_container'>
@@ -572,25 +501,16 @@
                             </div>
 
                             <div class='right_container'>
-                            <div class='small_container'>
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
-                                </div>
-                                <span><b>______{{clitic}}</b></span>                             
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
-                                </div>
-                            </div>
 
-                            <div class='small_container'>
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
+                                <div class='small_container'>     
+                                    <span><b>&#8599;   ______{{clitic}}   &#8600;</b></span>            
                                 </div>
-                                <span><b>______&nbsp;&nbsp;{{clitic}}</b></span>
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
+
+                                <div class='small_container'>
+
+                                    <span><b>&#8600;   ______&nbsp;&nbsp;{{clitic}}   &#8599;</b></span>
+                                                          
                                 </div>
-                            </div>                            
 
                             </div>
 
@@ -629,25 +549,16 @@
                             </div>
 
                             <div class='right_container'>
-                            <div class='small_container'>
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
-                                </div>
-                                <span><b>______{{clitic}}</b></span>                             
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
-                                </div>
-                            </div>
 
-                            <div class='small_container'>
-                                <div class='image_move_left'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
+                                <div class='small_container'>     
+                                    <span><b>&#8599;   ______{{clitic}}   &#8600;</b></span>            
                                 </div>
-                                <span><b>______&nbsp;&nbsp;{{clitic}}</b></span>
-                                <div class='image_move_right'>
-                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
+
+                                <div class='small_container'>
+
+                                    <span><b>&#8600;   ______&nbsp;&nbsp;{{clitic}}   &#8599;</b></span>
+                                                          
                                 </div>
-                            </div>                            
 
                             </div>
 
@@ -797,7 +708,7 @@
 
 			{% else %}
 
-				<div class="answerdiv" style="background: #ed3f3f;">
+				<div class="answerdiv" style="background: #f36b6b;">
 					<div class="branch_view">
 						<div class="left_container">
 							<span class="left_text text">
