@@ -671,6 +671,7 @@
 
         </div>
 
+        
         <div class="centeritems">
 
         	{% if selected_button == 'ADJACENT' %}
@@ -717,14 +718,14 @@
 
         			<button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4" disabled>Bitişik Yazılmalı</button>
 	                <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4" disabled>Ayrı Yazılmalı</button>
-	                <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-info mb-4" disabled>Kararsızım</button>
+	                <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-secondary mb-4" disabled>Kararsızım</button>
 	                <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
 
         		{% else %}
 
         			<button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4" disabled>Bitişik Yazılmalı</button>
 	                <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4" disabled>Ayrı Yazılmalı</button>
-	                <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-info mb-4" disabled>Kararsızım</button>
+	                <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-secondary mb-4" disabled>Kararsızım</button>
 	                <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
 
 
@@ -733,19 +734,8 @@
 
         	{% endif %}
 
-        	<!--
-            <form method="POST">
-                {% csrf_token %}
-
-                <button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4">Bitişik Yazılmalı</button>
-                <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4">Ayrı Yazılmalı</button>
-                <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-info mb-4">Kararsızım</button>
-                <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4">Bu cümleyi geç</button>
-
-            </form>
-        	-->
-
-        </div>      
+        </div>  
+         
 
     </div>
 	
@@ -758,33 +748,84 @@
 
 	<div>
 
-		<div class="answerdiv">
+		{% if selected_button == "INDECISIVE" %}
 
-			<div class="branch_view">
+			<div class="answerdiv" style="background: #bfc1c2;">
+				<div class="branch_view">
+					<div class="left_container">
+						<span class="left_text text">
 
-				<div class="left_container">
+							<p>  {{first_answer_text}} <span class="highlight_text"><b>{{highlighted_answer_text}}</b></span> {{second_answer_text}} </p>
+							
+						</span>
+					</div>
+				</div>
+				<!--
+				<div class="centeritems">
+					<a class="btn btn-info mb-4" href=" {% url 'question' %} ">Sonraki cümleye geç.</a>
+				</div>-->	
+			</div>
 
-					<span class="left_text text">
+		{% else %}
 
-						<p>  {{first_answer_text}} <span class="highlight_text"><b>{{highlighted_answer_text}}</b></span> {{second_answer_text}} </p>
+			{% if answer == True %}
+
+				<div class="answerdiv" style="background: #14b90c;">
+					<div class="branch_view">
+						<div class="left_container">
+							<span class="left_text text">
+
+								<p>  {{first_answer_text}} <span class="highlight_text"><b>{{highlighted_answer_text}}</b></span> {{second_answer_text}} </p>
+								
+							</span>
+						</div>
+					</div>
 						
-					</span>
+				</div>
 
+			{% else %}
+
+				<div class="answerdiv" style="background: #ed3f3f;">
+					<div class="branch_view">
+						<div class="left_container">
+							<span class="left_text text">
+
+								<p>  {{first_answer_text}} <span class="highlight_text"><b>{{highlighted_answer_text}}</b></span> {{second_answer_text}} </p>
+								
+							</span>
+						</div>
+					</div>
+						
 				</div>
 
 
-			</div>
-			
+			{% endif %}
 
-			<div class="centeritems">
+		{% endif %}
 
-				<a class="btn btn-outline-info mb-4" href=" {% url 'question' %} ">Sonraki cümleye geç.</a>
-
-			</div>	
-
+		<div align="center" class="nextquestionbuttondiv">
+			<a class="btn btn-info mb-4" href=" {% url 'question' %} ">Sonraki cümleye geç.</a>
 		</div>
+		
 
-		<div align="center" class="reportdiv">
+		<script >
+
+			function showDiv() {
+			   document.getElementById('reportDiv').style.display = "block";
+               $("#reportButton").hide()
+			}
+
+		</script>
+
+		<!--<input id="reportButton" type="button" class="reportbutton" name="answer" value="Show Div" onclick="showDiv()" />-->
+        <div align="center" class="reportbutton">
+
+            <button id="reportButton" class="btn btn-danger mb-4" name="answer" value="Show Div" onclick="showDiv()">Hata Bildir</button>
+
+        </div>  
+
+
+		<div id="reportDiv" align="center" class="reportdiv" style="display:none;">
 
 			<h3>Hata Bildir</h3>
 		

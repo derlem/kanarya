@@ -146,6 +146,24 @@ a.article-title:hover {
   text-align: center;
 }
 
+.nextquestionbuttondiv{
+
+  position: absolute;
+  top: 600px;
+  right: 30px;
+  left: 30px;
+
+}
+
+.reportbutton{
+
+  position: absolute;
+  top: 670px;
+  right: 30px;
+  left: 30px;
+
+}
+
 .reportdiv{
 
   position: absolute;
