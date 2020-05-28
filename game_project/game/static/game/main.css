@@ -120,6 +120,19 @@ a.article-title:hover {
 
 }
 
+.answerdiv {
+  position: absolute;
+  background-color: #15ca12  ;
+  color: black;
+  top: 500px;
+  right: 30px;
+  left: 30px;
+  border-radius: 25px;
+  border: 2px solid #73AD21;
+  z-index: 10;
+
+}
+
 .profquestiondesc {
 
   position: absolute;
@@ -136,7 +149,7 @@ a.article-title:hover {
 .reportdiv{
 
   position: absolute;
-  top: 500px;
+  top: 700px;
   right: 30px;
   left: 30px;
 

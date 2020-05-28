@@ -3,28 +3,782 @@
 {% load static %}
 {% block content %}
 
-	<div class="content">
+	<!-- Question Part -->
 
-		<!--
-		<img height="315" width="306" src="{% static 'game/canary-bird.png' %}" >
-		-->
-	</div>
+	
+
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <div class="content" style="left: 30px">
+
+        <h1 display="inline" float="left">{{question_idx}}/{{QUESTION_PER_TEST}}:</h1>
+
+    </div>
+
+    <div class="container">
+      <div class="progress">
+
+        
+        {% if question_idx > 0 %}
+
+            {% if question_idx <= 5 %}
+
+                {% with ''|center:question_idx as range %}
+                    {% for bar in range %}
+                        <div class="progress-bar" role="progressbar" style="width:3.33%">|</div>
+                    {% endfor %}
+                {% endwith %}
+
+            {% else %}
+
+                {% for i in '01234'|make_list %}
+                    <div class="progress-bar" role="progressbar" style="width:3.33%">|</div>
+                {% endfor %}
+
+            {% endif %}
+
+        {% endif %}
+
+        {% if question_idx > 5 %}
+
+           
+            {% if question_idx <= 10 %}
+
+                
+                {% with bar_num=question_idx|add:"-5" %}
+
+                    {% with ''|center:bar_num as range %}
+                        {% for bar in range %}
+                            <div class="progress-bar bg-info" role="progressbar" style="width:3.33%">|</div>
+                        {% endfor %}
+                    {% endwith %}
+
+
+                {% endwith %}
+
+                
+            {% else %}
+                
+                {% for i in '01234'|make_list %}
+                    <div class="progress-bar bg-info" role="progressbar" style="width:3.33%">|</div>
+                {% endfor %}
+
+            {% endif %}
+
+
+        {% endif %}
+
+        {% if question_idx > 10 %}
+
+           
+            {% if question_idx <= 15 %}
+
+                
+                {% with bar_num=question_idx|add:"-10" %}
+
+                    {% with ''|center:bar_num as range %}
+                        {% for bar in range %}
+                            <div class="progress-bar bg-success" role="progressbar" style="width:3.33%">|</div>
+                        {% endfor %}
+                    {% endwith %}
+
+
+                {% endwith %}
+
+                
+            {% else %}
+                
+                {% for i in '01234'|make_list %}
+                    <div class="progress-bar bg-success" role="progressbar" style="width:3.33%">|</div>
+                {% endfor %}
+
+            {% endif %}
+
+
+        {% endif %}
+
+        {% if question_idx > 15 %}
+
+           
+            {% if question_idx <= 20 %}
+
+                
+                {% with bar_num=question_idx|add:"-15" %}
+
+                    {% with ''|center:bar_num as range %}
+                        {% for bar in range %}
+                            <div class="progress-bar progress-bar-success" role="progressbar" style="width:3.33%">|</div>
+                        {% endfor %}
+                    {% endwith %}
+
+
+                {% endwith %}
+
+                
+            {% else %}
+                
+                {% for i in '01234'|make_list %}
+                    <div class="progress-bar progress-bar-success" role="progressbar" style="width:3.33%">|</div>
+                {% endfor %}
+
+            {% endif %}
+
+
+        {% endif %}
+
+        {% if question_idx > 20 %}
+
+           
+            {% if question_idx <= 25 %}
+
+                
+                {% with bar_num=question_idx|add:"-20" %}
+
+                    {% with ''|center:bar_num as range %}
+                        {% for bar in range %}
+                            <div class="progress-bar bg-warning" role="progressbar" style="width:3.33%">|</div>
+                        {% endfor %}
+                    {% endwith %}
+
+
+                {% endwith %}
+
+                
+            {% else %}
+                
+                {% for i in '01234'|make_list %}
+                    <div class="progress-bar bg-warning" role="progressbar" style="width:3.33%">|</div>
+                {% endfor %}
+
+            {% endif %}
+
+
+        {% endif %}
+
+        {% if question_idx > 25 %}
+
+           
+            {% if question_idx <= 30 %}
+
+                
+                {% with bar_num=question_idx|add:"-25" %}
+
+                    {% with ''|center:bar_num as range %}
+                        {% for bar in range %}
+                            <div class="progress-bar bg-danger" role="progressbar" style="width:3.33%">|</div>
+                        {% endfor %}
+                    {% endwith %}
+
+
+                {% endwith %}
+
+                
+            {% else %}
+                
+                {% for i in '01234'|make_list %}
+                    <div class="progress-bar bg-danger" role="progressbar" style="width:3.33%">|</div>
+                {% endfor %}
+
+            {% endif %}
+
+
+        {% endif %}
+
+      </div>
+    </div>
+
+    <div class="rightbox">
+
+        <img class="img_help2" src="{% static 'game/question_mark.png' %}" >
+        <span class="tooltiptext2"> {{mode_description}} </span>
+
+    </div>
+
+    <div class="questiondiv" style="z-index: 2">
+
+        <div class="centeritems">
+
+            <p style="font-size:30px">
+
+                {% if mode == "MODE_1" %}
+
+                    {% if type == "TYPE_1" %}
+
+                        <div class='branch_view'>
+
+                            <div class='left_container'>
+                                <span class='left_text text'> {{ first_text }} </span>
+                            </div>
+
+                            <div class='right_container'>
+
+                                <div class='small_container'>                                
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
+                                </div>
+                                    <span><b>______{{clitic}}</b></span>
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
+                                </div>                                    
+                                </div>
+
+                                <div class='small_container'>
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
+                                </div>                                              
+                                    <span><b>______&nbsp;&nbsp;{{clitic}}</b></span>
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
+                                </div>                                     
+                                </div>
+
+                            </div>
+
+                            <div class='left_container'>
+                                <span class='left_text text'> {{ second_text }} </span>
+                            </div>
+
+                        </div>
+
+                    {% elif type == "TYPE_2" %}
+
+
+                        <div class='branch_view'>
+
+                            <div class='left_container'>
+                                <span class='left_text text'> {{ first_text }} ______ {{ second_text }} </span>
+                            </div>
+
+                            <div class='right_container'>
+
+                                <div class='small_container'>
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
+                                </div>
+                                    <span><b>{{deda_adjacent}}</b></span>
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
+                                </div>
+                                </div>
+
+                                <div class='small_container'>
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
+                                </div>
+                                    <span><b>{{deda_separate}}</b></span>
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
+                                </div>                                    
+                                </div>
+
+                            </div>
+
+                            <div class='left_container'>
+                                <span class='left_text text'> {{ third_text }} </span>
+                            </div>
+
+                        </div>
+
+                    {% elif type == "TYPE_3" %}
+
+                        <div class='branch_view'>
+
+                            <div class='left_container'>
+                                <span class='left_text text'> {{ first_text }} </span>
+                            </div>
+
+                            <div class='right_container'>
+                                
+                                <div class='small_container'>
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
+                                </div>
+                                    <span><b>{{deda_adjacent}}</b></span>
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
+                                </div>
+                                </div>
+
+                                <div class='small_container'>
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
+                                </div>
+                                    <span><b>{{deda_separate}}</b></span>
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
+                                </div>                                    
+                                </div>
+
+                            </div>
+
+                            <div class='left_container'>
+                                <span class='left_text text'> {{ second_text }} _______ {{ third_text }} </span>
+                            </div>
+
+                        </div>
+                    {% endif %}
+
+                {% elif mode == "MODE_2" %}
+
+                    <div class='branch_view'>
+
+                        <div class='left_container'>
+                            <span class='left_text text'>{{first_half_text}}</span>
+                        </div>
+
+                        <div class='right_container'>
+                            <div class='small_container'>                                
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
+                                </div>
+                                    <span><b>{{deda_adjacent}}</b></span>
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
+                                </div>
+                            </div>
+
+                            <div class='small_container'>
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
+                                </div>
+                                    <span><b>{{deda_separate}}</b></span>
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class='left_container'>
+                            <span class='left_text text'>
+
+                                &emsp;*&emsp;*&emsp;*&emsp;
+
+                            </span>
+                        </div>
+                        
+                    </div>
+ 
+                {% elif mode == "MODE_3" %}
+
+                    <div class='branch_view'>
+
+                        <div class='left_container'>
+                            <span class='left_text text'>&emsp;*&emsp;*&emsp;*&emsp;</span>
+                        </div>
+
+                        <div class='right_container'>
+                            <div class='small_container'>                                
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
+                                </div>
+                                    <span><b>{{deda_adjacent}}</b></span>
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
+                                </div>
+                            </div>
+
+                            <div class='small_container'>
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
+                                </div>
+                                    <span><b>{{deda_separate}}</b></span>
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class='left_container'>
+                            <span class='left_text text'>{{ second_half_text }}</span>
+                        </div>
+
+                    </div>
+
+
+                {% elif mode == "MODE_4" %}
+
+                    <div class='branch_view'>
+
+                        <div class='left_container'>
+                            <span class='left_text text'>&emsp;*&emsp;*&emsp;*&emsp;</span>
+                        </div>
+
+                        <div class='right_container'>
+                            <div class='small_container'>
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
+                                </div>
+                                <span><b>______{{clitic}}</b></span>                             
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
+                                </div>
+                            </div>
+
+                            <div class='small_container'>                                
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
+                                </div>
+                                <span><b>______&nbsp;&nbsp;{{clitic}}</b></span>
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class='left_container'>
+                            <span class='left_text text'>{{ second_half_text }}</span>
+                        </div>
+                    </div>
+
+                {% elif mode == "MODE_5" %}
+
+                    <div class='branch_view'>
+
+                        <div class='left_container'>
+                            <span class='left_text text'>{{first_text}}</span>
+                        </div>
+
+                        <div class='right_container'>
+                            <div class='small_container'>
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
+                                </div>
+                                <span><b>______{{clitic}}</b></span>                             
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
+                                </div>
+                            </div>
+
+                            <div class='small_container'>
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
+                                </div>
+                                <span><b>______&nbsp;&nbsp;{{clitic}}</b></span>
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
+                                </div>
+                            </div>                            
+
+                        </div>
+
+                        <div class='left_container'>
+                            <span class='left_text text'>&emsp;*&emsp;*&emsp;*&emsp;</span>
+                        </div>
+                    </div>
+
+                {% elif mode == "MODE_6" %}
+
+                    {% if type == "TYPE_1" %}
+
+                        <div class='branch_view'>
+
+                            <div class='left_container'>
+                                <span class='left_text text'>
+
+                                    {% with ''|center:first_masked_num as range %}
+                                        {% for masked_word in range %}
+
+                                            ____&nbsp;
+
+                                        {% endfor %}
+                                    {% endwith %}
+
+                                </span>
+                            </div>
+
+                            <div class='right_container'>
+                            <div class='small_container'>                                
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
+                                </div>
+                                    <span><b>{{deda_adjacent}}</b></span>
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
+                                </div>
+                            </div>
+
+                            <div class='small_container'>
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
+                                </div>
+                                    <span><b>{{deda_separate}}</b></span>
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class='left_container'>
+                                <span class='left_text text'> 
+
+                                    {% with ''|center:second_masked_num as range %}
+                                        {% for masked_word in range %}
+
+                                            ____&nbsp;
+
+                                        {% endfor %}
+                                    {% endwith %}
+
+                                </span>
+                            </div>
+
+                        </div>
+
+                    {% elif type == "TYPE_2" %}
+
+
+                        <div class='branch_view'>
+
+                            <div class='left_container'>
+                                <span class='left_text text'> 
+
+                                    {% with ''|center:first_masked_num as range %}
+                                        {% for masked_word in range %}
+
+                                            ____&nbsp;
+
+                                        {% endfor %}
+                                    {% endwith %}
+
+                                    {{ unmasked_word }}
+
+                                    {% with ''|center:second_masked_num as range %}
+                                        {% for masked_word in range %}
+
+                                            ____&nbsp;
+
+                                        {% endfor %}
+                                    {% endwith %}
+
+                                </span>
+                            </div>
+
+                            <div class='right_container'>
+                            <div class='small_container'>
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
+                                </div>
+                                <span><b>______{{clitic}}</b></span>                             
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
+                                </div>
+                            </div>
+
+                            <div class='small_container'>
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
+                                </div>
+                                <span><b>______&nbsp;&nbsp;{{clitic}}</b></span>
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
+                                </div>
+                            </div>                            
+
+                            </div>
+
+                            <div class='left_container'>
+                                <span class='left_text text'>
+
+                                    {% with ''|center:third_masked_num as range %}
+                                        {% for masked_word in range %}
+
+                                            ____&nbsp;
+
+                                        {% endfor %}
+                                    {% endwith %}
+
+                                </span>
+                            </div>
+
+                        </div>
+
+                    {% elif type == "TYPE_3" %}
+
+                        <div class='branch_view'>
+
+                            <div class='left_container'>
+                                <span class='left_text text'>
+
+                                    {% with ''|center:first_masked_num as range %}
+                                        {% for masked_word in range %}
+
+                                            ____&nbsp;
+
+                                        {% endfor %}
+                                    {% endwith %}
+
+                                </span>
+                            </div>
+
+                            <div class='right_container'>
+                            <div class='small_container'>
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_ust.png" style="transform:rotate(0deg);" >
+                                </div>
+                                <span><b>______{{clitic}}</b></span>                             
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_ust.png" style="transform:rotate(0deg);" >
+                                </div>
+                            </div>
+
+                            <div class='small_container'>
+                                <div class='image_move_left'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sol_alt.png" style="transform:rotate(0deg);" >
+                                </div>
+                                <span><b>______&nbsp;&nbsp;{{clitic}}</b></span>
+                                <div class='image_move_right'>
+                                    <img   width=24px heigth=24px  src="../../static/game/ok_sag_alt.png" style="transform:rotate(0deg);" >
+                                </div>
+                            </div>                            
+
+                            </div>
+
+                            <div class='left_container'>
+                                <span class='left_text text'>
+
+                                    {% with ''|center:second_masked_num as range %}
+                                        {% for masked_word in range %}
+
+                                            ____&nbsp;
+
+                                        {% endfor %}
+                                    {% endwith %}
+
+                                    {{ unmasked_word }}
+
+                                    {% with ''|center:third_masked_num as range %}
+                                        {% for masked_word in range %}
+
+                                            ____&nbsp;
+
+                                        {% endfor %}
+                                    {% endwith %}
+
+                                </span>
+                            </div>
+
+                        </div>
+                    {% endif %}
+
+                {% endif %}
+            </p>
+
+        </div>
+
+        <div class="centeritems">
+
+        	{% if selected_button == 'ADJACENT' %}
+
+        		{% if answer == True %}
+
+        			<button type="submit" name="name" value="ADJACENT" class="btn btn-outline-success mb-4" disabled>Bitişik Yazılmalı</button>
+	                <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4" disabled>Ayrı Yazılmalı</button>
+	                <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-info mb-4" disabled>Kararsızım</button>
+	                <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
+
+        		{% else %}
+
+        			<button type="submit" name="name" value="ADJACENT" class="btn btn-outline-danger mb-4" disabled>Bitişik Yazılmalı</button>
+	                <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4" disabled>Ayrı Yazılmalı</button>
+	                <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-info mb-4" disabled>Kararsızım</button>
+	                <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
+
+
+        		{% endif %}
+
+        	{% elif selected_button == 'SEPARATE' %}
+
+        		{% if answer == True %}
+
+        			<button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4" disabled>Bitişik Yazılmalı</button>
+	                <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-success mb-4" disabled>Ayrı Yazılmalı</button>
+	                <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-info mb-4" disabled>Kararsızım</button>
+	                <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
+
+        		{% else %}
+
+        			<button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4" disabled>Bitişik Yazılmalı</button>
+	                <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-danger mb-4" disabled>Ayrı Yazılmalı</button>
+	                <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-info mb-4" disabled>Kararsızım</button>
+	                <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
+
+
+        		{% endif %}
+
+        	{% elif selected_button == 'INDECISIVE' %}
+
+        		{% if answer == True %}
+
+        			<button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4" disabled>Bitişik Yazılmalı</button>
+	                <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4" disabled>Ayrı Yazılmalı</button>
+	                <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-info mb-4" disabled>Kararsızım</button>
+	                <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
+
+        		{% else %}
+
+        			<button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4" disabled>Bitişik Yazılmalı</button>
+	                <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4" disabled>Ayrı Yazılmalı</button>
+	                <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-info mb-4" disabled>Kararsızım</button>
+	                <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
+
+
+        		{% endif %}
+
+
+        	{% endif %}
+
+        	<!--
+            <form method="POST">
+                {% csrf_token %}
+
+                <button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4">Bitişik Yazılmalı</button>
+                <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4">Ayrı Yazılmalı</button>
+                <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-info mb-4">Kararsızım</button>
+                <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4">Bu cümleyi geç</button>
+
+            </form>
+        	-->
+
+        </div>      
+
+    </div>
+	
+
+
+	<!-- Answer Part -->
+	
 	
 
 
 	<div>
 
-		<div class="questiondiv">
+		<div class="answerdiv">
 
-			<div class="centeritems">
+			<div class="branch_view">
 
-				<p>  {{first_text}} <span class="highlight_text"><b>{{highlighted_text}}</b></span> {{second_text}} </p>
-				
+				<div class="left_container">
+
+					<span class="left_text text">
+
+						<p>  {{first_answer_text}} <span class="highlight_text"><b>{{highlighted_answer_text}}</b></span> {{second_answer_text}} </p>
+						
+					</span>
+
+				</div>
+
+
 			</div>
+			
 
 			<div class="centeritems">
 
-				<a class="btn btn-outline-info mb-4" href=" {% url 'question' %} ">Next Sentence</a>
+				<a class="btn btn-outline-info mb-4" href=" {% url 'question' %} ">Sonraki cümleye geç.</a>
 
 			</div>	
 

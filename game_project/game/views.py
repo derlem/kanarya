@@ -165,6 +165,10 @@ def question(request):
 
     context['mode_label'] = mode_labels[context['mode']]
     context['mode_description'] = mode_descriptions[context['mode']]
+
+    # Pass the context to answer page
+    request.session['context'] = context
+
     # Process the POST request
     if request.method == 'POST':
 
@@ -199,6 +203,9 @@ def question(request):
 
             activity.save()
 
+            # Pass the answer to the context
+            context['selected_button'] = activity.name
+
             request.session['full_text'] = full_text
             request.session['question_pk'] = question.pk
             request.session['solved_question_num'] += 1
@@ -207,7 +214,7 @@ def question(request):
 
             if activity.name == "SKIP":
 
-                request.session['go_next_question'] = True
+                request.session['go_next_question'] = True # necessary?
                 request.session['question_idx'] += 1
                 request.session['success_rate'] = round((request.session.get('correct_answer_count_for_current_test') / request.session.get('solved_question_num')) * 100, 1)
 
@@ -273,6 +280,11 @@ def question(request):
 @login_required
 def answer(request):
     
+    # Get the question context
+    context = request.session.get('context')
+
+    print(context)
+
     last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
     sentence = get_sentence(last_seen_sentence_idx)
 
@@ -281,18 +293,16 @@ def answer(request):
     clitic = sentence.clitic
     pos = sentence.pos
 
-    first_text, highlighted_text, second_text = get_answer_text(full_text, pos, status)
-    
-    context = {
+    first_answer_text, highlighted_answer_text, second_answer_text = get_answer_text(full_text, pos, status)
 
-        'first_text' : first_text ,
-        'highlighted_text' : highlighted_text ,
-        'second_text' : second_text ,
-        'answer': request.session.get('answer'),
-        'correct_answer_count_for_current_test': request.session.get('correct_answer_count_for_current_test'),
-        'solved_question_num': request.session.get('solved_question_num'),
-        'success_rate': request.session.get('success_rate'),
-    }
+    context['first_answer_text'] = first_answer_text
+    context['highlighted_answer_text'] = highlighted_answer_text
+    context['second_answer_text'] = second_answer_text
+    context['answer'] = request.session.get('answer')
+    context['correct_answer_count_for_current_test'] = request.session.get('correct_answer_count_for_current_test') # necessary?
+    context['solved_question_num'] = request.session.get('solved_question_num')
+    context['success_rate'] = request.session.get('success_rate')
+
 
     if request.method == 'POST':
 
@@ -310,12 +320,14 @@ def answer(request):
 
     else:
 
+        """
         # If indecisive, do not show a message
         if request.session.get('activity') != 'INDECISIVE':
             if context['answer']:
                 messages.success(request, f'Doğru Cevap')
             else:
                 messages.error(request, f'Yanlış Cevap')
+        """
 
         form = ReportForm()
 
