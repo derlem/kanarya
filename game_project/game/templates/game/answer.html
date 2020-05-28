@@ -190,10 +190,22 @@
       </div>
     </div>
 
+    <!--
     <div class="rightbox">
 
         <img class="img_help2" src="{% static 'game/question_mark.png' %}" >
         <span class="tooltiptext2"> {{mode_description}} </span>
+
+    </div>
+    -->
+
+    <div class="profquestiondesc">
+
+        <div class="centeritems">
+
+            <p>{{mode_description}}</p>
+
+        </div>  
 
     </div>
 
@@ -804,7 +816,7 @@
 		{% endif %}
 
 		<div align="center" class="nextquestionbuttondiv">
-			<a class="btn btn-info mb-4" href=" {% url 'question' %} ">Sonraki cümleye geç.</a>
+			<a class="btn btn-info mb-4" href=" {% url 'question' %} ">Sonraki cümleye geç</a>
 		</div>
 		
 
@@ -817,7 +829,6 @@
 
 		</script>
 
-		<!--<input id="reportButton" type="button" class="reportbutton" name="answer" value="Show Div" onclick="showDiv()" />-->
         <div align="center" class="reportbutton">
 
             <button id="reportButton" class="btn btn-danger mb-4" name="answer" value="Show Div" onclick="showDiv()">Hata Bildir</button>
