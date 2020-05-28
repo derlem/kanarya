@@ -320,29 +320,38 @@ tr:nth-child(even) {
             margin-right: 10vh;
             display: flex;
             flex-direction: row;
+            flex-wrap: wrap;
+            
         }
         
         .left_container {
             display: grid;
             padding: 10px;
             padding-right: 6px;
+
+            
         }
 
         .right_container {
 
+            
         }
 
         .small_container {
             padding: 6px;
+
+            
         }
 
         .left_text {
             margin: auto;
             max-width: 75vw;
+
         }
         .right_text {
             margin: auto;
-            max-width: 75vw;   
+            max-width: 75vw;
+
         }
 
         .highlightme {
