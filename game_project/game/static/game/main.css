@@ -120,6 +120,17 @@ a.article-title:hover {
 
 }
 
+.central {
+  position: absolute;
+  background-color: white ;
+  color: black;
+  top: 300px;
+  right: 3%;
+  left: 3%;
+  z-index: 10;
+
+}
+
 .answerdiv {
   position: absolute;
   background-color: #15ca12  ;
@@ -176,6 +187,14 @@ a.article-title:hover {
 
 }
 
+.upperside {
+  margin-left: 3%;
+  margin-right: 3%;
+  width: 94%;
+  clear:both;
+  //border-radius: 25px;
+  //border: 2px solid #73AD21;
+}
 
 table {
   font-family: arial, sans-serif;

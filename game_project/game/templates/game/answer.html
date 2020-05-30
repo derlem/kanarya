@@ -12,185 +12,194 @@
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <div class="content" style="left: 30px">
-
-        <h1 display="inline" float="left">{{question_idx}}/{{QUESTION_PER_TEST}}:</h1>
-
-    </div>
-
-    <div class="container" style="width: 60%;">
-        <div class="progress">
-
+    <div class="upperside">
         
-        {% if question_idx > 0 %}
-
-            {% if question_idx <= 5 %}
-
-                {% with ''|center:question_idx as range %}
-                    {% for bar in range %}
-                        <!--<div class="progress-bar" role="progressbar" style="width:3.33%">|</div>-->
-                        <div class="progress-bar" role="progressbar" style="width:3.33%; background-color: #8e44ad  !important;">|</div>
-                    {% endfor %}
-                {% endwith %}
-
-            {% else %}
-
-                {% for i in '01234'|make_list %}
-                    <div class="progress-bar" role="progressbar" style="width:3.33%;  background-color: #8e44ad  !important;">|</div>
-                {% endfor %}
-
-            {% endif %}
-
-        {% endif %}
-
-        {% if question_idx > 5 %}
-
-           
-            {% if question_idx <= 10 %}
-
-                
-                {% with bar_num=question_idx|add:"-5" %}
-
-                    {% with ''|center:bar_num as range %}
-                        {% for bar in range %}
-                            <div class="progress-bar" role="progressbar" style="width:3.33%;  background-color: #2a4ff6  !important;">|</div>
-                        {% endfor %}
-                    {% endwith %}
-
-
-                {% endwith %}
-
-                
-            {% else %}
-                
-                {% for i in '01234'|make_list %}
-                    <div class="progress-bar" role="progressbar" style="width:3.33%;  background-color: #2a4ff6  !important;">|</div>
-                {% endfor %}
-
-            {% endif %}
-
-
-        {% endif %}
-
-        {% if question_idx > 10 %}
-
-           
-            {% if question_idx <= 15 %}
-
-                
-                {% with bar_num=question_idx|add:"-10" %}
-
-                    {% with ''|center:bar_num as range %}
-                        {% for bar in range %}
-                            <div class="progress-bar bg-success" role="progressbar" style="width:3.33%;  background-color: #239b56  !important;">|</div>
-                        {% endfor %}
-                    {% endwith %}
-
-
-                {% endwith %}
-
-                
-            {% else %}
-                
-                {% for i in '01234'|make_list %}
-                    <div class="progress-bar bg-success" role="progressbar" style="width:3.33%;  background-color: #239b56  !important;">|</div>
-                {% endfor %}
-
-            {% endif %}
-
-
-        {% endif %}
-
-        {% if question_idx > 15 %}
-
-           
-            {% if question_idx <= 20 %}
-
-                
-                {% with bar_num=question_idx|add:"-15" %}
-
-                    {% with ''|center:bar_num as range %}
-                        {% for bar in range %}
-                            <div class="progress-bar progress-bar-success" role="progressbar" style="width:3.33%;  background-color: #f4d03f  !important;">|</div>
-                        {% endfor %}
-                    {% endwith %}
-
-
-                {% endwith %}
-
-                
-            {% else %}
-                
-                {% for i in '01234'|make_list %}
-                    <div class="progress-bar progress-bar-success" role="progressbar" style="width:3.33%;  background-color: #f4d03f  !important;">|</div>
-                {% endfor %}
-
-            {% endif %}
-
-
-        {% endif %}
-
-        {% if question_idx > 20 %}
-
-           
-            {% if question_idx <= 25 %}
-
-                
-                {% with bar_num=question_idx|add:"-20" %}
-
-                    {% with ''|center:bar_num as range %}
-                        {% for bar in range %}
-                            <div class="progress-bar bg-warning" role="progressbar" style="width:3.33%;  background-color: #e67e22
-  !important;">|</div>
-                        {% endfor %}
-                    {% endwith %}
-
-
-                {% endwith %}
-
-                
-            {% else %}
-                
-                {% for i in '01234'|make_list %}
-                    <div class="progress-bar bg-warning" role="progressbar" style="width:3.33%;  background-color: #e67e22
-  !important;">|</div>
-                {% endfor %}
-
-            {% endif %}
-
-
-        {% endif %}
-
-        {% if question_idx > 25 %}
-
-           
-            {% if question_idx <= 30 %}
-
-                
-                {% with bar_num=question_idx|add:"-25" %}
-
-                    {% with ''|center:bar_num as range %}
-                        {% for bar in range %}
-                            <div class="progress-bar bg-danger" role="progressbar" style="width:3.33%;  background-color: red  !important;">|</div>
-                        {% endfor %}
-                    {% endwith %}
-
-
-                {% endwith %}
-
-                
-            {% else %}
-                
-                {% for i in '01234'|make_list %}
-                    <div class="progress-bar bg-danger" role="progressbar" style="width:3.33%   ; background-color: red  !important;">|</div>
-                {% endfor %}
-
-            {% endif %}
-
-
-        {% endif %}
-
+        <div style=" width:25%; float:left;">
+            <h1>{{question_idx}}/{{QUESTION_PER_TEST}}:</h1>
         </div>
+
+        <div align="center" style="width:50%; float:left;">
+            <div class="progress">
+            
+            {% if question_idx > 0 %}
+
+                {% if question_idx <= 5 %}
+
+                    {% with ''|center:question_idx as range %}
+                        {% for bar in range %}
+                            <div class="progress-bar" role="progressbar" style="width:3.33%; background-color: #8e44ad  !important;">|</div>
+                        {% endfor %}
+                    {% endwith %}
+
+                {% else %}
+
+                    {% for i in '01234'|make_list %}
+                        <div class="progress-bar" role="progressbar" style="width:3.33%;  background-color: #8e44ad  !important;">|</div>
+                    {% endfor %}
+
+                {% endif %}
+
+            {% endif %}
+
+            {% if question_idx > 5 %}
+
+               
+                {% if question_idx <= 10 %}
+
+                    
+                    {% with bar_num=question_idx|add:"-5" %}
+
+                        {% with ''|center:bar_num as range %}
+                            {% for bar in range %}
+                                <div class="progress-bar" role="progressbar" style="width:3.33%;  background-color: #2a4ff6  !important;">|</div>
+                            {% endfor %}
+                        {% endwith %}
+
+
+                    {% endwith %}
+
+                    
+                {% else %}
+                    
+                    {% for i in '01234'|make_list %}
+                        <div class="progress-bar" role="progressbar" style="width:3.33%;  background-color: #2a4ff6  !important;">|</div>
+                    {% endfor %}
+
+                {% endif %}
+
+
+            {% endif %}
+
+            {% if question_idx > 10 %}
+
+               
+                {% if question_idx <= 15 %}
+
+                    
+                    {% with bar_num=question_idx|add:"-10" %}
+
+                        {% with ''|center:bar_num as range %}
+                            {% for bar in range %}
+                                <div class="progress-bar bg-success" role="progressbar" style="width:3.33%;  background-color: #239b56  !important;">|</div>
+                            {% endfor %}
+                        {% endwith %}
+
+
+                    {% endwith %}
+
+                    
+                {% else %}
+                    
+                    {% for i in '01234'|make_list %}
+                        <div class="progress-bar bg-success" role="progressbar" style="width:3.33%;  background-color: #239b56  !important;">|</div>
+                    {% endfor %}
+
+                {% endif %}
+
+
+            {% endif %}
+
+            {% if question_idx > 15 %}
+
+               
+                {% if question_idx <= 20 %}
+
+                    
+                    {% with bar_num=question_idx|add:"-15" %}
+
+                        {% with ''|center:bar_num as range %}
+                            {% for bar in range %}
+                                <div class="progress-bar progress-bar-success" role="progressbar" style="width:3.33%;  background-color: #f4d03f  !important;">|</div>
+                            {% endfor %}
+                        {% endwith %}
+
+
+                    {% endwith %}
+
+                    
+                {% else %}
+                    
+                    {% for i in '01234'|make_list %}
+                        <div class="progress-bar progress-bar-success" role="progressbar" style="width:3.33%;  background-color: #f4d03f  !important;">|</div>
+                    {% endfor %}
+
+                {% endif %}
+
+
+            {% endif %}
+
+            {% if question_idx > 20 %}
+
+               
+                {% if question_idx <= 25 %}
+
+                    
+                    {% with bar_num=question_idx|add:"-20" %}
+
+                        {% with ''|center:bar_num as range %}
+                            {% for bar in range %}
+                                <div class="progress-bar bg-warning" role="progressbar" style="width:3.33%;  background-color: #e67e22
+      !important;">|</div>
+                            {% endfor %}
+                        {% endwith %}
+
+
+                    {% endwith %}
+
+                    
+                {% else %}
+                    
+                    {% for i in '01234'|make_list %}
+                        <div class="progress-bar bg-warning" role="progressbar" style="width:3.33%;  background-color: #e67e22
+      !important;">|</div>
+                    {% endfor %}
+
+                {% endif %}
+
+
+            {% endif %}
+
+            {% if question_idx > 25 %}
+
+               
+                {% if question_idx <= 30 %}
+
+                    
+                    {% with bar_num=question_idx|add:"-25" %}
+
+                        {% with ''|center:bar_num as range %}
+                            {% for bar in range %}
+                                <div class="progress-bar bg-danger" role="progressbar" style="width:3.33%;  background-color: red  !important;">|</div>
+                            {% endfor %}
+                        {% endwith %}
+
+
+                    {% endwith %}
+
+                    
+                {% else %}
+                    
+                    {% for i in '01234'|make_list %}
+                        <div class="progress-bar bg-danger" role="progressbar" style="width:3.33%   ; background-color: red  !important;">|</div>
+                    {% endfor %}
+
+                {% endif %}
+
+
+            {% endif %}
+
+            </div>
+        </div>
+
+        <div style=" width:25%; float:right;">
+
+            <button style="float:right;" id="reportButton" class="btn btn-danger mb-4" name="answer" value="Show Div" onclick="showDiv()">Hata Bildir</button>
+
+        </div> 
+
+        <br  style="clear: left;" />
+        
+
     </div>
 
     <!--
@@ -202,571 +211,575 @@
     </div>
     -->
 
-    <div class="profquestiondesc">
+    <div class="central">
 
         <div class="centeritems">
 
-            <p>{{mode_description}}</p>
+            <p style="font-size:18px">{{mode_description}}</p>
 
-        </div>  
+        </div> 
 
-    </div>
+        <div style="border-radius: 25px; border: 2px solid #73AD21;">
 
-    <div class="questiondiv" style="z-index: 2">
+            <div class="centeritems">
 
-        <div class="centeritems">
+                <p style="font-size:30px">
 
-            <p style="font-size:30px">
+                    {% if mode == "MODE_1" %}
 
-                {% if mode == "MODE_1" %}
+                        {% if type == "TYPE_1" %}
 
-                    {% if type == "TYPE_1" %}
+                            <div class='branch_view'>
+
+                                <div class='left_container'>
+                                    <span class='left_text text'> {{ first_text }} </span>
+                                </div>
+
+                                <div class='right_container'>
+
+                                    <div class='small_container'>     
+                                        <span><b>&#8599;   ______{{clitic}}   &#8600;</b></span>            
+                                    </div>
+
+                                    <div class='small_container'>
+
+                                        <span><b>&#8600;   ______&nbsp;&nbsp;{{clitic}}   &#8599;</b></span>
+                                                              
+                                    </div>
+
+                                </div>
+
+                                <div class='left_container'>
+                                    <span class='left_text text'> {{ second_text }} </span>
+                                </div>
+
+                            </div>
+
+                        {% elif type == "TYPE_2" %}
+
+
+                            <div class='branch_view'>
+
+                                <div class='left_container'>
+                                    <span class='left_text text'> {{ first_text }} ______ {{ second_text }} </span>
+                                </div>
+
+                                <div class='right_container'>
+                                    
+                                    <div class='small_container'>     
+                                        <span><b>&#8599;   {{deda_adjacent}}   &#8600;</b></span>            
+                                    </div>
+                                    <div class='small_container'>
+
+                                        <span><b>&#8600;   {{deda_separate}}   &#8599;</b></span>
+                                                              
+                                    </div>
+
+
+                                </div>
+
+                                <div class='left_container'>
+                                    <span class='left_text text'> {{ third_text }} </span>
+                                </div>
+
+                            </div>
+
+                        {% elif type == "TYPE_3" %}
+
+                            <div class='branch_view'>
+
+                                <div class='left_container'>
+                                    <span class='left_text text'> {{ first_text }} </span>
+                                </div>
+
+                                <div class='right_container'>
+                                    
+                                    
+                                    <div class='small_container'>     
+                                        <span><b>&#8599;   {{deda_adjacent}}   &#8600;</b></span>            
+                                    </div>
+                                    <div class='small_container'>
+
+                                        <span><b>&#8600;   {{deda_separate}}   &#8599;</b></span>
+                                                              
+                                    </div>
+                                    
+                                </div>
+
+                                <div class='left_container'>
+                                    <span class='left_text text'> {{ second_text }} _______ {{ third_text }} </span>
+                                </div>
+
+                            </div>
+                        {% endif %}
+
+                    {% elif mode == "MODE_2" %}
 
                         <div class='branch_view'>
 
                             <div class='left_container'>
-                                <span class='left_text text'> {{ first_text }} </span>
+                                <span class='left_text text'>{{first_half_text}}</span>
                             </div>
 
-                            <div class='right_container'>
+                                <div class='right_container'>
+                                    
+                                    
+                                    <div class='small_container'>     
+                                        <span><b>&#8599;   {{deda_adjacent}}   &#8600;</b></span>            
+                                    </div>
+                                    <div class='small_container'>
 
-                                <div class='small_container'>     
-                                    <span><b>&#8599;   ______{{clitic}}   &#8600;</b></span>            
+                                        <span><b>&#8600;   {{deda_separate}}   &#8599;</b></span>
+                                                              
+                                    </div>
+                                    
                                 </div>
-
-                                <div class='small_container'>
-
-                                    <span><b>&#8600;   ______&nbsp;&nbsp;{{clitic}}   &#8599;</b></span>
-                                                          
-                                </div>
-
-                            </div>
 
                             <div class='left_container'>
-                                <span class='left_text text'> {{ second_text }} </span>
+                                <span class='left_text text'>
+
+                                    &emsp;*&emsp;*&emsp;*&emsp;
+
+                                </span>
                             </div>
-
+                            
                         </div>
-
-                    {% elif type == "TYPE_2" %}
-
+     
+                    {% elif mode == "MODE_3" %}
 
                         <div class='branch_view'>
 
                             <div class='left_container'>
-                                <span class='left_text text'> {{ first_text }} ______ {{ second_text }} </span>
+                                <span class='left_text text'>&emsp;*&emsp;*&emsp;*&emsp;</span>
                             </div>
 
-                            <div class='right_container'>
-                                
-                                <div class='small_container'>     
-                                    <span><b>&#8599;   {{deda_adjacent}}   &#8600;</b></span>            
+                                <div class='right_container'>
+                                    
+                                    
+                                    <div class='small_container'>     
+                                        <span><b>&#8599;   {{deda_adjacent}}   &#8600;</b></span>            
+                                    </div>
+                                    <div class='small_container'>
+
+                                        <span><b>&#8600;   {{deda_separate}}   &#8599;</b></span>
+                                                              
+                                    </div>
+                                    
                                 </div>
-                                <div class='small_container'>
-
-                                    <span><b>&#8600;   {{deda_separate}}   &#8599;</b></span>
-                                                          
-                                </div>
-
-
-                            </div>
 
                             <div class='left_container'>
-                                <span class='left_text text'> {{ third_text }} </span>
+                                <span class='left_text text'>{{ second_half_text }}</span>
                             </div>
 
                         </div>
 
-                    {% elif type == "TYPE_3" %}
+
+                    {% elif mode == "MODE_4" %}
 
                         <div class='branch_view'>
 
                             <div class='left_container'>
-                                <span class='left_text text'> {{ first_text }} </span>
+                                <span class='left_text text'>&emsp;*&emsp;*&emsp;*&emsp;</span>
                             </div>
 
-                            <div class='right_container'>
-                                
-                                
-                                <div class='small_container'>     
-                                    <span><b>&#8599;   {{deda_adjacent}}   &#8600;</b></span>            
-                                </div>
-                                <div class='small_container'>
+                                <div class='right_container'>
 
-                                    <span><b>&#8600;   {{deda_separate}}   &#8599;</b></span>
-                                                          
+                                    <div class='small_container'>     
+                                        <span><b>&#8599;   ______{{clitic}}   &#8600;</b></span>            
+                                    </div>
+
+                                    <div class='small_container'>
+
+                                        <span><b>&#8600;   ______&nbsp;&nbsp;{{clitic}}   &#8599;</b></span>
+                                                              
+                                    </div>
+
                                 </div>
-                                
-                            </div>
 
                             <div class='left_container'>
-                                <span class='left_text text'> {{ second_text }} _______ {{ third_text }} </span>
+                                <span class='left_text text'>{{ second_half_text }}</span>
+                            </div>
+                        </div>
+
+                    {% elif mode == "MODE_5" %}
+
+                        <div class='branch_view'>
+
+                            <div class='left_container'>
+                                <span class='left_text text'>{{first_text}}</span>
                             </div>
 
+                                <div class='right_container'>
+
+                                    <div class='small_container'>     
+                                        <span><b>&#8599;   ______{{clitic}}   &#8600;</b></span>            
+                                    </div>
+
+                                    <div class='small_container'>
+
+                                        <span><b>&#8600;   ______&nbsp;&nbsp;{{clitic}}   &#8599;</b></span>
+                                                              
+                                    </div>
+
+                                </div>
+
+                            <div class='left_container'>
+                                <span class='left_text text'>&emsp;*&emsp;*&emsp;*&emsp;</span>
+                            </div>
                         </div>
+
+                    {% elif mode == "MODE_6" %}
+
+                        {% if type == "TYPE_1" %}
+
+                            <div class='branch_view'>
+
+                                <div class='left_container'>
+                                    <span class='left_text text'>
+
+                                        {% with ''|center:first_masked_num as range %}
+                                            {% for masked_word in range %}
+
+                                                ____&nbsp;
+
+                                            {% endfor %}
+                                        {% endwith %}
+
+                                    </span>
+                                </div>
+
+                                <div class='right_container'>
+                                    
+                                    
+                                    <div class='small_container'>     
+                                        <span><b>&#8599;   {{deda_adjacent}}   &#8600;</b></span>            
+                                    </div>
+                                    <div class='small_container'>
+
+                                        <span><b>&#8600;   {{deda_separate}}   &#8599;</b></span>
+                                                              
+                                    </div>
+                                    
+                                </div>
+
+                                <div class='left_container'>
+                                    <span class='left_text text'> 
+
+                                        {% with ''|center:second_masked_num as range %}
+                                            {% for masked_word in range %}
+
+                                                ____&nbsp;
+
+                                            {% endfor %}
+                                        {% endwith %}
+
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        {% elif type == "TYPE_2" %}
+
+
+                            <div class='branch_view'>
+
+                                <div class='left_container'>
+                                    <span class='left_text text'> 
+
+                                        {% with ''|center:first_masked_num as range %}
+                                            {% for masked_word in range %}
+
+                                                ____&nbsp;
+
+                                            {% endfor %}
+                                        {% endwith %}
+
+                                        {{ unmasked_word }}
+
+                                        {% with ''|center:second_masked_num as range %}
+                                            {% for masked_word in range %}
+
+                                                ____&nbsp;
+
+                                            {% endfor %}
+                                        {% endwith %}
+
+                                    </span>
+                                </div>
+
+                                <div class='right_container'>
+
+                                    <div class='small_container'>     
+                                        <span><b>&#8599;   ______{{clitic}}   &#8600;</b></span>            
+                                    </div>
+
+                                    <div class='small_container'>
+
+                                        <span><b>&#8600;   ______&nbsp;&nbsp;{{clitic}}   &#8599;</b></span>
+                                                              
+                                    </div>
+
+                                </div>
+
+                                <div class='left_container'>
+                                    <span class='left_text text'>
+
+                                        {% with ''|center:third_masked_num as range %}
+                                            {% for masked_word in range %}
+
+                                                ____&nbsp;
+
+                                            {% endfor %}
+                                        {% endwith %}
+
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        {% elif type == "TYPE_3" %}
+
+                            <div class='branch_view'>
+
+                                <div class='left_container'>
+                                    <span class='left_text text'>
+
+                                        {% with ''|center:first_masked_num as range %}
+                                            {% for masked_word in range %}
+
+                                                ____&nbsp;
+
+                                            {% endfor %}
+                                        {% endwith %}
+
+                                    </span>
+                                </div>
+
+                                <div class='right_container'>
+
+                                    <div class='small_container'>     
+                                        <span><b>&#8599;   ______{{clitic}}   &#8600;</b></span>            
+                                    </div>
+
+                                    <div class='small_container'>
+
+                                        <span><b>&#8600;   ______&nbsp;&nbsp;{{clitic}}   &#8599;</b></span>
+                                                              
+                                    </div>
+
+                                </div>
+
+                                <div class='left_container'>
+                                    <span class='left_text text'>
+
+                                        {% with ''|center:second_masked_num as range %}
+                                            {% for masked_word in range %}
+
+                                                ____&nbsp;
+
+                                            {% endfor %}
+                                        {% endwith %}
+
+                                        {{ unmasked_word }}
+
+                                        {% with ''|center:third_masked_num as range %}
+                                            {% for masked_word in range %}
+
+                                                ____&nbsp;
+
+                                            {% endfor %}
+                                        {% endwith %}
+
+                                    </span>
+                                </div>
+
+                            </div>
+                        {% endif %}
+
+                    {% endif %}
+                </p>
+
+            </div>
+
+            
+            <div class="centeritems">
+
+                {% if selected_button == 'ADJACENT' %}
+
+                    {% if answer == True %}
+
+                        <button type="submit" name="name" value="ADJACENT" class="btn btn-outline-success mb-4" disabled>Bitişik Yazılmalı</button>
+                        <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4" disabled>Ayrı Yazılmalı</button>
+                        <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-info mb-4" disabled>Kararsızım</button>
+                        <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
+
+                    {% else %}
+
+                        <button type="submit" name="name" value="ADJACENT" class="btn btn-outline-danger mb-4" disabled>Bitişik Yazılmalı</button>
+                        <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4" disabled>Ayrı Yazılmalı</button>
+                        <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-info mb-4" disabled>Kararsızım</button>
+                        <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
+
+
                     {% endif %}
 
-                {% elif mode == "MODE_2" %}
+                {% elif selected_button == 'SEPARATE' %}
 
-                    <div class='branch_view'>
+                    {% if answer == True %}
 
-                        <div class='left_container'>
-                            <span class='left_text text'>{{first_half_text}}</span>
-                        </div>
+                        <button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4" disabled>Bitişik Yazılmalı</button>
+                        <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-success mb-4" disabled>Ayrı Yazılmalı</button>
+                        <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-info mb-4" disabled>Kararsızım</button>
+                        <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
 
-                            <div class='right_container'>
-                                
-                                
-                                <div class='small_container'>     
-                                    <span><b>&#8599;   {{deda_adjacent}}   &#8600;</b></span>            
-                                </div>
-                                <div class='small_container'>
+                    {% else %}
 
-                                    <span><b>&#8600;   {{deda_separate}}   &#8599;</b></span>
-                                                          
-                                </div>
-                                
-                            </div>
+                        <button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4" disabled>Bitişik Yazılmalı</button>
+                        <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-danger mb-4" disabled>Ayrı Yazılmalı</button>
+                        <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-info mb-4" disabled>Kararsızım</button>
+                        <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
 
-                        <div class='left_container'>
-                            <span class='left_text text'>
 
-                                &emsp;*&emsp;*&emsp;*&emsp;
-
-                            </span>
-                        </div>
-                        
-                    </div>
- 
-                {% elif mode == "MODE_3" %}
-
-                    <div class='branch_view'>
-
-                        <div class='left_container'>
-                            <span class='left_text text'>&emsp;*&emsp;*&emsp;*&emsp;</span>
-                        </div>
-
-                            <div class='right_container'>
-                                
-                                
-                                <div class='small_container'>     
-                                    <span><b>&#8599;   {{deda_adjacent}}   &#8600;</b></span>            
-                                </div>
-                                <div class='small_container'>
-
-                                    <span><b>&#8600;   {{deda_separate}}   &#8599;</b></span>
-                                                          
-                                </div>
-                                
-                            </div>
-
-                        <div class='left_container'>
-                            <span class='left_text text'>{{ second_half_text }}</span>
-                        </div>
-
-                    </div>
-
-
-                {% elif mode == "MODE_4" %}
-
-                    <div class='branch_view'>
-
-                        <div class='left_container'>
-                            <span class='left_text text'>&emsp;*&emsp;*&emsp;*&emsp;</span>
-                        </div>
-
-                            <div class='right_container'>
-
-                                <div class='small_container'>     
-                                    <span><b>&#8599;   ______{{clitic}}   &#8600;</b></span>            
-                                </div>
-
-                                <div class='small_container'>
-
-                                    <span><b>&#8600;   ______&nbsp;&nbsp;{{clitic}}   &#8599;</b></span>
-                                                          
-                                </div>
-
-                            </div>
-
-                        <div class='left_container'>
-                            <span class='left_text text'>{{ second_half_text }}</span>
-                        </div>
-                    </div>
-
-                {% elif mode == "MODE_5" %}
-
-                    <div class='branch_view'>
-
-                        <div class='left_container'>
-                            <span class='left_text text'>{{first_text}}</span>
-                        </div>
-
-                            <div class='right_container'>
-
-                                <div class='small_container'>     
-                                    <span><b>&#8599;   ______{{clitic}}   &#8600;</b></span>            
-                                </div>
-
-                                <div class='small_container'>
-
-                                    <span><b>&#8600;   ______&nbsp;&nbsp;{{clitic}}   &#8599;</b></span>
-                                                          
-                                </div>
-
-                            </div>
-
-                        <div class='left_container'>
-                            <span class='left_text text'>&emsp;*&emsp;*&emsp;*&emsp;</span>
-                        </div>
-                    </div>
-
-                {% elif mode == "MODE_6" %}
-
-                    {% if type == "TYPE_1" %}
-
-                        <div class='branch_view'>
-
-                            <div class='left_container'>
-                                <span class='left_text text'>
-
-                                    {% with ''|center:first_masked_num as range %}
-                                        {% for masked_word in range %}
-
-                                            ____&nbsp;
-
-                                        {% endfor %}
-                                    {% endwith %}
-
-                                </span>
-                            </div>
-
-                            <div class='right_container'>
-                                
-                                
-                                <div class='small_container'>     
-                                    <span><b>&#8599;   {{deda_adjacent}}   &#8600;</b></span>            
-                                </div>
-                                <div class='small_container'>
-
-                                    <span><b>&#8600;   {{deda_separate}}   &#8599;</b></span>
-                                                          
-                                </div>
-                                
-                            </div>
-
-                            <div class='left_container'>
-                                <span class='left_text text'> 
-
-                                    {% with ''|center:second_masked_num as range %}
-                                        {% for masked_word in range %}
-
-                                            ____&nbsp;
-
-                                        {% endfor %}
-                                    {% endwith %}
-
-                                </span>
-                            </div>
-
-                        </div>
-
-                    {% elif type == "TYPE_2" %}
-
-
-                        <div class='branch_view'>
-
-                            <div class='left_container'>
-                                <span class='left_text text'> 
-
-                                    {% with ''|center:first_masked_num as range %}
-                                        {% for masked_word in range %}
-
-                                            ____&nbsp;
-
-                                        {% endfor %}
-                                    {% endwith %}
-
-                                    {{ unmasked_word }}
-
-                                    {% with ''|center:second_masked_num as range %}
-                                        {% for masked_word in range %}
-
-                                            ____&nbsp;
-
-                                        {% endfor %}
-                                    {% endwith %}
-
-                                </span>
-                            </div>
-
-                            <div class='right_container'>
-
-                                <div class='small_container'>     
-                                    <span><b>&#8599;   ______{{clitic}}   &#8600;</b></span>            
-                                </div>
-
-                                <div class='small_container'>
-
-                                    <span><b>&#8600;   ______&nbsp;&nbsp;{{clitic}}   &#8599;</b></span>
-                                                          
-                                </div>
-
-                            </div>
-
-                            <div class='left_container'>
-                                <span class='left_text text'>
-
-                                    {% with ''|center:third_masked_num as range %}
-                                        {% for masked_word in range %}
-
-                                            ____&nbsp;
-
-                                        {% endfor %}
-                                    {% endwith %}
-
-                                </span>
-                            </div>
-
-                        </div>
-
-                    {% elif type == "TYPE_3" %}
-
-                        <div class='branch_view'>
-
-                            <div class='left_container'>
-                                <span class='left_text text'>
-
-                                    {% with ''|center:first_masked_num as range %}
-                                        {% for masked_word in range %}
-
-                                            ____&nbsp;
-
-                                        {% endfor %}
-                                    {% endwith %}
-
-                                </span>
-                            </div>
-
-                            <div class='right_container'>
-
-                                <div class='small_container'>     
-                                    <span><b>&#8599;   ______{{clitic}}   &#8600;</b></span>            
-                                </div>
-
-                                <div class='small_container'>
-
-                                    <span><b>&#8600;   ______&nbsp;&nbsp;{{clitic}}   &#8599;</b></span>
-                                                          
-                                </div>
-
-                            </div>
-
-                            <div class='left_container'>
-                                <span class='left_text text'>
-
-                                    {% with ''|center:second_masked_num as range %}
-                                        {% for masked_word in range %}
-
-                                            ____&nbsp;
-
-                                        {% endfor %}
-                                    {% endwith %}
-
-                                    {{ unmasked_word }}
-
-                                    {% with ''|center:third_masked_num as range %}
-                                        {% for masked_word in range %}
-
-                                            ____&nbsp;
-
-                                        {% endfor %}
-                                    {% endwith %}
-
-                                </span>
-                            </div>
-
-                        </div>
                     {% endif %}
+
+                {% elif selected_button == 'INDECISIVE' %}
+
+                    {% if answer == True %}
+
+                        <button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4" disabled>Bitişik Yazılmalı</button>
+                        <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4" disabled>Ayrı Yazılmalı</button>
+                        <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-secondary mb-4" disabled>Kararsızım</button>
+                        <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
+
+                    {% else %}
+
+                        <button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4" disabled>Bitişik Yazılmalı</button>
+                        <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4" disabled>Ayrı Yazılmalı</button>
+                        <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-secondary mb-4" disabled>Kararsızım</button>
+                        <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
+
+
+                    {% endif %}
+
 
                 {% endif %}
-            </p>
+
+            </div>  
+             
+
+        </div>
+        
+
+
+        <!-- Answer Part -->
+        <br>
+        <br>
+        
+
+
+        <div>
+
+            {% if selected_button == "INDECISIVE" %}
+
+                <div style="border-radius: 25px; border: 2px solid #73AD21;background: #bfc1c2;">
+                    <div class="branch_view">
+                        <div class="left_container">
+                            <span class="left_text text">
+
+                                <p>  {{first_answer_text}} <span class="highlight_text"><b>{{highlighted_answer_text}}</b></span> {{second_answer_text}} </p>
+                                
+                            </span>
+                        </div>
+                    </div>
+                    <!--
+                    <div class="centeritems">
+                        <a class="btn btn-info mb-4" href=" {% url 'question' %} ">Sonraki cümleye geç.</a>
+                    </div>-->   
+                </div>
+
+            {% else %}
+
+                {% if answer == True %}
+
+                    <div style="border-radius: 25px; border: 2px solid #73AD21; background: #14b90c;">
+                        <div class="branch_view">
+                            <div class="left_container">
+                                <span class="left_text text">
+
+                                    <p>  {{first_answer_text}} <span class="highlight_text"><b>{{highlighted_answer_text}}</b></span> {{second_answer_text}} </p>
+                                    
+                                </span>
+                            </div>
+                        </div>
+                            
+                    </div>
+
+                {% else %}
+
+                    <div style="border-radius: 25px; border: 2px solid #73AD21;background: #f36b6b;">
+                        <div class="branch_view">
+                            <div class="left_container">
+                                <span class="left_text text">
+
+                                    <p>  {{first_answer_text}} <span class="highlight_text"><b>{{highlighted_answer_text}}</b></span> {{second_answer_text}} </p>
+                                    
+                                </span>
+                            </div>
+                        </div>
+                            
+                    </div>
+
+
+                {% endif %}
+
+            {% endif %}
+
+            
+            
+
+             
+
 
         </div>
 
-        
-        <div class="centeritems">
+        <br>
 
-        	{% if selected_button == 'ADJACENT' %}
+        <div align="center" >
+            <a class="btn btn-info mb-4" href=" {% url 'question' %} ">Sonraki cümleye geç</a>
+        </div>
 
-        		{% if answer == True %}
+        <script >
 
-        			<button type="submit" name="name" value="ADJACENT" class="btn btn-outline-success mb-4" disabled>Bitişik Yazılmalı</button>
-	                <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4" disabled>Ayrı Yazılmalı</button>
-	                <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-info mb-4" disabled>Kararsızım</button>
-	                <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
+            function showDiv() {
+               document.getElementById('reportDiv').style.display = "block";
+               $("#reportButton").hide()
+            }
 
-        		{% else %}
+        </script>
 
-        			<button type="submit" name="name" value="ADJACENT" class="btn btn-outline-danger mb-4" disabled>Bitişik Yazılmalı</button>
-	                <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4" disabled>Ayrı Yazılmalı</button>
-	                <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-info mb-4" disabled>Kararsızım</button>
-	                <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
-
-
-        		{% endif %}
-
-        	{% elif selected_button == 'SEPARATE' %}
-
-        		{% if answer == True %}
-
-        			<button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4" disabled>Bitişik Yazılmalı</button>
-	                <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-success mb-4" disabled>Ayrı Yazılmalı</button>
-	                <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-info mb-4" disabled>Kararsızım</button>
-	                <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
-
-        		{% else %}
-
-        			<button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4" disabled>Bitişik Yazılmalı</button>
-	                <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-danger mb-4" disabled>Ayrı Yazılmalı</button>
-	                <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-info mb-4" disabled>Kararsızım</button>
-	                <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
+        <br>
+        <br>
 
 
-        		{% endif %}
+        <div id="reportDiv" align="center" style="display:none;">
 
-        	{% elif selected_button == 'INDECISIVE' %}
+            <h3>Hata Bildir</h3>
+            
+            <form  method="POST" id="reportform"> 
+                {% csrf_token %} 
+                
+                <div class="textdiv">
 
-        		{% if answer == True %}
+                    <textarea rows="4" cols="50" name="text" form="reportform" placeholder="Hata mesajını giriniz..."></textarea>
 
-        			<button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4" disabled>Bitişik Yazılmalı</button>
-	                <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4" disabled>Ayrı Yazılmalı</button>
-	                <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-secondary mb-4" disabled>Kararsızım</button>
-	                <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
+                    <button type="submit" class="textbutton">Hata Bildir</button>
 
-        		{% else %}
+                </div>  
+            </form>
 
-        			<button type="submit" name="name" value="ADJACENT" class="btn btn-outline-info mb-4" disabled>Bitişik Yazılmalı</button>
-	                <button type="submit" name="name" value="SEPARATE" class="btn btn-outline-info mb-4" disabled>Ayrı Yazılmalı</button>
-	                <button type="submit" name="name" value="INDECISIVE" class="btn btn-outline-secondary mb-4" disabled>Kararsızım</button>
-	                <button type="submit" name="name" value="SKIP" class="btn btn-outline-info mb-4" disabled>Bu cümleyi geç</button>
-
-
-        		{% endif %}
-
-
-        	{% endif %}
-
-        </div>  
-         
+        </div> 
 
     </div>
-	
-
-
-	<!-- Answer Part -->
-	
-	
-
-
-	<div>
-
-		{% if selected_button == "INDECISIVE" %}
-
-			<div class="answerdiv" style="background: #bfc1c2;">
-				<div class="branch_view">
-					<div class="left_container">
-						<span class="left_text text">
-
-							<p>  {{first_answer_text}} <span class="highlight_text"><b>{{highlighted_answer_text}}</b></span> {{second_answer_text}} </p>
-							
-						</span>
-					</div>
-				</div>
-				<!--
-				<div class="centeritems">
-					<a class="btn btn-info mb-4" href=" {% url 'question' %} ">Sonraki cümleye geç.</a>
-				</div>-->	
-			</div>
-
-		{% else %}
-
-			{% if answer == True %}
-
-				<div class="answerdiv" style="background: #14b90c;">
-					<div class="branch_view">
-						<div class="left_container">
-							<span class="left_text text">
-
-								<p>  {{first_answer_text}} <span class="highlight_text"><b>{{highlighted_answer_text}}</b></span> {{second_answer_text}} </p>
-								
-							</span>
-						</div>
-					</div>
-						
-				</div>
-
-			{% else %}
-
-				<div class="answerdiv" style="background: #f36b6b;">
-					<div class="branch_view">
-						<div class="left_container">
-							<span class="left_text text">
-
-								<p>  {{first_answer_text}} <span class="highlight_text"><b>{{highlighted_answer_text}}</b></span> {{second_answer_text}} </p>
-								
-							</span>
-						</div>
-					</div>
-						
-				</div>
-
-
-			{% endif %}
-
-		{% endif %}
-
-		<div align="center" class="nextquestionbuttondiv">
-			<a class="btn btn-info mb-4" href=" {% url 'question' %} ">Sonraki cümleye geç</a>
-		</div>
-		
-
-		<script >
-
-			function showDiv() {
-			   document.getElementById('reportDiv').style.display = "block";
-               $("#reportButton").hide()
-			}
-
-		</script>
-
-        <div align="center" class="reportbutton">
-
-            <button id="reportButton" class="btn btn-danger mb-4" name="answer" value="Show Div" onclick="showDiv()">Hata Bildir</button>
-
-        </div>  
-
-
-		<div id="reportDiv" align="center" class="reportdiv" style="display:none;">
-
-			<h3>Hata Bildir</h3>
-		
-			<form  method="POST" id="reportform"> 
-	   			{% csrf_token %} 
-	    	
-	       		<div class="textdiv">
-
-	           		<textarea rows="4" cols="50" name="text" form="reportform" placeholder="Hata mesajını giriniz..."></textarea>
-
-	           		<button type="submit" class="textbutton">Hata Bildir</button>
-
-	       		</div> 	
-			</form>
-
-		</div>	
-
-
-	</div>
 
 	
 
