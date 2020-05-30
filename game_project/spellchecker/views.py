@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import QueryForm
+from .forms import QueryForm, QueryFeedbackForm
 from .models import Query
 
 import flair, torch
@@ -8,6 +8,8 @@ from flair.data import Sentence
 from django.contrib.staticfiles import finders
 
 from .models import Query
+
+from game.views import str2bool
 
 url = finders.find('best-model.pt')
 flair.device = torch.device('cpu')
@@ -25,12 +27,12 @@ def query(request):
             sentence = form.cleaned_data['sentence']
 
             request.session['sentence'] = sentence
-            """
+            
             query = Query(sentence=sentence, user=request.user)
             query.save()
 
             request.session['query_pk'] = query.pk
-            """
+            
 
             return redirect('spellchecker_answer')
 
@@ -43,30 +45,38 @@ def query(request):
     return render(request, 'spellchecker/spellchecker_query.html')
 
 def answer(request):
-	
-	if request.method == 'POST':
-
-		return redirect('spellchecker_query')
 
 	sentence = request.session.get('sentence')
 
 	labeled_words = spellchecker(sentence)
 
-	"""
-	query_pk = request.session.get('query_pk')
-	query = Query.objects.filter(pk=query_pk)[0]
-
-	query.
-	"""
-
-
 	context = {
 	'labeled_words': labeled_words
 	}
 
-	return render(request, 'spellchecker/spellchecker_answer.html', context)
-	
+	if request.method == 'POST':
 
+		form = QueryFeedbackForm(request.POST)
+
+		if form.is_valid():
+
+			isHappy = form.cleaned_data['isHappy']
+
+			query_pk = request.session.get('query_pk')
+			query = Query.objects.filter(pk=query_pk)[0]
+
+			query.isHappy = isHappy
+
+			query.save()
+
+			return redirect('spellchecker_query')
+
+	else:
+
+		form = QueryFeedbackForm()
+
+
+	return render(request, 'spellchecker/spellchecker_answer.html', context)
 
 
 def spellchecker(sentence):
