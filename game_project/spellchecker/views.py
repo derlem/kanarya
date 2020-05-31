@@ -28,7 +28,11 @@ def query(request):
 
             request.session['sentence'] = sentence
             
-            query = Query(sentence=sentence, user=request.user)
+            query = Query(sentence=sentence)
+
+            if request.user.is_authenticated:
+            	query.user = request.user
+            
             query.save()
 
             request.session['query_pk'] = query.pk

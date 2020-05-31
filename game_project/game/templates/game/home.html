@@ -23,8 +23,6 @@
 
 				Bir testte 30 soru vardır ve sınırsız sayıda test çözebilirsiniz. Ne kadar çok test çözerseniz Türkçenin bu müzmin sorununu çözmeye bir o kadar çok yaklaşırız :)
 
-				<!--Bu çalışma “de/da” ek ve bağlacının kullanımını etkileyen faktörleri anlamak amacıyla düzenlenmektedir. <b style="color:red;">Herhangi bir şekilde kullanıcıların bireysel başarıları ölçülmemektedir.</b>-->
-
 				İyi eğlenceler :)
 
 
@@ -33,17 +31,13 @@
 
 		    <div style="text-align: center">
 		    	
-		    	
-
 		    	{% if is_prof_done == True %}
 
-		    		<!--<button class="btn btn-outline-info"  href=" {% url 'proficiency' %}" disabled>Ön bilgi testini çöz</button>-->
 		    		<a class="btn btn-outline-info" href=" {% url 'question' %} ">Araştırmaya Başla!</a>
 
 		    	{% else %}
 
 		    		<a class="btn btn-outline-info"  href=" {% url 'proficiency' %} ">Isındırma Turuna Başla!</a>
-		    		<!--<button class="btn btn-outline-info" href=" {% url 'question' %} " disabled>Araştırmaya başla!</button>-->
 
 		    	{% endif %}
 
