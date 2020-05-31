@@ -54,6 +54,10 @@ class MODE_THRESHOLD(Enum):
     MODE_5 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4 + QUESTION_NUM_MODE_5
     MODE_6 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4 + QUESTION_NUM_MODE_5 + QUESTION_NUM_MODE_6
 
+def welcome(request):
+
+    return render(request, 'game/welcome.html')
+
 @login_required
 def home(request):
 

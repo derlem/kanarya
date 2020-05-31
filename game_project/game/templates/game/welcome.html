@@ -1,0 +1,40 @@
+{% extends 'game/base.html' %}
+{% block content %}
+
+	<div class="container">
+
+		<article class="media content-section">
+		  <div class="media-body">
+		    <!--<h2><a class="article-title" href="#">Onam Formu</a></h2>-->
+		    <h2 style="text-align:center" >Hoşgeldiniz</h2>
+		    <p class="article-content">
+
+		    	Merhabalar,
+
+				Türkçedeki “de/da” ek ve bağlaçlarının kullanımını etkileyen faktörleri araştırdığımız deneyimize hoş geldiniz.
+
+				Biz Boğaziçi Üniversitesi Bilgisayar Mühendisliği çatısı altında "de/da" yazım hatalarını tespit edebilen bir yapay zeka modeli geliştirmiş bir ekibiz. Şimdi ise üzerine uğraştığımız problemi ve modelimizin kararlarını daha iyi anlamak üzere insan temelli bir deney yapıyoruz.
+
+				İsterseniz deneyimize katılmadan evvel üstteki "Yazım Denetleyicisi" butonuna basarak daha önceden geliştirdiğimiz modelimizi deneyebilirsiniz.
+
+				Eğer daha önce kayıt olmadıysanız kayıt olarak deneyimize başlayabilir, eğer kayıt olmuşsanız giriş yaparak deneyimize kaldığınız yerden devam edebilirsiniz. 
+
+				İyi eğlenceler :)
+
+		    </p>
+
+		    <div style="text-align: center">
+		    	
+		    	<a class="btn btn-outline-info" href=" {% url 'login' %} ">Giriş Yap</a>
+		    	<a class="btn btn-outline-info" href=" {% url 'register' %} ">Kayıt Ol</a>
+
+		    </div>
+
+		  </div>
+		</article>	
+
+		
+
+	</div>
+	
+{% endblock content %}

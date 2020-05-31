@@ -14,5 +14,6 @@ urlpatterns = [
 	#path('onamformu/', views.onamformu, name='onamformu'),
 	path('proficiency/', views.proficiency, name='proficiency'),
 	path('prof_end/', views.prof_end, name='prof_end'),
+	path('welcome/', views.welcome, name='welcome'),
 
 ]
