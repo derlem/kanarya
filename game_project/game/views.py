@@ -66,12 +66,12 @@ mode_labels = {
 }
 
 mode_descriptions = {
-    'MODE_1': 'Bu seviyede cümledeki bir kelime rastgele silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
-    'MODE_2': 'Bu seviyede cümledeki "de/da" ek ya da bağlacından sonraki tüm kelimeler silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
-    'MODE_3': 'Bu seviyede cümledeki "de/da" ek ya da bağlacından önceki tüm kelimeler (bir önceki kelime dışında) silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
-    'MODE_4': 'Bu seviyede cümledeki "de/da" ek ya da bağlacından önceki tüm kelimeler silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
-    'MODE_5': 'Bu seviyede cümledeki "de/da" ek ya da bağlacından bir önceki kelime ve sonraki tüm kelimeler silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
-    'MODE_6': 'Bu seviyede cümledeki bir kelime dışındaki tüm sözcükler silinir. Sizin elinizdeki kelime ile "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
+    'MODE_1': 'Bu soru tipinde cümledeki bir kelime rastgele silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
+    'MODE_2': 'Bu soru tipinde cümledeki "de/da" ek ya da bağlacından sonraki tüm kelimeler silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
+    'MODE_3': 'Bu soru tipinde cümledeki "de/da" ek ya da bağlacından önceki tüm kelimeler (bir önceki kelime dışında) silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
+    'MODE_4': 'Bu soru tipinde cümledeki "de/da" ek ya da bağlacından önceki tüm kelimeler silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
+    'MODE_5': 'Bu soru tipinde cümledeki "de/da" ek ya da bağlacından bir önceki kelime ve sonraki tüm kelimeler silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
+    'MODE_6': 'Bu soru tipinde cümledeki bir kelime dışındaki tüm sözcükler silinir. Sizin elinizdeki kelime ile "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
 }
 
 class MODE_THRESHOLD(Enum):
