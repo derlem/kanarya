@@ -13,9 +13,10 @@ urlpatterns = [
 	path('stats/', views.stats, name='stats'),
 	#path('onamformu/', views.onamformu, name='onamformu'),
 	path('proficiency/', views.proficiency, name='proficiency'),
-	path('prof_end/', views.prof_end, name='prof_end'),
+	#path('prof_end/', views.prof_end, name='prof_end'),
 	path('welcome/', views.welcome, name='welcome'),
 	path('warmup_question/', views.warmup_question, name='warmup_question'),
 	path('warmup_answer/', views.warmup_answer, name='warmup_answer'),
+	path('warmup_end/', views.warmup_end, name='warmup_end'),
 
 ]

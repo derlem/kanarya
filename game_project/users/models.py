@@ -16,6 +16,7 @@ class Profile(models.Model):
 	is_prof_done = models.BooleanField(default=False)
 
 	last_seen_warmup_idx = models.IntegerField(default=1)
+	is_warmup_done = models.BooleanField(default=False)
 
 	tos = models.BooleanField(default=False) # terms of service (onam formu)
 

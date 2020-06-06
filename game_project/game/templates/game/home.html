@@ -13,7 +13,7 @@
 
 				Türkçedeki “de/da” ek ve bağlaçlarının kullanımını etkileyen faktörleri araştırdığımız deneyimize hoş geldiniz.
 
-				Araştırmamıza başlamadan evvel aşağıdaki "Isındırma Turuna Başla" butonuna basarak 10 soruluk testi çözmeniz gerekir. Bu kısa testte "de/da" ek ya da bağlaçlarının doğru ya da yanlış yazılmış hallerini göreceksiniz. Sizin de hangi cümlelerde doğru hangi cümlelerde yanlış yazıldığını tespit etmenizi bekliyoruz.
+				Araştırmamıza başlamadan evvel aşağıdaki "Isınma Turuna Başla" butonuna basarak 5 soruluk testi çözmeniz gerekir. Bu kısa testte "de/da" ek ya da bağlaçlarının doğru ya da yanlış yazılmış hallerini göreceksiniz. Sizin de hangi cümlelerde doğru hangi cümlelerde yanlış yazıldığını tespit etmenizi bekliyoruz.
 
 				Sonrasında "Araştırmaya Başla” butonuna bastıktan sonra 30 soruluk bir testle karşılaşacaksınız. Her bir soru bir Türkçe cümleden oluşur ve her bir cümle en az bir tane “de/da” bağlacı ya da eki içerir. Size cümlenin bir kısmını gösterip bir kısmını göstermeyeceğiz ve sizden elinizdeki kadar bilgi ile “de/da” ek ya da bağlacının doğru yazımını tahmin etmenizi bekleyeceğiz.
 
@@ -31,15 +31,14 @@
 
 		    <div style="text-align: center">
 		    	
-		    	<a class="btn btn-outline-info" href=" {% url 'warmup_question' %} ">Isın bakalım!</a>
 
-		    	{% if is_prof_done == True %}
+		    	{% if is_warmup_done == True %}
 
 		    		<a class="btn btn-outline-info" href=" {% url 'question' %} ">Araştırmaya Başla!</a>
 
 		    	{% else %}
 
-		    		<a class="btn btn-outline-info"  href=" {% url 'proficiency' %} ">Isındırma Turuna Başla!</a>
+		    		<a class="btn btn-outline-info"  href=" {% url 'warmup_question' %} ">Isınma Turuna Başla!</a>
 
 		    	{% endif %}
 

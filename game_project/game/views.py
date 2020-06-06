@@ -14,6 +14,8 @@ from .models import Sentence, Question, Activity, Decision, Report
 
 from enum import Enum
 
+NUM_OF_PROF_QUESTIONS = 5
+
 ### Warmup parameters
 
 WARMUP_QUESTION_NUM_MODE_1 = 1
@@ -89,6 +91,9 @@ def welcome(request):
 @login_required
 def home(request):
 
+    if request.user.profile.is_prof_done == False:
+        return redirect('proficiency')
+
     # Set new test settings
     request.session['question_idx'] = 1
     request.session['correct_answer_count_for_current_test'] = 0
@@ -113,13 +118,6 @@ def about(request):
 
 @login_required
 def question(request):
-
-
-    #if not request.user.profile.onam:
-    #    return redirect('onamformu')
-
-    if request.user.profile.last_seen_prof_idx < 11:
-        return redirect('proficiency')
 
     # Current question index according the user progress
     last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
@@ -355,15 +353,6 @@ def answer(request):
 
     else:
 
-        """
-        # If indecisive, do not show a message
-        if request.session.get('activity') != 'INDECISIVE':
-            if context['answer']:
-                messages.success(request, f'Doğru Cevap')
-            else:
-                messages.error(request, f'Yanlış Cevap')
-        """
-
         form = ReportForm()
 
 
@@ -372,12 +361,15 @@ def answer(request):
 @login_required
 def proficiency(request):
 
-    if request.user.profile.last_seen_prof_idx > 10:
+    if request.user.profile.last_seen_prof_idx > NUM_OF_PROF_QUESTIONS:
 
         request.user.profile.is_prof_done = True
         request.user.profile.save()
 
-        return redirect('prof_end')
+        #return redirect('prof_end')
+        messages.success(request, f'Ön bilgi testi sona erdi, çok teşekkürler!')
+
+        return redirect('home')
 
     question_index = request.user.profile.last_seen_prof_idx
     labeled_words, condition = get_prof_question_context(question_index)
@@ -459,11 +451,8 @@ def get_prof_question_context(question_index):
 
     return labeled_words,  condition
 
-@login_required
-def prof_end(request):
-    messages.success(request, f'Isındırma turumuz sona erdi, çok teşekkürler!')
 
-    return render(request, 'game/prof_end.html')
+
 
 @login_required
 def test_end(request):
@@ -570,7 +559,10 @@ def warmup_question(request):
 
     else:
 
-        return redirect('home')
+        request.user.profile.is_warmup_done = True
+        request.user.profile.save()
+
+        return redirect('warmup_end')
 
     context['mode_label'] = mode_labels[context['mode']]
     context['mode_description'] = mode_descriptions[context['mode']]
@@ -655,6 +647,11 @@ def warmup_answer(request):
 
     return render(request, 'game/warmup_answer.html', context)
 
+@login_required
+def warmup_end(request):
+    messages.success(request, f'Isınma turumuz sona erdi, çok teşekkürler!')
+
+    return render(request, 'game/warmup_end.html')
     
 def get_sentence(sentence_idx):
 
