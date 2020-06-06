@@ -15,5 +15,7 @@ urlpatterns = [
 	path('proficiency/', views.proficiency, name='proficiency'),
 	path('prof_end/', views.prof_end, name='prof_end'),
 	path('welcome/', views.welcome, name='welcome'),
+	path('warmup_question/', views.warmup_question, name='warmup_question'),
+	path('warmup_answer/', views.warmup_answer, name='warmup_answer'),
 
 ]

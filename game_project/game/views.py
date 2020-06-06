@@ -14,6 +14,34 @@ from .models import Sentence, Question, Activity, Decision, Report
 
 from enum import Enum
 
+### Warmup parameters
+
+WARMUP_QUESTION_NUM_MODE_1 = 1
+WARMUP_QUESTION_NUM_MODE_2 = 1
+WARMUP_QUESTION_NUM_MODE_3 = 1
+WARMUP_QUESTION_NUM_MODE_4 = 1
+WARMUP_QUESTION_NUM_MODE_5 = 1
+WARMUP_QUESTION_NUM_MODE_6 = 1
+
+WARMUP_QUESTION_PER_TEST =(WARMUP_QUESTION_NUM_MODE_1 +
+                    WARMUP_QUESTION_NUM_MODE_2 + 
+                    WARMUP_QUESTION_NUM_MODE_3 +
+                    WARMUP_QUESTION_NUM_MODE_4 + 
+                    WARMUP_QUESTION_NUM_MODE_5 +
+                    WARMUP_QUESTION_NUM_MODE_6)
+
+class WARMUP_MODE_THRESHOLD(Enum):
+    MODE_1 = WARMUP_QUESTION_NUM_MODE_1
+    MODE_2 = WARMUP_QUESTION_NUM_MODE_1 + WARMUP_QUESTION_NUM_MODE_2
+    MODE_3 = WARMUP_QUESTION_NUM_MODE_1 + WARMUP_QUESTION_NUM_MODE_2 + WARMUP_QUESTION_NUM_MODE_3
+    MODE_4 = WARMUP_QUESTION_NUM_MODE_1 + WARMUP_QUESTION_NUM_MODE_2 + WARMUP_QUESTION_NUM_MODE_3 + WARMUP_QUESTION_NUM_MODE_4
+    MODE_5 = WARMUP_QUESTION_NUM_MODE_1 + WARMUP_QUESTION_NUM_MODE_2 + WARMUP_QUESTION_NUM_MODE_3 + WARMUP_QUESTION_NUM_MODE_4 + WARMUP_QUESTION_NUM_MODE_5
+    MODE_6 = WARMUP_QUESTION_NUM_MODE_1 + WARMUP_QUESTION_NUM_MODE_2 + WARMUP_QUESTION_NUM_MODE_3 + WARMUP_QUESTION_NUM_MODE_4 + WARMUP_QUESTION_NUM_MODE_5 + WARMUP_QUESTION_NUM_MODE_6
+
+
+
+### Main experiment parameters
+
 QUESTION_NUM_MODE_1 = 5
 QUESTION_NUM_MODE_2 = 5
 QUESTION_NUM_MODE_3 = 5
@@ -481,6 +509,152 @@ def stats(request):
     }
 
     return render(request, 'game/stats.html', context)
+
+
+def get_warmup_question_context(warmup_question_index):
+
+    path_to_data = os.path.dirname(__file__) + '/static/game/WarmupSentences.csv'
+
+    f = open(path_to_data, 'r')
+
+    all_lines = f.readlines()
+
+    current_row = all_lines[warmup_question_index -1]
+
+    index = list(csv.reader([current_row]))[0][0]
+    text = list(csv.reader([current_row]))[0][1]
+    status = list(csv.reader([current_row]))[0][2]
+    clitic = list(csv.reader([current_row]))[0][3]
+    pos = int(list(csv.reader([current_row]))[0][4])
+    
+
+    return text, status, clitic, pos
+
+def warmup_question(request):    
+
+    warmup_question_index = request.user.profile.last_seen_warmup_idx
+
+    full_text, status, clitic, pos = get_warmup_question_context(warmup_question_index)
+
+    # Set initial context
+    context = {
+        'question_idx': warmup_question_index,
+        'QUESTION_PER_TEST': WARMUP_QUESTION_PER_TEST,
+    }
+    
+    # Set modal context
+
+    if warmup_question_index <= WARMUP_MODE_THRESHOLD.MODE_1.value:
+        
+        get_mode_1_context(context, full_text, pos, status)
+
+    elif warmup_question_index <= WARMUP_MODE_THRESHOLD.MODE_2.value:
+        
+        get_mode_2_context(context, full_text, pos, status)
+
+    elif warmup_question_index <= WARMUP_MODE_THRESHOLD.MODE_3.value:
+        
+        get_mode_3_context(context, full_text, pos, status)
+
+    elif warmup_question_index <= WARMUP_MODE_THRESHOLD.MODE_4.value:
+
+        get_mode_4_context(context, full_text, pos, status)
+
+    elif warmup_question_index <= WARMUP_MODE_THRESHOLD.MODE_5.value:
+
+        get_mode_5_context(context, full_text, pos, status)
+
+    elif warmup_question_index <= WARMUP_MODE_THRESHOLD.MODE_6.value:
+
+        get_mode_6_context(context, full_text, pos, status)
+
+    else:
+
+        return redirect('home')
+
+    context['mode_label'] = mode_labels[context['mode']]
+    context['mode_description'] = mode_descriptions[context['mode']]
+
+    # Process the POST request
+    if request.method == 'POST':
+
+        form = ActivityForm(request.POST)
+
+        if form.is_valid():
+            
+
+            activity = form.save(commit=False)
+            #activity.save()
+
+            request.session['selected_button'] = activity.name          
+
+            if activity.name == "SKIP":
+
+                request.user.profile.last_seen_warmup_idx += 1
+                request.user.profile.save()
+
+                return redirect('warmup_question')
+
+            elif activity.name == "INDECISIVE":
+                pass
+
+            elif activity.name == "ADJACENT" or activity.name == "SEPARATE": 
+
+                if activity.name == status:
+
+                    request.session['answer'] = True
+
+
+                else:
+                    request.session['answer'] = False
+
+            request.user.profile.last_seen_warmup_idx += 1
+            request.user.profile.save()
+            return redirect('warmup_answer')
+    else:
+
+        # Pass the context to answer page
+        request.session['context'] = context
+
+        form = ActivityForm()
+
+    return render(request, 'game/warmup_question.html',context)
+    
+
+
+def warmup_answer(request):
+
+    # Get the question context
+    context = request.session.get('context')
+
+    warmup_question_index = request.user.profile.last_seen_warmup_idx - 1
+
+    full_text, status, clitic, pos = get_warmup_question_context(warmup_question_index)
+
+    first_answer_text, highlighted_answer_text, second_answer_text = get_answer_text(full_text, pos, status)
+
+    context['first_answer_text'] = first_answer_text
+    context['highlighted_answer_text'] = highlighted_answer_text
+    context['second_answer_text'] = second_answer_text
+    context['answer'] = request.session.get('answer') 
+    context['selected_button'] = request.session.get('selected_button') 
+
+
+    if request.method == 'POST':
+
+        form = ReportForm(request.POST)
+
+        if form.is_valid():
+
+            return redirect('warmup_question')
+
+    else:
+
+        form = ReportForm()
+
+
+    return render(request, 'game/warmup_answer.html', context)
+
     
 def get_sentence(sentence_idx):
 
