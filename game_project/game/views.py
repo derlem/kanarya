@@ -18,6 +18,7 @@ NUM_OF_PROF_QUESTIONS = 5
 
 ### Warmup parameters
 
+WARMUP_QUESTION_NUM_MODE_0 = 1
 WARMUP_QUESTION_NUM_MODE_1 = 1
 WARMUP_QUESTION_NUM_MODE_2 = 1
 WARMUP_QUESTION_NUM_MODE_3 = 1
@@ -25,7 +26,8 @@ WARMUP_QUESTION_NUM_MODE_4 = 1
 WARMUP_QUESTION_NUM_MODE_5 = 1
 WARMUP_QUESTION_NUM_MODE_6 = 1
 
-WARMUP_QUESTION_PER_TEST =(WARMUP_QUESTION_NUM_MODE_1 +
+WARMUP_QUESTION_PER_TEST =(WARMUP_QUESTION_NUM_MODE_0 +
+                    WARMUP_QUESTION_NUM_MODE_1 +
                     WARMUP_QUESTION_NUM_MODE_2 + 
                     WARMUP_QUESTION_NUM_MODE_3 +
                     WARMUP_QUESTION_NUM_MODE_4 + 
@@ -33,17 +35,18 @@ WARMUP_QUESTION_PER_TEST =(WARMUP_QUESTION_NUM_MODE_1 +
                     WARMUP_QUESTION_NUM_MODE_6)
 
 class WARMUP_MODE_THRESHOLD(Enum):
-    MODE_1 = WARMUP_QUESTION_NUM_MODE_1
-    MODE_2 = WARMUP_QUESTION_NUM_MODE_1 + WARMUP_QUESTION_NUM_MODE_2
-    MODE_3 = WARMUP_QUESTION_NUM_MODE_1 + WARMUP_QUESTION_NUM_MODE_2 + WARMUP_QUESTION_NUM_MODE_3
-    MODE_4 = WARMUP_QUESTION_NUM_MODE_1 + WARMUP_QUESTION_NUM_MODE_2 + WARMUP_QUESTION_NUM_MODE_3 + WARMUP_QUESTION_NUM_MODE_4
-    MODE_5 = WARMUP_QUESTION_NUM_MODE_1 + WARMUP_QUESTION_NUM_MODE_2 + WARMUP_QUESTION_NUM_MODE_3 + WARMUP_QUESTION_NUM_MODE_4 + WARMUP_QUESTION_NUM_MODE_5
-    MODE_6 = WARMUP_QUESTION_NUM_MODE_1 + WARMUP_QUESTION_NUM_MODE_2 + WARMUP_QUESTION_NUM_MODE_3 + WARMUP_QUESTION_NUM_MODE_4 + WARMUP_QUESTION_NUM_MODE_5 + WARMUP_QUESTION_NUM_MODE_6
-
+    MODE_0 = WARMUP_QUESTION_NUM_MODE_0
+    MODE_1 = WARMUP_QUESTION_NUM_MODE_0 + WARMUP_QUESTION_NUM_MODE_1
+    MODE_2 = WARMUP_QUESTION_NUM_MODE_0 + WARMUP_QUESTION_NUM_MODE_1 + WARMUP_QUESTION_NUM_MODE_2
+    MODE_3 = WARMUP_QUESTION_NUM_MODE_0 + WARMUP_QUESTION_NUM_MODE_1 + WARMUP_QUESTION_NUM_MODE_2 + WARMUP_QUESTION_NUM_MODE_3
+    MODE_4 = WARMUP_QUESTION_NUM_MODE_0 + WARMUP_QUESTION_NUM_MODE_1 + WARMUP_QUESTION_NUM_MODE_2 + WARMUP_QUESTION_NUM_MODE_3 + WARMUP_QUESTION_NUM_MODE_4
+    MODE_5 = WARMUP_QUESTION_NUM_MODE_0 + WARMUP_QUESTION_NUM_MODE_1 + WARMUP_QUESTION_NUM_MODE_2 + WARMUP_QUESTION_NUM_MODE_3 + WARMUP_QUESTION_NUM_MODE_4 + WARMUP_QUESTION_NUM_MODE_5
+    MODE_6 = WARMUP_QUESTION_NUM_MODE_0 + WARMUP_QUESTION_NUM_MODE_1 + WARMUP_QUESTION_NUM_MODE_2 + WARMUP_QUESTION_NUM_MODE_3 + WARMUP_QUESTION_NUM_MODE_4 + WARMUP_QUESTION_NUM_MODE_5 + WARMUP_QUESTION_NUM_MODE_6
 
 
 ### Main experiment parameters
 
+QUESTION_NUM_MODE_0 = 5
 QUESTION_NUM_MODE_1 = 5
 QUESTION_NUM_MODE_2 = 5
 QUESTION_NUM_MODE_3 = 5
@@ -51,7 +54,8 @@ QUESTION_NUM_MODE_4 = 5
 QUESTION_NUM_MODE_5 = 5
 QUESTION_NUM_MODE_6 = 5
 
-QUESTION_PER_TEST =(QUESTION_NUM_MODE_1 +
+QUESTION_PER_TEST =(QUESTION_NUM_MODE_0 +
+                    QUESTION_NUM_MODE_1 +
                     QUESTION_NUM_MODE_2 + 
                     QUESTION_NUM_MODE_3 +
                     QUESTION_NUM_MODE_4 + 
@@ -59,6 +63,7 @@ QUESTION_PER_TEST =(QUESTION_NUM_MODE_1 +
                     QUESTION_NUM_MODE_6)
 
 mode_labels = {
+    'MODE_0': 'SEVİYE 0',
     'MODE_1': 'SEVİYE 1',
     'MODE_2': 'SEVİYE 2',
     'MODE_3': 'SEVİYE 3',
@@ -68,21 +73,23 @@ mode_labels = {
 }
 
 mode_descriptions = {
-    'MODE_1': 'Bu soru tipinde cümledeki bir kelime rastgele silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
-    'MODE_2': 'Bu soru tipinde cümledeki "de/da" ek ya da bağlacından sonraki tüm kelimeler silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
-    'MODE_3': 'Bu soru tipinde cümledeki "de/da" ek ya da bağlacından önceki tüm kelimeler (bir önceki kelime dışında) silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
-    'MODE_4': 'Bu soru tipinde cümledeki "de/da" ek ya da bağlacından önceki tüm kelimeler silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
-    'MODE_5': 'Bu soru tipinde cümledeki "de/da" ek ya da bağlacından bir önceki kelime ve sonraki tüm kelimeler silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
-    'MODE_6': 'Bu soru tipinde cümledeki bir kelime dışındaki tüm sözcükler silinir. Sizin elinizdeki kelime ile "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
+    'MODE_0': 'Bu soru tipinde cümledeki hiçbir kelime silinmez. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
+    'MODE_1': 'Bu soru tipinde cümledeki bir kelime rastgele silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir. "_____" işaretlenen kısımda sadece bir sözcük silinmiştir.',
+    'MODE_2': 'Bu soru tipinde cümledeki "de/da" ek ya da bağlacından sonraki tüm kelimeler silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir. "* * *" işaretlenen kısımda bir ya da birden fazla sözcük silinmiştir.',
+    'MODE_3': 'Bu soru tipinde cümledeki "de/da" ek ya da bağlacından önceki tüm kelimeler (bir önceki kelime dışında) silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir. "* * *" işaretlenen kısımda bir ya da birden fazla sözcük silinmiştir.',
+    'MODE_4': 'Bu soru tipinde cümledeki "de/da" ek ya da bağlacından önceki tüm kelimeler silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir. "_____" işaretlenen kısımda sadece bir sözcük silinmiştir. "* * *" işaretlenen kısımda bir ya da birden fazla sözcük silinmiştir.',
+    'MODE_5': 'Bu soru tipinde cümledeki "de/da" ek ya da bağlacından bir önceki kelime ve sonraki tüm kelimeler silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir. "_____" işaretlenen kısımda sadece bir sözcük silinmiştir. "* * *" işaretlenen kısımda bir ya da birden fazla sözcük silinmiştir.',
+    'MODE_6': 'Bu soru tipinde cümledeki bir kelime dışındaki tüm sözcükler silinir. Sizin elinizdeki kelime ile "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir. "_____" işaretlenen kısımda sadece bir sözcük silinmiştir.',
 }
 
 class MODE_THRESHOLD(Enum):
-    MODE_1 = QUESTION_NUM_MODE_1
-    MODE_2 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2
-    MODE_3 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3
-    MODE_4 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4
-    MODE_5 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4 + QUESTION_NUM_MODE_5
-    MODE_6 = QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4 + QUESTION_NUM_MODE_5 + QUESTION_NUM_MODE_6
+    MODE_0 = QUESTION_NUM_MODE_0
+    MODE_1 = QUESTION_NUM_MODE_0 + QUESTION_NUM_MODE_1
+    MODE_2 = QUESTION_NUM_MODE_0 + QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2
+    MODE_3 = QUESTION_NUM_MODE_0 + QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3
+    MODE_4 = QUESTION_NUM_MODE_0 + QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4
+    MODE_5 = QUESTION_NUM_MODE_0 + QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4 + QUESTION_NUM_MODE_5
+    MODE_6 = QUESTION_NUM_MODE_0 + QUESTION_NUM_MODE_1 + QUESTION_NUM_MODE_2 + QUESTION_NUM_MODE_3 + QUESTION_NUM_MODE_4 + QUESTION_NUM_MODE_5 + QUESTION_NUM_MODE_6
 
 def welcome(request):
 
@@ -102,11 +109,9 @@ def home(request):
 
     request.session['go_next_question'] = True
 
-    is_prof_done = request.user.profile.is_prof_done
-
     context = {
 
-        "is_prof_done": is_prof_done
+        "is_warmup_done": request.user.profile.is_warmup_done
 
     }
 
@@ -128,7 +133,15 @@ def question(request):
 
     # A temporary workaround to solve the alignment of long sentences
     while len(sentence.text) > 200:
-        print("Long sentence avoided. Length: " + str(sentence.text))
+        print("Long sentence avoided.")
+        request.user.profile.last_seen_sentence_idx  += 1
+        request.user.profile.save()
+        last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
+        sentence = get_sentence(last_seen_sentence_idx + 1)
+
+    # Another temporary workaround: Do not show the sentences whose dedaword is in the first position
+    while sentence.pos <= 1:
+        print("Left arrow avoided. ")
         request.user.profile.last_seen_sentence_idx  += 1
         request.user.profile.save()
         last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
@@ -159,7 +172,12 @@ def question(request):
     
     # Set modal context
 
-    if request.session['question_idx'] <= MODE_THRESHOLD.MODE_1.value:
+
+    if request.session['question_idx'] <= MODE_THRESHOLD.MODE_0.value:
+        
+        get_mode_0_context(context, full_text, pos, status)
+
+    elif request.session['question_idx'] <= MODE_THRESHOLD.MODE_1.value:
         
         get_mode_1_context(context, full_text, pos, status)
 
@@ -533,7 +551,11 @@ def warmup_question(request):
     
     # Set modal context
 
-    if warmup_question_index <= WARMUP_MODE_THRESHOLD.MODE_1.value:
+    if warmup_question_index <= WARMUP_MODE_THRESHOLD.MODE_0.value:
+        
+        get_mode_0_context(context, full_text, pos, status)
+
+    elif warmup_question_index <= WARMUP_MODE_THRESHOLD.MODE_1.value:
         
         get_mode_1_context(context, full_text, pos, status)
 
@@ -719,16 +741,38 @@ def get_adjacent(full_text, pos, status):
     else:
         return words[pos]
 
-"""
-def set_hints(hint_list, hint_count, full_text, pos):
-    
-    words = full_text.split()
-    hint_start_idx = pos + 1
-    hint_end_idx = hint_start_idx + hint_count + 1
 
-    for word in words[hint_start_idx:hint_end_idx]:
-        hint_list.append(word)
-"""
+def get_mode_0_context(context, full_text, pos, status):
+
+    print(full_text)
+
+    tokens = full_tokenize(full_text, pos, status)
+
+    if status  == "ADJACENT":
+        pos += 1
+
+    first_text, second_text = "",""
+
+    for token in tokens[:pos-1]:
+        first_text += " " + token
+    first_text = first_text[1:]
+
+    for token in tokens[pos+1:]:
+        second_text += " " + token
+    second_text = second_text[1:]
+
+    deda_separate = tokens[pos-1] + " " + tokens[pos]
+    deda_adjacent = tokens[pos-1] + tokens[pos]
+
+    context['first_text'] = first_text
+    context['second_text'] = second_text
+    context['deda_separate'] = deda_separate
+    context['deda_adjacent'] = deda_adjacent
+
+
+    context['mode'] = 'MODE_0'
+    return context
+
 
 def get_mode_1_context(context, full_text, pos, status):
 

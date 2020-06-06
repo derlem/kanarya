@@ -28,14 +28,14 @@
 
                     {% with ''|center:question_idx as range %}
                         {% for bar in range %}
-                            <div class="progress-bar" role="progressbar" style="width:3.33%; background-color: #8e44ad  !important;">|</div>
+                            <div class="progress-bar" role="progressbar" style="width:2.85%; background-color: #8e44ad  !important;">|</div>
                         {% endfor %}
                     {% endwith %}
 
                 {% else %}
 
                     {% for i in '01234'|make_list %}
-                        <div class="progress-bar" role="progressbar" style="width:3.33%;  background-color: #8e44ad  !important;">|</div>
+                        <div class="progress-bar" role="progressbar" style="width:2.85%;  background-color: #8e44ad  !important;">|</div>
                     {% endfor %}
 
                 {% endif %}
@@ -52,7 +52,7 @@
 
                         {% with ''|center:bar_num as range %}
                             {% for bar in range %}
-                                <div class="progress-bar" role="progressbar" style="width:3.33%;  background-color: #2a4ff6  !important;">|</div>
+                                <div class="progress-bar" role="progressbar" style="width:2.85%;  background-color: #2a4ff6  !important;">|</div>
                             {% endfor %}
                         {% endwith %}
 
@@ -63,7 +63,7 @@
                 {% else %}
                     
                     {% for i in '01234'|make_list %}
-                        <div class="progress-bar" role="progressbar" style="width:3.33%;  background-color: #2a4ff6  !important;">|</div>
+                        <div class="progress-bar" role="progressbar" style="width:2.85%;  background-color: #2a4ff6  !important;">|</div>
                     {% endfor %}
 
                 {% endif %}
@@ -81,7 +81,7 @@
 
                         {% with ''|center:bar_num as range %}
                             {% for bar in range %}
-                                <div class="progress-bar bg-success" role="progressbar" style="width:3.33%;  background-color: #239b56  !important;">|</div>
+                                <div class="progress-bar bg-success" role="progressbar" style="width:2.85%;  background-color: #239b56  !important;">|</div>
                             {% endfor %}
                         {% endwith %}
 
@@ -92,7 +92,7 @@
                 {% else %}
                     
                     {% for i in '01234'|make_list %}
-                        <div class="progress-bar bg-success" role="progressbar" style="width:3.33%;  background-color: #239b56  !important;">|</div>
+                        <div class="progress-bar bg-success" role="progressbar" style="width:2.85%;  background-color: #239b56  !important;">|</div>
                     {% endfor %}
 
                 {% endif %}
@@ -110,7 +110,7 @@
 
                         {% with ''|center:bar_num as range %}
                             {% for bar in range %}
-                                <div class="progress-bar progress-bar-success" role="progressbar" style="width:3.33%;  background-color: #f4d03f  !important;">|</div>
+                                <div class="progress-bar progress-bar-success" role="progressbar" style="width:2.85%;  background-color: #f4d03f  !important;">|</div>
                             {% endfor %}
                         {% endwith %}
 
@@ -121,7 +121,7 @@
                 {% else %}
                     
                     {% for i in '01234'|make_list %}
-                        <div class="progress-bar progress-bar-success" role="progressbar" style="width:3.33%;  background-color: #f4d03f  !important;">|</div>
+                        <div class="progress-bar progress-bar-success" role="progressbar" style="width:2.85%;  background-color: #f4d03f  !important;">|</div>
                     {% endfor %}
 
                 {% endif %}
@@ -139,7 +139,7 @@
 
                         {% with ''|center:bar_num as range %}
                             {% for bar in range %}
-                                <div class="progress-bar bg-warning" role="progressbar" style="width:3.33%;  background-color: #e67e22
+                                <div class="progress-bar bg-warning" role="progressbar" style="width:2.85%;  background-color: #e67e22
       !important;">|</div>
                             {% endfor %}
                         {% endwith %}
@@ -151,7 +151,7 @@
                 {% else %}
                     
                     {% for i in '01234'|make_list %}
-                        <div class="progress-bar bg-warning" role="progressbar" style="width:3.33%;  background-color: #e67e22
+                        <div class="progress-bar bg-warning" role="progressbar" style="width:2.85%;  background-color: #e67e22
       !important;">|</div>
                     {% endfor %}
 
@@ -170,7 +170,7 @@
 
                         {% with ''|center:bar_num as range %}
                             {% for bar in range %}
-                                <div class="progress-bar bg-danger" role="progressbar" style="width:3.33%;  background-color: red  !important;">|</div>
+                                <div class="progress-bar bg-danger" role="progressbar" style="width:2.85%;  background-color: red  !important;">|</div>
                             {% endfor %}
                         {% endwith %}
 
@@ -181,7 +181,36 @@
                 {% else %}
                     
                     {% for i in '01234'|make_list %}
-                        <div class="progress-bar bg-danger" role="progressbar" style="width:3.33%   ; background-color: red  !important;">|</div>
+                        <div class="progress-bar bg-danger" role="progressbar" style="width:2.85%   ; background-color: red  !important;">|</div>
+                    {% endfor %}
+
+                {% endif %}
+
+
+            {% endif %}
+
+            {% if question_idx > 30 %}
+
+               
+                {% if question_idx <= 35 %}
+
+                    
+                    {% with bar_num=question_idx|add:"-30" %}
+
+                        {% with ''|center:bar_num as range %}
+                            {% for bar in range %}
+                                <div class="progress-bar bg-danger" role="progressbar" style="width:2.85%;  background-color: #b40000  !important;">|</div>
+                            {% endfor %}
+                        {% endwith %}
+
+
+                    {% endwith %}
+
+                    
+                {% else %}
+                    
+                    {% for i in '01234'|make_list %}
+                        <div class="progress-bar bg-danger" role="progressbar" style="width:2.85%   ; background-color: #b40000  !important;">|</div>
                     {% endfor %}
 
                 {% endif %}
@@ -220,7 +249,35 @@
 
                 <p style="font-size:30px">
 
-                    {% if mode == "MODE_1" %}
+                    {% if mode == "MODE_0" %}
+
+                        <div class='branch_view'>
+
+                            <div class='left_container'>
+                                <span class='left_text text'>{{first_text}}</span>
+                            </div>
+
+                                <div class='right_container'>
+                                    
+                                    
+                                    <div class='small_container'>     
+                                        <span><b>&#8599;   {{deda_adjacent}}   &#8600;</b></span>            
+                                    </div>
+                                    <div class='small_container'>
+
+                                        <span><b>&#8600;   {{deda_separate}}   &#8599;</b></span>
+                                                              
+                                    </div>
+                                    
+                                </div>
+
+                            <div class='left_container'>
+                                <span class='left_text text'>{{second_text}}</span>
+                            </div>
+                            
+                        </div>
+
+                    {% elif mode == "MODE_1" %}
 
                         {% if type == "TYPE_1" %}
 
@@ -614,6 +671,7 @@
 
     </div>
 
+    
     
 
     

@@ -178,7 +178,7 @@ a.article-title:hover {
 
 }
 
-.reportdiv{
+.reportdiv{ 
 
   position: absolute;
   top: 700px;
@@ -407,3 +407,4 @@ tr:nth-child(even) {
 .progress-bar-orange {
       background-color: orange !important;
 }
+
