@@ -8,7 +8,7 @@ import linecache
 import random
 #import distutils
 import os
-from .forms import ActivityForm, ReportForm, ProfForm
+from .forms import ActivityForm, ReportForm#, ProfForm
 
 from .models import Sentence, Question, Activity, Decision, Report
 
@@ -98,8 +98,8 @@ def welcome(request):
 @login_required
 def home(request):
 
-    if request.user.profile.is_prof_done == False:
-        return redirect('proficiency')
+    #if request.user.profile.is_prof_done == False:
+    #    return redirect('proficiency')
 
     # Set new test settings
     request.session['question_idx'] = 1
@@ -376,6 +376,7 @@ def answer(request):
 
     return render(request, 'game/answer.html', context)
 
+"""
 @login_required
 def proficiency(request):
 
@@ -413,13 +414,7 @@ def proficiency(request):
             request.user.profile.last_seen_prof_idx += 1
             request.user.profile.save()
 
-            """
-            if answer == condition:
-                messages.success(request, f'Doğru Cevap')
-            else:
-                messages.error(request, f'Yanlış Cevap')
-            """
-
+            
             return redirect('proficiency')
 
     else:
@@ -469,7 +464,7 @@ def get_prof_question_context(question_index):
 
     return labeled_words,  condition
 
-
+"""
 
 
 @login_required

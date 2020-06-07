@@ -17,7 +17,8 @@ class ReportForm(forms.ModelForm):
 		model = Report
 		fields = ['text']
 
+"""
 class ProfForm(forms.Form):
 
 	answer = forms.CharField(max_length=5) # True or False
-
+"""
