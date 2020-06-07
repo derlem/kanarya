@@ -1,6 +1,13 @@
 {% extends 'game/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
+
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 	
 	<main role="main" class="container" >
 	  <div class="row">
@@ -22,6 +29,57 @@
 					</div>
 					
 				</form>
+
+				 <!-- The Modal -->
+				<div class="modal" id="onamModal">
+				  <div class="modal-dialog modal-lg">
+				    <div class="modal-content">
+				      
+				      <!-- Modal Header -->
+				      <div class="modal-header">
+				        <h4 class="modal-title">Onam Formu</h4>
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				      </div>
+				        
+				      <!-- Modal body -->
+				      <div class="modal-body">
+				      	<p>
+					        Bu araştırmada Türkçede sıklıkla rastlanan “de/da” bağlacı ve  “-de/da” eklerinin hatalı yazılma halini tespit etmek için veriye dayalı olarak geliştirmiş olduğumuz modelin nasıl çalıştığını daha iyi anlamayı hedefliyoruz. Bunun için size  “de/da”  bağlacı ve/veya eki içeren cümlelerin bir kısmını göstererek sizden “de/da” nın bitişik mi ya da ayrı mı yazılması gerektiğini belirtmenizi isteyeceğiz. 
+					        <br>
+					        <br>
+					    	Sizi  “de/da”  bağlaç ve eki ile ilgili hataların otomatik tespiti için geliştirilmiş bir modelin  anlaşılması ile ilgili bir araştırmaya katılmaya davet ediyoruz. Bu çalışma bilimsel amaçlarla yapılmaktadır.
+					    	<br>
+					    	<br>
+					    	Çevrimiçi bir ortamda size  “de/da”  bağlacı ve/veya eki içeren belirli bir sayıda cümlenin bir kısmını göstererek sizden  “de/da”’nın bitişik mi veya ayrı mı yazılması gerektiğini belirtmenizi isteyeceğiz. 
+					    	<br>
+					        <br>
+							Cevap vermek istemediğiniz soruları atlayabilirsiniz. 
+							<br>
+					        <br>
+					    	Çalışma yaklaşık 15 dakika sürecektir. İsterseniz bitirdikten sonra da çözmeye devam edebilirsiniz. 
+					    	<br>
+					        <br>
+					    	Sizden toplanan veriler hiçbir durumda tek başına kullanılmayacak; birçok katılımcıdan gelen veriler grup halinde değerlendirilecektir. Veriler, kimden geldiğine dair hiçbir bilgiyle eşleştirilmeyecektir. Verileri işleyerek elde ettiğimiz sonuçlar anonim olarak açık bilim standartlarına uygun şekilde bilimsel yayınlarda paylaşılacaktır. 
+					    	<br>
+					        <br>
+					    	Çalışmaya katılmanız tamamen isteğe bağlıdır. Bu formu onaylasanız dahi kendinizi rahat hissetmediğiniz herhangi bir anda çalışmayı bırakabilirsiniz. Bu durumda hiçbir olumsuzluk ile karşılaşmayacaksınız ve sizden almış olduğumuz veri dilerseniz imha edilecektir. Bu araştırmaya katılımınız karşılığında size herhangi bir şey verilmeyecektir. Ancak, katılımcı olarak “de/da” denetleyicisini kullanabilir ve deneyde kullanılacak olan verdiğiniz yanıtları görebilirsiniz. Ayrıca, bu çalışmanın sonuçlarını görmek isterseniz bizden isteyebilirsiniz. Bu araştırmanın ileride diğer araştırmacılara ve bu alanda çalışan bireylere katkı yapması beklenmektedir. 
+					    	<br>
+					        <br>
+					    	Yapmak istediğimiz araştırmanın size herhangi bir riski yoktur. Bu formu onaylamadan önce sormak istediğiniz bir soru varsa lütfen Suzan Üsküdarlı  (E-mail:suzan.uskudarli@boun.edu.tr; 212-359-7682) ile iletişime geçiniz. Araştırmayla ilgili haklarınız konusunda Sosyal ve Beşeri Bilimler İnsan Araştırmaları Etik Kurulu’na (fminarek@boun.edu.tr ) ile temasa geçebilirsiniz. 
+					    	<br>
+					        <br>
+					    	Aşağıdaki “Kabul ediyorum” a tıklayarak yukarıdaki metni okuduğunuzu, katılmanız istenen çalışmanın kapsamını ve amacını, gönüllü olarak üzerinize düşen sorumlulukları tamamen anladığınızı ve  bu çalışmaya tamamen gönüllü olarak katılmayı kabul ettiğinizi teyit edebilirsiniz. Aksi takdirde “Kabul etmiyorum” a basabilirsiniz.
+				    	</p>
+					  </div>
+				        
+				      <!-- Modal footer -->
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat.</button>
+				      </div>
+				        
+				    </div>
+				  </div>
+				</div>
 
 				<div class="border-top pt-3">
 					<small class="text-muted">

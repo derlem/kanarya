@@ -7,7 +7,8 @@ from django.utils.safestring import mark_safe
 
 class UserRegisterForm(UserCreationForm):
 	email = forms.EmailField()
-	tos = forms.BooleanField(label=mark_safe('<a href="/onamformu" target="_blank">Onam Formu</a>nu okudum ve onaylıyorum.'))
+	#tos = forms.BooleanField(label=mark_safe('<a href="/onamformu" target="_blank">Onam Formu</a>nu okudum ve onaylıyorum.'))
+	tos = forms.BooleanField(label=mark_safe('<a type="button" style="color: blue" data-toggle="modal" data-target="#onamModal">Onam Formu</a>\'nu okudum ve onaylıyorum.'))
 
 	class Meta:
 		model = User
