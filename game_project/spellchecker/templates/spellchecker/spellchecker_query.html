@@ -5,16 +5,15 @@
 
 	<div class="spellchecker">
 
-		<h1>Yazım Denetleyicisi</h1>
+		<h1>de-da Yazım Denetleyicisi</h1>
 
 		<br>
 		<br>
-
 
 		<form method="POST">
         	{% csrf_token %}
 
-            <textarea  style="width: 80%;" name="sentence" rows="4" cols="50"  name="sentence" placeholder="Denemek için içinde de/da ek ya da bağlacı geçen bir cümle yazın..."></textarea>
+            <textarea  style="width: 80%;" name="sentence" rows="4" cols="50"  id="sentence" placeholder="Denemek için içinde de/da ek ya da bağlacı geçen bir cümle yazın..."></textarea>
 
 		    <!--<p>Cümle: <input style="width: 500px" type="text" name="sentence"></p>-->
 
@@ -24,6 +23,27 @@
 		    <p><input class="btn btn-outline-info mb-4" type="submit" value="Denetle"></p>
 		</form>
 
-	</div>
+    </div>
+
+  <div class="select-box">
+    
+    <label for="dropdown" class="label select-box1"><span class="label-desc">... ya da örnek bir cümle seçin.</span> </label>
+    <select id="dropdown" class="select">
+      <option value="Ekran da Tarkan'ı gören seyirciler çok heyecanlandı.">Ekran da Tarkan'ı gören seyirciler çok heyecanlandı.</option>
+      <option value="Gördük ki evden çıkmadanda hayat devam ediyor.">Gördük ki evden çıkmadanda hayat devam ediyor.</option>
+      <option value="Yazım denetleyicisini onlar da çok beğendi.">Yazım denetleyicisini onlar da çok beğendi.</option>
+    </select>
+    
+  </div>
+
+<script type="text/javascript">
+	
+var mytextbox = document.getElementById('sentence');
+var mydropdown = document.getElementById('dropdown');
+
+mydropdown.onchange = function(){
+     mytextbox.value = this.value;
+}
+</script>
 
 {% endblock content %}
