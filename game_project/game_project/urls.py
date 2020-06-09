@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from users import views as users_views
+from game import views as game_views
 from spellchecker import views as spellchecker_views
 
 urlpatterns = [
@@ -34,4 +35,5 @@ urlpatterns = [
     path('password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'), name='password_reset_complete'), 
     path('spellchecker/', include('spellchecker.urls')), 
     path('onamformu/', users_views.onamformu, name="onamformu"),
+    path('', game_views.welcome, name="welcome"),
 ]
