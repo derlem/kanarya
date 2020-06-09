@@ -148,10 +148,16 @@ def question(request):
         sentence = get_sentence(last_seen_sentence_idx + 1)
 
 
+    print("")
+    print(last_seen_sentence_idx)
+
     full_text = sentence.text
     status = sentence.status
     clitic = sentence.clitic
     pos = sentence.pos
+
+    #print(last_seen_sentence_idx)
+    #print(full_text)
 
     # Get Progress Info
     question_idx = request.session['question_idx']
@@ -321,6 +327,7 @@ def question(request):
 
         # Pass the context to answer page
         request.session['context'] = context
+        request.session['last_seen_sentence_idx'] = last_seen_sentence_idx
 
         form = ActivityForm()
 
@@ -333,15 +340,24 @@ def answer(request):
     # Get the question context
     context = request.session.get('context')
 
-    print(context)
+    #print(context)
+    print("")
 
-    last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
-    sentence = get_sentence(last_seen_sentence_idx)
+
+    #last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
+    #sentence = get_sentence(last_seen_sentence_idx )
+    last_seen_sentence_idx = request.session.get('last_seen_sentence_idx')
+    sentence = get_sentence(last_seen_sentence_idx + 1)
+    
+    print(last_seen_sentence_idx)
 
     full_text = sentence.text
     status = sentence.status
     clitic = sentence.clitic
     pos = sentence.pos
+
+    #print(last_seen_sentence_idx)
+    #print(full_text)
 
     first_answer_text, highlighted_answer_text, second_answer_text = get_answer_text(full_text, pos, status)
 
@@ -498,7 +514,7 @@ def stats(request):
 
     success_rate = round((correct_answer_count / decision_count), 2)*100
 
-    print(success_rate)
+    #print(success_rate)
 
     context = {
 
@@ -739,7 +755,7 @@ def get_adjacent(full_text, pos, status):
 
 def get_mode_0_context(context, full_text, pos, status):
 
-    print(full_text)
+    #print(full_text)
 
     tokens = full_tokenize(full_text, pos, status)
 
@@ -927,7 +943,7 @@ def get_mode_6_context(context, full_text, pos, status):
 
     # Do not forget to the record the relative_unmask_pos
 
-    print(full_text)
+    #print(full_text)
 
     if unmask_pos < pos:
         
@@ -939,11 +955,11 @@ def get_mode_6_context(context, full_text, pos, status):
             context['deda_separate'] = tokens[pos - 1] + " " + tokens[pos]
             context['second_masked_num'] = len(tokens) - pos - 1
 
-            print(context['type'])
-            print("first_masked_num: " + str(context['first_masked_num']))
-            print("deda_adjacent: " + context['deda_adjacent'])
-            print("deda_separate: " + context['deda_separate'])
-            print("second_masked_num: " + str(context['second_masked_num']))
+            #print(context['type'])
+            #print("first_masked_num: " + str(context['first_masked_num']))
+            #print("deda_adjacent: " + context['deda_adjacent'])
+            #print("deda_separate: " + context['deda_separate'])
+            #print("second_masked_num: " + str(context['second_masked_num']))
 
         else:
 
@@ -954,12 +970,12 @@ def get_mode_6_context(context, full_text, pos, status):
             context['clitic'] = tokens[pos]
             context['third_masked_num'] = len(tokens) - pos - 1
 
-            print(context['type'])
-            print("first_masked_num: " + str(context['first_masked_num']))
-            print("unmasked_word: " + context['unmasked_word'])
-            print("second_masked_num: " + str(context['second_masked_num']))
-            print("clitic: " + context['clitic'])
-            print("third_masked_num: " + str(context['third_masked_num']))
+            #print(context['type'])
+            #print("first_masked_num: " + str(context['first_masked_num']))
+            #print("unmasked_word: " + context['unmasked_word'])
+            #print("second_masked_num: " + str(context['second_masked_num']))
+            #print("clitic: " + context['clitic'])
+            #print("third_masked_num: " + str(context['third_masked_num']))
 
     else:
 
@@ -970,12 +986,12 @@ def get_mode_6_context(context, full_text, pos, status):
         context['unmasked_word'] = tokens[unmask_pos]
         context['third_masked_num'] = len(tokens) - unmask_pos - 1
 
-        print(context['type'])
-        print("first_masked_num: " + str(context['first_masked_num']))
-        print("clitic: " + context['clitic'])
-        print("second_masked_num: " + str(context['second_masked_num']))
-        print("unmasked_word: " + context['unmasked_word'])        
-        print("third_masked_num: " + str(context['third_masked_num']))
+        #print(context['type'])
+        #print("first_masked_num: " + str(context['first_masked_num']))
+        #print("clitic: " + context['clitic'])
+        #print("second_masked_num: " + str(context['second_masked_num']))
+        #print("unmasked_word: " + context['unmasked_word'])        
+        #print("third_masked_num: " + str(context['third_masked_num']))
 
     return context
 
