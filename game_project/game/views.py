@@ -148,16 +148,10 @@ def question(request):
         sentence = get_sentence(last_seen_sentence_idx + 1)
 
 
-    print("")
-    print(last_seen_sentence_idx)
-
     full_text = sentence.text
     status = sentence.status
     clitic = sentence.clitic
     pos = sentence.pos
-
-    #print(last_seen_sentence_idx)
-    #print(full_text)
 
     # Get Progress Info
     question_idx = request.session['question_idx']
@@ -214,7 +208,6 @@ def question(request):
         request.session['solved_question_num'] = 0
         request.session['success_rate'] = 0
 
-        #return render(request, 'game/test_end.html')
         return redirect('test_end')
 
     context['mode_label'] = mode_labels[context['mode']]
@@ -234,19 +227,20 @@ def question(request):
                 
                 question.save()
 
+
+            # This else statement seems redundant. Check!
             else:
                 question_pk = request.session.get('question_pk')
                 question = Question.objects.filter(pk=question_pk)[0]
 
+
             question.mode = context['mode']
             if context['mode'] == 'MODE_1':
-                question.relative_mask_pos = context['relative_mask_pos']
+                question.relative_mask_pos = request.session.get('relative_mask_pos')
 
             if context['mode'] == 'MODE_6':
-                question.relative_unmask_pos = context['relative_unmask_pos']
+                question.relative_unmask_pos = request.session.get('relative_unmask_pos')
             question.save()
-
-
 
             activity = form.save(commit=False)
             activity.question = question
@@ -329,6 +323,12 @@ def question(request):
         request.session['context'] = context
         request.session['last_seen_sentence_idx'] = last_seen_sentence_idx
 
+        if context['mode'] == 'MODE_1':
+            request.session['relative_mask_pos'] = context['relative_mask_pos']
+
+        if context['mode'] == 'MODE_6':
+            request.session['relative_unmask_pos'] = context['relative_unmask_pos']
+
         form = ActivityForm()
 
     return render(request, 'game/question.html',context)
@@ -340,24 +340,14 @@ def answer(request):
     # Get the question context
     context = request.session.get('context')
 
-    #print(context)
-    print("")
-
-
-    #last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
-    #sentence = get_sentence(last_seen_sentence_idx )
     last_seen_sentence_idx = request.session.get('last_seen_sentence_idx')
     sentence = get_sentence(last_seen_sentence_idx + 1)
     
-    print(last_seen_sentence_idx)
 
     full_text = sentence.text
     status = sentence.status
     clitic = sentence.clitic
     pos = sentence.pos
-
-    #print(last_seen_sentence_idx)
-    #print(full_text)
 
     first_answer_text, highlighted_answer_text, second_answer_text = get_answer_text(full_text, pos, status)
 
@@ -799,6 +789,9 @@ def get_mode_1_context(context, full_text, pos, status):
 
     relative_mask_pos = mask_pos - pos
     context['relative_mask_pos'] = relative_mask_pos
+    print("mask_pos: " + str(mask_pos))
+    print("pos: " + str(pos))
+    print("relative_mask_pos: " + str(relative_mask_pos))
 
     if mask_pos < pos:
         
