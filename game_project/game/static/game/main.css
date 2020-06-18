@@ -437,8 +437,8 @@ tr:nth-child(even) {
 
 .select {
   width: 100%;
-  position: absolute;
-  top: 0;
+  //position: absolute;
+  //top: 0;
   padding: 5px 0;
   height: 40px;
   opacity: 0;
