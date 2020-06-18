@@ -411,11 +411,11 @@ tr:nth-child(even) {
 
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
 
-body {
-  background: #ffffff; 
-  color: #414141;
-  font: 400 17px/2em 'Source Sans Pro', sans-serif;
-}
+//body {
+//  background: #ffffff; 
+//  color: #414141;
+//  font: 400 17px/2em 'Source Sans Pro', sans-serif;
+//}
 
 .select-box {
   cursor: pointer;
@@ -423,6 +423,7 @@ body {
   max-width:  20em;
   margin: 5em auto;
   width: 100%;
+
 }
 
 .select,
@@ -430,6 +431,8 @@ body {
   color: #414141;
   display: block;
   font: 400 17px/2em 'Source Sans Pro', sans-serif;
+  border-radius: 25px;
+  border: 2px solid #333333;
 }
 
 .select {
