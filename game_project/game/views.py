@@ -73,13 +73,13 @@ mode_labels = {
 }
 
 mode_descriptions = {
-    'MODE_0': 'Bu soru tipinde cümledeki hiçbir kelime silinmez. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir.',
-    'MODE_1': 'Bu soru tipinde cümledeki bir kelime rastgele silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir. "_____" işaretlenen kısımda sadece bir sözcük silinmiştir.',
-    'MODE_2': 'Bu soru tipinde cümledeki "de/da" ek ya da bağlacından sonraki tüm kelimeler silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir. "* * *" işaretlenen kısımda bir ya da birden fazla sözcük silinmiştir.',
-    'MODE_3': 'Bu soru tipinde cümledeki "de/da" ek ya da bağlacından önceki tüm kelimeler (bir önceki kelime dışında) silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir. "* * *" işaretlenen kısımda bir ya da birden fazla sözcük silinmiştir.',
-    'MODE_4': 'Bu soru tipinde cümledeki "de/da" ek ya da bağlacından önceki tüm kelimeler silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir. "_____" işaretlenen kısımda sadece bir sözcük silinmiştir. "* * *" işaretlenen kısımda bir ya da birden fazla sözcük silinmiştir.',
-    'MODE_5': 'Bu soru tipinde cümledeki "de/da" ek ya da bağlacından bir önceki kelime ve sonraki tüm kelimeler silinir. Sizin elinizdeki kelimelerle "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir. "_____" işaretlenen kısımda sadece bir sözcük silinmiştir. "* * *" işaretlenen kısımda bir ya da birden fazla sözcük silinmiştir.',
-    'MODE_6': 'Bu soru tipinde cümledeki bir kelime dışındaki tüm sözcükler silinir. Sizin elinizdeki kelime ile "de/da" ek ya da bağlacının doğru yazımını tahmin etmeniz gerekir. "_____" işaretlenen kısımda sadece bir sözcük silinmiştir.',
+    'MODE_0': 'Bu cümlede "de/da" ek ya da bağlacı doğru kullanılmış mıdır?',
+    'MODE_1': 'Bir kelimesi "_____" işaretiyle gizlenmiş olan bu cümlede "de/da" eki ya da bağlacı doğru kullanılmış mıdır?',
+    'MODE_2': '"de/da" ek ya da bağlacından sonraki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı doğru kullanılmış mıdır?',
+    'MODE_3': '"de/da" ek ya da bağlacı ile ilgili kelimeden önceki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı doğru kullanılmış mıdır?',
+    'MODE_4': '"de/da" ek ya da bağlacından önceki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı doğru kullanılmış mıdır?',
+    'MODE_5': '"de/da" ek ya da bağlacından bir önceki kelimeye ek olarak sonraki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı doğru kullanılmış mıdır?',
+    'MODE_6': '"de/da" ek ya da bağlacının dışındaki kelimelerden sadece biri hariç tümümün "_____" işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı doğru kullanılmış mıdır?',
 }
 
 class MODE_THRESHOLD(Enum):
