@@ -444,7 +444,7 @@ tr:nth-child(even) {
   opacity: 0;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   background: none transparent;
-  border: 0 none;
+  border: 20px none;
 }
 .select-box1 {
   background: #ececec;

@@ -1,0 +1,31 @@
+{% extends 'game/base.html' %}
+{% block content %}
+
+	
+	<div>
+
+		<table>
+		    <tr>
+		        <th>Index</th>
+		        <th>Mode N</th>
+		        <th>Decision Count</th>
+		        <th>Text</th>
+		    </tr>
+		    {% for sentence in sentences %}
+		    <tr> 
+		        <td>{{ sentence.index }}</td>
+		        <td>{{ sentence.mode }}</td>
+		        <td>{{ sentence.decision_count }}</td>
+		        <td>{{ sentence.text }}</td>
+		    </tr>
+		    {% endfor %}
+		</table>
+
+	</div>
+
+	
+	
+
+	
+	
+{% endblock content %}

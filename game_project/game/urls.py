@@ -18,5 +18,6 @@ urlpatterns = [
 	path('warmup_question/', views.warmup_question, name='warmup_question'),
 	path('warmup_answer/', views.warmup_answer, name='warmup_answer'),
 	path('warmup_end/', views.warmup_end, name='warmup_end'),
+	path('stats/sentencecounts', views.sentence_counts, name='sentence_counts'),
 
 ]
