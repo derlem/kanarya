@@ -408,3 +408,62 @@ tr:nth-child(even) {
       background-color: orange !important;
 }
 
+
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
+
+//body {
+//  background: #ffffff; 
+//  color: #414141;
+//  font: 400 17px/2em 'Source Sans Pro', sans-serif;
+//}
+
+.select-box {
+  cursor: pointer;
+  position : relative;
+  max-width:  20em;
+  margin: 5em auto;
+  width: 100%;
+
+}
+
+.select,
+.label {
+  color: #414141;
+  display: block;
+  font: 400 17px/2em 'Source Sans Pro', sans-serif;
+  border-radius: 25px;
+  border: 2px solid #333333;
+}
+
+.select {
+  width: 100%;
+  //position: absolute;
+  //top: 0;
+  padding: 5px 0;
+  height: 40px;
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  background: none transparent;
+  border: 0 none;
+}
+.select-box1 {
+  background: #ececec;
+}
+
+.label {
+  position: relative;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.open .label::after {
+   content: "▲";
+}
+.label::after {
+  content: "▼";
+  font-size: 12px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 5px 15px;
+  border-left: 5px solid #fff;
+}
