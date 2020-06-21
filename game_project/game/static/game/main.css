@@ -466,6 +466,6 @@ tr:nth-child(even) {
 .spellchecker_query {
 
   width: 80%;
-  font-size:25px;
+  font-size:3vh;
   font-family: "Courier New", Courier, monospace;
 }
