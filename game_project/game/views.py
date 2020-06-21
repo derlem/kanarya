@@ -18,7 +18,9 @@ from django.core.paginator import Paginator
 
 NUM_OF_PROF_QUESTIONS = 5
 
-SENTENCE_SEEN_LIMIT = 3
+MODE_1_DECISION_LIMIT = 5
+MODE_6_DECISION_LIMIT = 5
+GENERAL_DECISION_LIMIT = 3
 
 ### Warmup parameters
 
@@ -629,7 +631,13 @@ def warmup_end(request):
     
 def get_sentence(next_sentence_idx, mode):
 
-    sentence = Sentence.objects.all().filter(mode=mode, decision_count__lt=SENTENCE_SEEN_LIMIT)[next_sentence_idx]
+    sentence = ""
+    if mode == 'MODE_1':
+        sentence = Sentence.objects.all().filter(mode=mode, decision_count__lt=MODE_1_DECISION_LIMIT)[next_sentence_idx]
+    elif mode =='MODE_6':
+        sentence = Sentence.objects.all().filter(mode=mode, decision_count__lt=MODE_6_DECISION_LIMIT)[next_sentence_idx]
+    else:
+        sentence = Sentence.objects.all().filter(mode=mode, decision_count__lt=GENERAL_DECISION_LIMIT)[next_sentence_idx]
     #sentence = Sentence.objects.all()[sentence_idx]
     print("Sentence " + str(sentence.index) + " : Decision Count: "  + str(sentence.decision_count))
     
@@ -1003,8 +1011,13 @@ def get_next_sentence_idx(last_seen_sentence_idx, mode):
     num_of_tests_solved = last_seen_sentence_idx // QUESTION_PER_TEST
     num_of_questions_solved_for_curr_mode = 5 * num_of_tests_solved + current_mode_idx
 
-    num_of_overlimit_sentences_for_curr_mode = len(Sentence.objects.all().filter(mode=mode, decision_count__gte=SENTENCE_SEEN_LIMIT))
-    #next_question_idx = num_of_questions_solved_for_curr_mode - num_of_overlimit_sentences_for_curr_mode
+    if mode == 'MODE_1':
+        num_of_overlimit_sentences_for_curr_mode = len(Sentence.objects.all().filter(mode=mode, decision_count__gte=MODE_1_DECISION_LIMIT))
+    elif mode == 'MODE_6':
+        num_of_overlimit_sentences_for_curr_mode = len(Sentence.objects.all().filter(mode=mode, decision_count__gte=MODE_6_DECISION_LIMIT))
+    else:
+        num_of_overlimit_sentences_for_curr_mode = len(Sentence.objects.all().filter(mode=mode, decision_count__gte=GENERAL_DECISION_LIMIT))
+
 
     if num_of_questions_solved_for_curr_mode >= num_of_overlimit_sentences_for_curr_mode:
         next_question_idx = num_of_questions_solved_for_curr_mode - num_of_overlimit_sentences_for_curr_mode
