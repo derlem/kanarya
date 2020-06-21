@@ -14,6 +14,8 @@ from .models import Sentence, Question, Activity, Decision, Report
 
 from enum import Enum
 
+from django.core.paginator import Paginator
+
 NUM_OF_PROF_QUESTIONS = 5
 
 SENTENCE_SEEN_LIMIT = 3
@@ -451,8 +453,18 @@ def sentence_counts(request):
 
     sentences = Sentence.objects.all().order_by('-decision_count')
 
+    paginator = Paginator(sentences, 50) # Show 25 contacts per page.
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    """
     context = {
         'sentences': sentences
+    }
+    """
+    context = {
+        'page_obj': page_obj
     }
 
     return render(request, 'game/sentence_counts.html', context)
