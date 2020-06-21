@@ -742,8 +742,10 @@ def get_mode_1_context(context, full_text, pos, status):
     if status  == "ADJACENT":
         pos += 1
 
+    possible_positions = [-3,-2,-1,1,2,3]
+
     mask_pos = random.randint(0, len(tokens)-1)
-    # Do not mask the clitic
+    # If you mask the clitic, reshuffle
     while(mask_pos == pos):
         mask_pos = random.randint(0, len(tokens)-1)
 
@@ -885,12 +887,20 @@ def get_mode_6_context(context, full_text, pos, status):
     if status  == "ADJACENT":
         pos += 1
 
-    unmask_pos = random.randint(0, len(tokens)-1)
-    # Do not unmask the clitic, it will be visible in any case
-    while(unmask_pos == pos):
-        unmask_pos = random.randint(0, len(tokens)-1)
+    possible_relative_unmask_positions = [-3,-2,-1,1,2,3]
 
+    unmask_pos = random.randint(0, len(tokens)-1)
     relative_unmask_pos = unmask_pos - pos
+    print("UnMask pos: "  + str(unmask_pos))
+    print("Relative_unmask_pos: "  + str(relative_unmask_pos))
+    # Do not unmask the clitic, it will be visible in any case
+    while(unmask_pos == pos or relative_unmask_pos not in possible_relative_unmask_positions):
+        print("Relative_unmask_pos: " + str(relative_unmask_pos) + " not allowed.")
+        unmask_pos = random.randint(0, len(tokens)-1)
+        relative_unmask_pos = unmask_pos - pos
+
+    print("Final relative_unmask_pos: " + str(relative_unmask_pos))
+    #relative_unmask_pos = unmask_pos - pos
     context['relative_unmask_pos'] = relative_unmask_pos
     context['mode'] = 'MODE_6'
 
