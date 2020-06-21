@@ -15,6 +15,7 @@ RUN pip install -r requirements-phase1.txt
 
 RUN pip install -r requirements-phase2.txt
 
-# RUN python manage.py migrate
+RUN python manage.py migrate --noinput
 
 # RUN python manage.py createsuperuser
+# Run with docker exec -it ${container_name} python manage.py createsuperuser
