@@ -16,7 +16,7 @@ from enum import Enum
 
 NUM_OF_PROF_QUESTIONS = 5
 
-SENTENCE_SEEN_LIMIT = 2
+SENTENCE_SEEN_LIMIT = 3
 
 ### Warmup parameters
 
