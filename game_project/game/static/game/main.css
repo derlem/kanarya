@@ -409,21 +409,12 @@ tr:nth-child(even) {
 }
 
 
-@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
-
-//body {
-//  background: #ffffff; 
-//  color: #414141;
-//  font: 400 17px/2em 'Source Sans Pro', sans-serif;
-//}
-
 .select-box {
   cursor: pointer;
   position : relative;
   max-width:  20em;
   margin: 5em auto;
   width: 100%;
-
 }
 
 .select,
@@ -431,20 +422,18 @@ tr:nth-child(even) {
   color: #414141;
   display: block;
   font: 400 17px/2em 'Source Sans Pro', sans-serif;
-  border-radius: 25px;
-  border: 2px solid #333333;
 }
 
 .select {
   width: 100%;
-  //position: absolute;
-  //top: 0;
+  position: absolute;
+  top: 0;
   padding: 5px 0;
   height: 40px;
   opacity: 0;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   background: none transparent;
-  border: 20px none;
+  border: 0 none;
 }
 .select-box1 {
   background: #ececec;
@@ -466,4 +455,17 @@ tr:nth-child(even) {
   top: 0;
   padding: 5px 15px;
   border-left: 5px solid #fff;
+} 
+
+.spellchecker_answer {
+
+  font-family: "Courier New", Courier, monospace;
+  text-align: center;
+}
+
+.spellchecker_query {
+
+  width: 80%;
+  font-size:25px;
+  font-family: "Courier New", Courier, monospace;
 }
