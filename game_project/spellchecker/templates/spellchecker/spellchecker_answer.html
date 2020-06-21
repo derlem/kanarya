@@ -9,17 +9,17 @@
         <br>
         <br>
 
-        <div >
+        <div class="spellchecker_answer">
 
             {% for entry in labeled_words %}
 
                 {% if entry.label == True %}
 
-                    <span style="background: #f06b81; font-size:25px">{{entry.word}}</span>
+                    <span style="background: #f06b81; font-size:25px" >{{entry.word}}</span>
 
                 {% else %}
 
-                    <span style="font-size:30px">{{entry.word}}</span>
+                    <span style="font-size:25px">{{entry.word}}</span>
 
                 {% endif %}
 

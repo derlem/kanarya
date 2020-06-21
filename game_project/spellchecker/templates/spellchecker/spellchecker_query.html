@@ -7,11 +7,13 @@
 
 		<h1>-de/-da Yazım Hatası Bulucu</h1>
 
+		<br>
+        <br>
 
 		<form method="POST">
         	{% csrf_token %}
 
-            <textarea  style="width: 80%; font-size:18px" name="sentence" rows="4" cols="50"  id="sentence" placeholder="Denemek için içinde de/da ek ya da bağlacı geçen bir cümle yazın..."></textarea>
+            <textarea  class="spellchecker_query" name="sentence" rows="4" cols="50"  id="sentence" placeholder="Denemek için içinde de/da ek ya da bağlacı geçen bir cümle yazın..."></textarea>
 
 		    <!--<p>Cümle: <input style="width: 500px" type="text" name="sentence"></p>-->
 
@@ -30,7 +32,7 @@
 		  <select id="dropdown" class="select">
 		    <option value="Ekran da Tarkan'ı gören seyirciler çok heyecanlandı.">Ekran da Tarkan'ı gören seyirciler çok heyecanlandı.</option>
 		    <option value="Gördük ki evden çıkmadanda hayat devam ediyor.">Gördük ki evden çıkmadanda hayat devam ediyor.</option>
-		    <option value="Yazım denetleyicisini onlar da çok beğendi.">Yazım denetleyicisini onlar da çok beğendi.</option>
+		    <option value="Yazım denetleyicisini onlarda çok beğendi.">Yazım denetleyicisini onlarda çok beğendi.</option>
 		  </select>
 		    
 		</div>

@@ -409,14 +409,6 @@ tr:nth-child(even) {
 }
 
 
-@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
-
-body {
-  background: #ffffff; 
-  color: #414141;
-  font: 400 17px/2em 'Source Sans Pro', sans-serif;
-}
-
 .select-box {
   cursor: pointer;
   position : relative;
@@ -464,3 +456,16 @@ body {
   padding: 5px 15px;
   border-left: 5px solid #fff;
 } 
+
+.spellchecker_answer {
+
+  font-family: "Courier New", Courier, monospace;
+  text-align: center;
+}
+
+.spellchecker_query {
+
+  width: 80%;
+  font-size:25px;
+  font-family: "Courier New", Courier, monospace;
+}
