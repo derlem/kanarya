@@ -32,17 +32,6 @@
         <div >
 
 
-            <form method="POST">
-                {% csrf_token %}
-
-                <button type="submit" name="isHappy" value="True" >
-                    <img src="{% static 'spellchecker/like.png' %}" alt="[scissors]" width="20" height="30"/>
-                </button>
-                <button type="submit" name="isHappy" value="False">
-                    <img src="{% static 'spellchecker/dislike.png' %}" alt="[scissors]" width="20" height="30"/>
-                </button>
-
-            </form>
             <a  href=" {% url 'spellchecker_query' %} " class="btn btn-outline-info mb-4">Başka bir cümle dene</a>
         </div>  
     </div>

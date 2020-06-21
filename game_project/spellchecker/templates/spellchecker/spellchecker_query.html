@@ -7,24 +7,6 @@
 
 		<h1>-de/-da Yazım Hatası Bulucu</h1>
 
-		<br>
-		<br>
-
-		<div class="select-box">
-    
-		  <label for="dropdown" class="label select-box1"><span class="label-desc">Örnek bir cümle seçin.</span> </label>
-		  <select id="dropdown" class="select">
-		    <option value="Ekran da Tarkan'ı gören seyirciler çok heyecanlandı.">Ekran da Tarkan'ı gören seyirciler çok heyecanlandı.</option>
-		    <option value="Gördük ki evden çıkmadanda hayat devam ediyor.">Gördük ki evden çıkmadanda hayat devam ediyor.</option>
-		    <option value="Yazım denetleyicisini onlar da çok beğendi.">Yazım denetleyicisini onlar da çok beğendi.</option>
-		  </select>
-		    
-		</div>
-
-		<br>
-		<br>
-
-		
 
 		<form method="POST">
         	{% csrf_token %}
@@ -39,9 +21,19 @@
 		    <p><input class="btn btn-outline-info mb-4" type="submit" value="Denetle"></p>
 		</form>
 
+
     </div>
 
-  
+		<div class="select-box">
+    
+		  <label for="dropdown" class="label select-box1"><span class="label-desc">Örnek bir cümle seçin.</span> </label>
+		  <select id="dropdown" class="select">
+		    <option value="Ekran da Tarkan'ı gören seyirciler çok heyecanlandı.">Ekran da Tarkan'ı gören seyirciler çok heyecanlandı.</option>
+		    <option value="Gördük ki evden çıkmadanda hayat devam ediyor.">Gördük ki evden çıkmadanda hayat devam ediyor.</option>
+		    <option value="Yazım denetleyicisini onlar da çok beğendi.">Yazım denetleyicisini onlar da çok beğendi.</option>
+		  </select>
+		    
+		</div>
 
 <script type="text/javascript">
 	
