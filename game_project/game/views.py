@@ -75,13 +75,13 @@ mode_labels = {
 }
 
 mode_descriptions = {
-    'MODE_0': 'Bu cümlede "de/da" ek ya da bağlacı doğru kullanılmış mıdır?',
-    'MODE_1': 'Bir kelimesi "_____" işaretiyle gizlenmiş olan bu cümlede "de/da" eki ya da bağlacı doğru kullanılmış mıdır?',
-    'MODE_2': '"de/da" ek ya da bağlacından sonraki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı doğru kullanılmış mıdır?',
-    'MODE_3': '"de/da" ek ya da bağlacı ile ilgili kelimeden önceki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı doğru kullanılmış mıdır?',
-    'MODE_4': '"de/da" ek ya da bağlacından önceki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı doğru kullanılmış mıdır?',
-    'MODE_5': '"de/da" ek ya da bağlacından bir önceki kelimeye ek olarak sonraki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı doğru kullanılmış mıdır?',
-    'MODE_6': '"de/da" ek ya da bağlacının dışındaki kelimelerden sadece biri hariç tümümün "_____" işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı doğru kullanılmış mıdır?',
+    'MODE_0': 'Bu cümlede "de/da" eki ya da bağlacı bitişik mi yoksa ayrı mı yazılmalıdır?',
+    'MODE_1': 'Bir kelimesi "_____" işaretiyle gizlenmiş olan bu cümlede "de/da" eki ya da bağlacı bitişik mi yoksa ayrı mı yazılmalıdır?',
+    'MODE_2': '"De/da" eki ya da bağlacından sonraki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı bitişik mi yoksa ayrı mı yazılmalıdır?',
+    'MODE_3': '"De/da" ek ya da bağlacı ile ilgili kelimeden önceki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı bitişik mi yoksa ayrı mı yazılmalıdır?',
+    'MODE_4': '"De/da" ek ya da bağlacından önceki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı bitişik mi yoksa ayrı mı yazılmalıdır?',
+    'MODE_5': '"De/da" ek ya da bağlacından bir önceki kelimeye ek olarak sonraki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı bitişik mi yoksa ayrı mı yazılmalıdır?',
+    'MODE_6': '"De/da" ek ya da bağlacının dışındaki kelimelerden sadece biri hariç tümünün "_____" işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı bitişik mi yoksa ayrı mı yazılmalıdır?',
 }
 
 class MODE_THRESHOLD(Enum):
