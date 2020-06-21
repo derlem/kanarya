@@ -6,6 +6,7 @@ RUN mkdir /game_project
 
 WORKDIR /game_project
 
+COPY requirements-phase1.txt /game_project/
 COPY requirements-phase2.txt /game_project/
 
 RUN pip install -r requirements-phase1.txt
