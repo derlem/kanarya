@@ -15,124 +15,82 @@ url = finders.find('best-model.pt')
 flair.device = torch.device('cpu')
 classifier = SequenceTagger.load_from_file(url)
 
+
 def query(request):
 
     if request.method == 'POST':
-
         form = QueryForm(request.POST)
-
-        if form.is_valid():
-
-
-            sentence = form.cleaned_data['sentence']
-
-            request.session['sentence'] = sentence
-            
-            query = Query(sentence=sentence)
-
-            if request.user.is_authenticated:
-            	query.user = request.user
-            
-            query.save()
-
-            request.session['query_pk'] = query.pk
-            
-
-            return redirect('spellchecker_answer')
-
-
+    elif request.method == "GET":
+        form = QueryForm(request.GET)
     else:
-
         form = QueryForm()
 
+    if form.is_valid():
+        sentence = form.cleaned_data['sentence']
 
-    return render(request, 'spellchecker/spellchecker_query.html')
+        # request.session['sentence'] = sentence
 
-def answer(request):
+        query = Query(sentence=sentence)
 
-	sentence = request.session.get('sentence')
+        if request.user.is_authenticated:
+            query.user = request.user
 
-	labeled_words = spellchecker(sentence)
+        query.save()
 
-	context = {
-	'labeled_words': labeled_words
-	}
+        labeled_words = spellchecker(sentence)
 
-	if request.method == 'POST':
+        context = {
+            'labeled_words': labeled_words,
+            'sentence': sentence
+        }
 
-		form = QueryFeedbackForm(request.POST)
+        request.session['query_pk'] = query.pk
 
-		if form.is_valid():
-
-			isHappy = form.cleaned_data['isHappy']
-
-			query_pk = request.session.get('query_pk')
-			query = Query.objects.filter(pk=query_pk)[0]
-
-			query.isHappy = isHappy
-
-			query.save()
-
-			return redirect('spellchecker_query')
-
-	else:
-
-		form = QueryFeedbackForm()
-
-
-	return render(request, 'spellchecker/spellchecker_answer.html', context)
+        return render(request, 'spellchecker/spellchecker_query.html', context)
+    else:
+        return render(request, 'spellchecker/spellchecker_query.html')
 
 
 def spellchecker(sentence):
+    sentence = Sentence(sentence)
 
-	sentence = Sentence(sentence)
+    classifier.predict(sentence)
 
-	classifier.predict(sentence)
+    tagged_string = sentence.to_tagged_string()
 
-	tagged_string = sentence.to_tagged_string()
-	
-	labeled_words = {}
+    labeled_words = {}
 
-	words, labels = [],[] 
+    words, labels = [], []
 
-	tokens = tagged_string.split()
+    tokens = tagged_string.split()
 
-	print(tagged_string)
+    print(tagged_string)
 
+    idx = 0
+    for token in tokens:
 
-	idx = 0
-	for token in tokens:
+        print(str(idx) + ": " + token)
 
-		print(str(idx) + ": " + token)
+        if token == '<B-ERR>':
+            labels[idx - 1] = True
 
-		if token == '<B-ERR>':
-			labels[idx-1] = True
+            # if de/da is seperate, highlight the word before the de/da as well
+            if len(words[idx - 1]) == 2:
+                labels[idx - 2] = True
+                words[idx - 2] += " " + words[idx - 1]
 
+                del words[idx - 1]
+                del labels[idx - 1]
+                idx -= 1
 
-			# if de/da is seperate, highlight the word before the de/da as well 
-			if len(words[idx-1]) == 2:
+            idx -= 1
 
-				labels[idx - 2] = True
-				words[idx - 2] += " " + words[idx-1] 
+        else:
+            words.append(token)
+            labels.append(False)
 
-				del words[idx-1]
-				del labels[idx-1]
-				idx -= 1
+        idx += 1
 
-				
+    labeled_words = [{'word': words[i], 'label': labels[i]} for i in range(len(words))]
 
-			idx -= 1
-			
-		else:
-			words.append(token)
-			labels.append(False)
-
-		idx += 1
-
-	labeled_words = [{'word':words[i],'label':labels[i]} for i in range(len(words))]
-
-	return labeled_words
-
-
-
-	
+    return labeled_words
