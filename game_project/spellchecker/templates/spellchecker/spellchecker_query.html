@@ -5,31 +5,15 @@
 
 	<div class="spellchecker">
 
-		<h1>de-da Yazım Hatası Bulucu</h1>
+		<h1>-de/-da Yazım Hatası Bulucu</h1>
 
 		<br>
-		<br>
-
-		<div class="select-box">
-    
-		  <label for="dropdown" class="label select-box1"><span class="label-desc">Örnek bir cümle seçin.</span> </label>
-		  <select id="dropdown" class="select">
-		    <option value="Ekran da Tarkan'ı gören seyirciler çok heyecanlandı.">Ekran da Tarkan'ı gören seyirciler çok heyecanlandı.</option>
-		    <option value="Gördük ki evden çıkmadanda hayat devam ediyor.">Gördük ki evden çıkmadanda hayat devam ediyor.</option>
-		    <option value="Yazım denetleyicisini onlar da çok beğendi.">Yazım denetleyicisini onlar da çok beğendi.</option>
-		  </select>
-		    
-		</div>
-
-		<br>
-		<br>
-
-		
+        <br>
 
 		<form method="POST">
         	{% csrf_token %}
 
-            <textarea  style="width: 80%;" name="sentence" rows="4" cols="50"  id="sentence" placeholder="Denemek için içinde de/da ek ya da bağlacı geçen bir cümle yazın..."></textarea>
+            <textarea  class="spellchecker_query" name="sentence" rows="4" cols="50"  id="sentence" placeholder="Denemek için içinde de/da ek ya da bağlacı geçen bir cümle yazın..."></textarea>
 
 		    <!--<p>Cümle: <input style="width: 500px" type="text" name="sentence"></p>-->
 
@@ -39,9 +23,20 @@
 		    <p><input class="btn btn-outline-info mb-4" type="submit" value="Denetle"></p>
 		</form>
 
+
     </div>
 
-  
+		<div class="select-box">
+    
+		  <label for="dropdown" class="label select-box1"><span class="label-desc">Örnek bir cümle seçin.</span> </label>
+		  <select id="dropdown" class="select">
+		  	<option value=""></option>
+		    <option value="Ekran da Tarkan'ı gören seyirciler çok heyecanlandı.">Ekran da Tarkan'ı gören seyirciler çok heyecanlandı.</option>
+		    <option value="Gördük ki evden çıkmadanda hayat devam ediyor.">Gördük ki evden çıkmadanda hayat devam ediyor.</option>
+		    <option value="Yazım denetleyicisini onlarda çok beğendi.">Yazım denetleyicisini onlarda çok beğendi.</option>
+		  </select>
+		    
+		</div>
 
 <script type="text/javascript">
 	

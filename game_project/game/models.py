@@ -11,6 +11,8 @@ class Sentence(models.Model):
 	pos = models.IntegerField()
 	status = models.TextField()
 	clitic = models.CharField(max_length=2) # de/da/te/ta
+	mode = models.CharField(max_length=7)
+	decision_count = models.IntegerField(default=0)
 
 class Question(models.Model):
 	sentence = models.ForeignKey(Sentence, on_delete=models.CASCADE)

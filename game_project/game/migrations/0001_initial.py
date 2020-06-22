@@ -11,6 +11,10 @@ import linecache
 import os.path
 import distutils
 
+
+from game.views import MODE_THRESHOLD, QUESTION_PER_TEST
+
+
 def load_game(apps, schema_editor):
 
     Sentence = apps.get_model("game", "Sentence")
@@ -20,28 +24,61 @@ def load_game(apps, schema_editor):
 
     f = open(path_to_data, 'r')
 
+    sentence_idx = 0
+
     for idx, line in enumerate(f):
 
-        index = list(csv.reader([line]))[0][0]
+        #index = list(csv.reader([line]))[0][0]
         text = list(csv.reader([line]))[0][1]
         pos = int(list(csv.reader([line]))[0][2])   
+        
+        # A temporary workaround to solve the alignment of long sentences
+        if len(text) > 200:
+            continue
+
+        # Another temporary workaround: Do not show the sentences whose dedaword is in the first position
+        if pos <= 1:
+            continue
+
+        mode_idx = sentence_idx % QUESTION_PER_TEST
+
+        mode = ""
+        if mode_idx < MODE_THRESHOLD.MODE_0.value:
+            mode = 'MODE_0'
+        elif mode_idx < MODE_THRESHOLD.MODE_1.value:
+            mode = 'MODE_1'
+        elif mode_idx < MODE_THRESHOLD.MODE_2.value:
+            mode = 'MODE_2'
+        elif mode_idx < MODE_THRESHOLD.MODE_3.value:
+            mode = 'MODE_3'
+        elif mode_idx < MODE_THRESHOLD.MODE_4.value:
+            mode = 'MODE_4'
+        elif mode_idx < MODE_THRESHOLD.MODE_5.value:
+            mode = 'MODE_5'
+        elif mode_idx < MODE_THRESHOLD.MODE_6.value:
+            mode = 'MODE_6'
+        
 
         sentence_info = {
-            'sentence_idx': index,
+            'sentence_idx': sentence_idx,
             'full_sentence': text,
             'pos': pos
         }
 
-        print("Sentence " + str(index) + " is inserted into the database. ")
+        print("Sentence " + str(sentence_idx) + " is inserted. " + ": Mode: " + mode + " , Pos: " + str(pos) + " , Len: " + str(len(text)))
         status = get_status(sentence_info)
         clitic = get_clitic(sentence_info)
-
-        instance = Sentence(index=index,
+        instance = Sentence(index=sentence_idx,
                             text=text,
                             pos=pos,
                             status=status,
-                            clitic=clitic)
+                            clitic=clitic,
+                            mode=mode,
+                            decision_count=0,
+                            )
         instance.save()
+
+        sentence_idx += 1
 
 
 def delete_game(apps, schema_editor):
@@ -99,6 +136,8 @@ class Migration(migrations.Migration):
                 ('pos', models.IntegerField()),
                 ('status', models.TextField()),
                 ('clitic', models.CharField(max_length=2)),
+                ('decision_count', models.IntegerField(default=0)),
+                ('mode', models.CharField(max_length=7)),
             ],
         ),
         migrations.CreateModel(

@@ -4,22 +4,22 @@
 
     <div class="spellchecker">
 
-        <h1>de-da Yazım Denetleyicisi</h1>
+        <h1>-de/-da Yazım Hatası Bulucu</h1>
 
         <br>
         <br>
 
-        <div >
+        <div class="spellchecker_answer">
 
             {% for entry in labeled_words %}
 
                 {% if entry.label == True %}
 
-                    <span style="background: #f06b81">{{entry.word}}</span>
+                    <span style="background: #f06b81; font-size:3vh" >{{entry.word}}</span>
 
                 {% else %}
 
-                    {{entry.word}}
+                    <span style="font-size:3vh">{{entry.word}}</span>
 
                 {% endif %}
 
@@ -32,17 +32,6 @@
         <div >
 
 
-            <form method="POST">
-                {% csrf_token %}
-
-                <button type="submit" name="isHappy" value="True" >
-                    <img src="{% static 'spellchecker/like.png' %}" alt="[scissors]" width="20" height="30"/>
-                </button>
-                <button type="submit" name="isHappy" value="False">
-                    <img src="{% static 'spellchecker/dislike.png' %}" alt="[scissors]" width="20" height="30"/>
-                </button>
-
-            </form>
             <a  href=" {% url 'spellchecker_query' %} " class="btn btn-outline-info mb-4">Başka bir cümle dene</a>
         </div>  
     </div>

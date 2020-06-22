@@ -14,7 +14,13 @@ from .models import Sentence, Question, Activity, Decision, Report
 
 from enum import Enum
 
+from django.core.paginator import Paginator
+
 NUM_OF_PROF_QUESTIONS = 5
+
+MODE_1_DECISION_LIMIT = 100
+MODE_6_DECISION_LIMIT = 100
+GENERAL_DECISION_LIMIT = 10
 
 ### Warmup parameters
 
@@ -73,13 +79,13 @@ mode_labels = {
 }
 
 mode_descriptions = {
-    'MODE_0': 'Bu cümlede "de/da" ek ya da bağlacı doğru kullanılmış mıdır?',
-    'MODE_1': 'Bir kelimesi "_____" işaretiyle gizlenmiş olan bu cümlede "de/da" eki ya da bağlacı doğru kullanılmış mıdır?',
-    'MODE_2': '"de/da" ek ya da bağlacından sonraki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı doğru kullanılmış mıdır?',
-    'MODE_3': '"de/da" ek ya da bağlacı ile ilgili kelimeden önceki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı doğru kullanılmış mıdır?',
-    'MODE_4': '"de/da" ek ya da bağlacından önceki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı doğru kullanılmış mıdır?',
-    'MODE_5': '"de/da" ek ya da bağlacından bir önceki kelimeye ek olarak sonraki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı doğru kullanılmış mıdır?',
-    'MODE_6': '"de/da" ek ya da bağlacının dışındaki kelimelerden sadece biri hariç tümümün "_____" işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı doğru kullanılmış mıdır?',
+    'MODE_0': 'Bu cümlede "de/da" eki ya da bağlacı bitişik mi yoksa ayrı mı yazılmalıdır?',
+    'MODE_1': 'Bir kelimesi "_____" işaretiyle gizlenmiş olan bu cümlede "de/da" eki ya da bağlacı bitişik mi yoksa ayrı mı yazılmalıdır?',
+    'MODE_2': '"De/da" eki ya da bağlacından sonraki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı bitişik mi yoksa ayrı mı yazılmalıdır?',
+    'MODE_3': '"De/da" ek ya da bağlacı ile ilgili kelimeden önceki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı bitişik mi yoksa ayrı mı yazılmalıdır?',
+    'MODE_4': '"De/da" ek ya da bağlacından önceki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı bitişik mi yoksa ayrı mı yazılmalıdır?',
+    'MODE_5': '"De/da" ek ya da bağlacından bir önceki kelimeye ek olarak sonraki tüm kelimelerin * * * işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı bitişik mi yoksa ayrı mı yazılmalıdır?',
+    'MODE_6': '"De/da" ek ya da bağlacının dışındaki kelimelerden sadece biri hariç tümünün "_____" işareti ile silindiği bu cümlede "de/da" eki ya da bağlacı bitişik mi yoksa ayrı mı yazılmalıdır?',
 }
 
 class MODE_THRESHOLD(Enum):
@@ -97,9 +103,6 @@ def welcome(request):
 
 @login_required
 def home(request):
-
-    #if request.user.profile.is_prof_done == False:
-    #    return redirect('proficiency')
 
     # Set new test settings
     request.session['question_idx'] = 1
@@ -129,24 +132,40 @@ def question(request):
 
     
     # Get the current question 
-    sentence = get_sentence(last_seen_sentence_idx + 1)
+    #sentence = get_sentence(last_seen_sentence_idx + 1)
 
-    # A temporary workaround to solve the alignment of long sentences
-    while len(sentence.text) > 200:
-        print("Long sentence avoided.")
-        request.user.profile.last_seen_sentence_idx  += 1
-        request.user.profile.save()
-        last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
-        sentence = get_sentence(last_seen_sentence_idx + 1)
+    
 
-    # Another temporary workaround: Do not show the sentences whose dedaword is in the first position
-    while sentence.pos <= 1:
-        print("Left arrow avoided. ")
-        request.user.profile.last_seen_sentence_idx  += 1
-        request.user.profile.save()
-        last_seen_sentence_idx = request.user.profile.last_seen_sentence_idx
-        sentence = get_sentence(last_seen_sentence_idx + 1)
+    sentence = ""
+    if request.session['question_idx'] <= MODE_THRESHOLD.MODE_0.value:
+        next_sentence_idx = get_next_sentence_idx(last_seen_sentence_idx, 'MODE_0')
+        sentence = get_sentence(next_sentence_idx, 'MODE_0')
+    elif request.session['question_idx'] <= MODE_THRESHOLD.MODE_1.value:
+        next_sentence_idx = get_next_sentence_idx(last_seen_sentence_idx, 'MODE_1')
+        sentence = get_sentence(next_sentence_idx, 'MODE_1')
+    elif request.session['question_idx'] <= MODE_THRESHOLD.MODE_2.value:
+        next_sentence_idx = get_next_sentence_idx(last_seen_sentence_idx, 'MODE_2')
+        sentence = get_sentence(next_sentence_idx, 'MODE_2')
+    elif request.session['question_idx'] <= MODE_THRESHOLD.MODE_3.value:
+        next_sentence_idx = get_next_sentence_idx(last_seen_sentence_idx, 'MODE_3')
+        sentence = get_sentence(next_sentence_idx, 'MODE_3')
+    elif request.session['question_idx'] <= MODE_THRESHOLD.MODE_4.value:
+        next_sentence_idx = get_next_sentence_idx(last_seen_sentence_idx, 'MODE_4')
+        sentence = get_sentence(next_sentence_idx, 'MODE_4')
+    elif request.session['question_idx'] <= MODE_THRESHOLD.MODE_5.value:
+        next_sentence_idx = get_next_sentence_idx(last_seen_sentence_idx, 'MODE_5')
+        sentence = get_sentence(next_sentence_idx, 'MODE_5')
+    elif request.session['question_idx'] <= MODE_THRESHOLD.MODE_6.value:
+        next_sentence_idx = get_next_sentence_idx(last_seen_sentence_idx, 'MODE_6')
+        sentence = get_sentence(next_sentence_idx, 'MODE_6')
+    else:
+        # Set test start settings
+        request.session['question_idx'] = 1
+        request.session['correct_answer_count_for_current_test'] = 0
+        request.session['solved_question_num'] = 0
+        request.session['success_rate'] = 0
 
+        return redirect('test_end')
 
     full_text = sentence.text
     status = sentence.status
@@ -163,7 +182,6 @@ def question(request):
     # Set initial context
     context = {
         'question_idx': question_idx,
-        #'hints': [],
         'correct_answer_count_for_current_test': request.session.get('correct_answer_count_for_current_test'),
         'solved_question_num': solved_question_num,
         'success_rate': success_rate,
@@ -249,14 +267,14 @@ def question(request):
             activity.save()
 
             # Pass the answer to the context
-            #context['selected_button'] = activity.name
             request.session['selected_button'] = activity.name
-
             request.session['full_text'] = full_text
             request.session['question_pk'] = question.pk
             request.session['solved_question_num'] += 1
             request.session['activity'] = activity.name
+            request.session['sentence_pk'] = sentence.pk
             
+
 
             if activity.name == "SKIP":
 
@@ -273,7 +291,6 @@ def question(request):
 
                 return redirect('question')
 
-            #elif activity.name == "HINT":
             elif activity.name == "INDECISIVE":
 
                 
@@ -282,14 +299,17 @@ def question(request):
                 request.session['question_idx'] += 1
                 request.session['success_rate'] = round((request.session.get('correct_answer_count_for_current_test') / request.session.get('solved_question_num')) * 100, 1)
                 
-                # HINT RELATED LINES
-                #request.session['go_next_question'] = False
-                #set_hints(context['hints'], question.hint_count, full_text, pos)
-                #question.hint_count += 1
-                #question.save()
-                #return render(request, 'game/question.html',context)
+                # Increase the seen count of the answered sentences
+                print("Decision Count: " + str(sentence.decision_count) + " + " + str(1) + " = " + str(sentence.decision_count + 1))
+                sentence.decision_count += 1
+                sentence.save()
 
             else: 
+
+                # Increase the seen count of the answered sentences
+                print("Decision Count: " + str(sentence.decision_count) + " + " + str(1) + " = " + str(sentence.decision_count + 1))
+                sentence.decision_count += 1
+                sentence.save()
 
                 request.session['question_idx'] += 1
 
@@ -321,7 +341,7 @@ def question(request):
 
         # Pass the context to answer page
         request.session['context'] = context
-        request.session['last_seen_sentence_idx'] = last_seen_sentence_idx
+        #request.session['last_seen_sentence_idx'] = last_seen_sentence_idx
 
         if context['mode'] == 'MODE_1':
             request.session['relative_mask_pos'] = context['relative_mask_pos']
@@ -340,9 +360,14 @@ def answer(request):
     # Get the question context
     context = request.session.get('context')
 
-    last_seen_sentence_idx = request.session.get('last_seen_sentence_idx')
-    sentence = get_sentence(last_seen_sentence_idx + 1)
+    #last_seen_sentence_idx = request.session.get('last_seen_sentence_idx')
+    #sentence = get_sentence(last_seen_sentence_idx + 1)
+
+    #sentence = get_sentence(context['mode'])
     
+    sentence_pk = request.session.get('sentence_pk')
+    sentence = Sentence.objects.filter(pk=sentence_pk)[0]
+
 
     full_text = sentence.text
     status = sentence.status
@@ -382,97 +407,6 @@ def answer(request):
 
     return render(request, 'game/answer.html', context)
 
-"""
-@login_required
-def proficiency(request):
-
-    if request.user.profile.last_seen_prof_idx > NUM_OF_PROF_QUESTIONS:
-
-        request.user.profile.is_prof_done = True
-        request.user.profile.save()
-
-        #return redirect('prof_end')
-        messages.success(request, f'Ön bilgi testi sona erdi, çok teşekkürler!')
-
-        return redirect('home')
-
-    question_index = request.user.profile.last_seen_prof_idx
-    labeled_words, condition = get_prof_question_context(question_index)
-
-    context = {
-        "labeled_words": labeled_words,
-        "question_index": question_index
-    }
-
-    if request.method == 'POST':
-
-        form = ProfForm(request.POST)
-        
-        if form.is_valid():
-            
-            answer = str2bool(form.cleaned_data['answer'])
-
-            # if the answer is true
-            if answer == condition:
-                request.user.profile.prof_score += 1
-                request.user.profile.save()
-
-            request.user.profile.last_seen_prof_idx += 1
-            request.user.profile.save()
-
-            
-            return redirect('proficiency')
-
-    else:
-        form = ProfForm()
-
-    return render(request, 'game/proficiency.html', context)
-
-def get_prof_question_context(question_index):
-
-    path_to_data = os.path.dirname(__file__) + '/static/game/ProficiencySentences.csv'
-
-    f = open(path_to_data, 'r')
-
-    all_lines = f.readlines()
-
-    current_row = all_lines[question_index -1]
-
-    index = list(csv.reader([current_row]))[0][0]
-    text = list(csv.reader([current_row]))[0][1]
-    condition = str2bool(list(csv.reader([current_row]))[0][2])
-    pos = int(list(csv.reader([current_row]))[0][3])
-    status = list(csv.reader([current_row]))[0][4]
-
-    words, labels = [], []
-
-    tokens = text.split()
-
-    for idx, token in enumerate(tokens):
-
-        if idx == pos:
-
-            if status == "SEPARATE":
-
-                words[idx-1] += " " + token
-                labels[idx-1] = True
-
-            else:
-
-                words.append(token)
-                labels.append(True)
-
-        else:
-            words.append(token)
-            labels.append(False)
-
-    labeled_words = [{'word':words[i],'label':labels[i]} for i in range(len(words))]
-
-    return labeled_words,  condition
-
-"""
-
-
 @login_required
 def test_end(request):
     
@@ -504,8 +438,6 @@ def stats(request):
 
     success_rate = round((correct_answer_count / decision_count), 2)*100
 
-    #print(success_rate)
-
     context = {
 
         'decision_count': decision_count,
@@ -517,6 +449,27 @@ def stats(request):
     }
 
     return render(request, 'game/stats.html', context)
+
+@login_required
+def sentence_counts(request):
+
+    sentences = Sentence.objects.all().order_by('-decision_count')
+
+    paginator = Paginator(sentences, 50) # Show 25 contacts per page.
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    """
+    context = {
+        'sentences': sentences
+    }
+    """
+    context = {
+        'page_obj': page_obj
+    }
+
+    return render(request, 'game/sentence_counts.html', context)
 
 
 def get_warmup_question_context(warmup_question_index):
@@ -676,9 +629,18 @@ def warmup_end(request):
 
     return render(request, 'game/warmup_end.html')
     
-def get_sentence(sentence_idx):
+def get_sentence(next_sentence_idx, mode):
 
-    sentence = Sentence.objects.all()[sentence_idx]
+    sentence = ""
+    if mode == 'MODE_1':
+        sentence = Sentence.objects.all().filter(mode=mode, decision_count__lt=MODE_1_DECISION_LIMIT)[next_sentence_idx]
+    elif mode =='MODE_6':
+        sentence = Sentence.objects.all().filter(mode=mode, decision_count__lt=MODE_6_DECISION_LIMIT)[next_sentence_idx]
+    else:
+        sentence = Sentence.objects.all().filter(mode=mode, decision_count__lt=GENERAL_DECISION_LIMIT)[next_sentence_idx]
+    #sentence = Sentence.objects.all()[sentence_idx]
+    print("Sentence " + str(sentence.index) + " : Decision Count: "  + str(sentence.decision_count))
+    
     return sentence
 
 
@@ -745,8 +707,6 @@ def get_adjacent(full_text, pos, status):
 
 def get_mode_0_context(context, full_text, pos, status):
 
-    #print(full_text)
-
     tokens = full_tokenize(full_text, pos, status)
 
     if status  == "ADJACENT":
@@ -782,16 +742,18 @@ def get_mode_1_context(context, full_text, pos, status):
     if status  == "ADJACENT":
         pos += 1
 
+    possible_positions = [-3,-2,-1,1,2,3]
+
     mask_pos = random.randint(0, len(tokens)-1)
-    # Do not mask the clitic
+    # If you mask the clitic, reshuffle
     while(mask_pos == pos):
         mask_pos = random.randint(0, len(tokens)-1)
 
     relative_mask_pos = mask_pos - pos
     context['relative_mask_pos'] = relative_mask_pos
-    print("mask_pos: " + str(mask_pos))
-    print("pos: " + str(pos))
-    print("relative_mask_pos: " + str(relative_mask_pos))
+    #print("mask_pos: " + str(mask_pos))
+    #print("pos: " + str(pos))
+    #print("relative_mask_pos: " + str(relative_mask_pos))
 
     if mask_pos < pos:
         
@@ -925,18 +887,22 @@ def get_mode_6_context(context, full_text, pos, status):
     if status  == "ADJACENT":
         pos += 1
 
-    unmask_pos = random.randint(0, len(tokens)-1)
-    # Do not unmask the clitic, it will be visible in any case
-    while(unmask_pos == pos):
-        unmask_pos = random.randint(0, len(tokens)-1)
+    possible_relative_unmask_positions = [-3,-2,-1,1,2,3]
 
+    unmask_pos = random.randint(0, len(tokens)-1)
     relative_unmask_pos = unmask_pos - pos
+    print("UnMask pos: "  + str(unmask_pos))
+    print("Relative_unmask_pos: "  + str(relative_unmask_pos))
+    # Do not unmask the clitic, it will be visible in any case
+    while(unmask_pos == pos or relative_unmask_pos not in possible_relative_unmask_positions):
+        print("Relative_unmask_pos: " + str(relative_unmask_pos) + " not allowed.")
+        unmask_pos = random.randint(0, len(tokens)-1)
+        relative_unmask_pos = unmask_pos - pos
+
+    print("Final relative_unmask_pos: " + str(relative_unmask_pos))
+    #relative_unmask_pos = unmask_pos - pos
     context['relative_unmask_pos'] = relative_unmask_pos
     context['mode'] = 'MODE_6'
-
-    # Do not forget to the record the relative_unmask_pos
-
-    #print(full_text)
 
     if unmask_pos < pos:
         
@@ -1045,3 +1011,37 @@ def get_answer_text(full_text, pos, status):
 def str2bool(s):
 
     return True if s == "true" or s == "True" else False
+
+# Returns the sentence idx for the current mode.
+# If the user solved QUESTION_PER_TEST + 
+def get_next_sentence_idx(last_seen_sentence_idx, mode):
+
+    current_question_idx_for_curr_test = last_seen_sentence_idx % QUESTION_PER_TEST
+    current_mode_idx = current_question_idx_for_curr_test % 5
+    num_of_tests_solved = last_seen_sentence_idx // QUESTION_PER_TEST
+    num_of_questions_solved_for_curr_mode = 5 * num_of_tests_solved + current_mode_idx
+
+    if mode == 'MODE_1':
+        num_of_overlimit_sentences_for_curr_mode = len(Sentence.objects.all().filter(mode=mode, decision_count__gte=MODE_1_DECISION_LIMIT))
+    elif mode == 'MODE_6':
+        num_of_overlimit_sentences_for_curr_mode = len(Sentence.objects.all().filter(mode=mode, decision_count__gte=MODE_6_DECISION_LIMIT))
+    else:
+        num_of_overlimit_sentences_for_curr_mode = len(Sentence.objects.all().filter(mode=mode, decision_count__gte=GENERAL_DECISION_LIMIT))
+
+
+    if num_of_questions_solved_for_curr_mode >= num_of_overlimit_sentences_for_curr_mode:
+        next_question_idx = num_of_questions_solved_for_curr_mode - num_of_overlimit_sentences_for_curr_mode
+    else:
+        next_question_idx = num_of_questions_solved_for_curr_mode
+
+    print("---")
+    print("Mode: " + mode)
+    #print("current_question_idx_for_curr_test : " + str(current_question_idx_for_curr_test))
+    print("current_mode_idx : " + str(current_mode_idx))
+    print("num_of_tests_solved : " + str(num_of_tests_solved))
+    print("num_of_questions_solved_for_curr_mode : " + str(num_of_questions_solved_for_curr_mode))
+    print("num_of_overlimit_sentences_for_curr_mode : " + str(num_of_overlimit_sentences_for_curr_mode))
+    print("next_question_idx : " + str(next_question_idx))
+    print("---")
+
+    return next_question_idx

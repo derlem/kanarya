@@ -5,7 +5,8 @@ from PIL import Image
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	image = models.ImageField(default='default.jpg', upload_to='profile_pics')
-	last_seen_sentence_idx = models.IntegerField(default=1)
+	#last_seen_sentence_idx = models.IntegerField(default=1)
+	last_seen_sentence_idx = models.IntegerField(default=0)
 	correct_answer_count = models.IntegerField(default=0)
 
 	#onam = models.BooleanField(default=False)
