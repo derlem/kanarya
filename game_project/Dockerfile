@@ -6,10 +6,10 @@ RUN mkdir /game_project
 
 WORKDIR /game_project
 
-COPY kanarya_config.json /etc/
-
 COPY requirements-phase1.txt /game_project/
 RUN pip install -r requirements-phase1.txt
+
+COPY kanarya_config.json /etc/
 
 COPY . /game_project/
 
