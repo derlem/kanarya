@@ -6,13 +6,14 @@ RUN mkdir /game_project
 
 WORKDIR /game_project
 
-COPY . /game_project/
+COPY kanarya_config.json /etc/
 
 COPY requirements-phase1.txt /game_project/
-COPY requirements-phase2.txt /game_project/
-
 RUN pip install -r requirements-phase1.txt
 
+COPY . /game_project/
+
+COPY requirements-phase2.txt /game_project/
 RUN pip install -r requirements-phase2.txt
 
 RUN python manage.py migrate --noinput
