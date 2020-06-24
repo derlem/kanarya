@@ -419,7 +419,7 @@ def test_end(request):
 def stats(request):
 
     spellchecker_metrics = get_spellchecker_metrics()
-    
+
     mode_metrics = {
 
         'MODE_0': get_mode_metrics('MODE_0'),
@@ -450,6 +450,10 @@ def get_mode_metrics(mode):
 
     # Calculate answer counts
     for question in Question.objects.all().filter(mode=mode):
+
+        # Solve the bug of question without decisions: Investigate
+        if not hasattr(question, 'decision'):
+            continue
 
         decision = question.decision.name
         status = question.sentence.status
