@@ -11,6 +11,7 @@ import os
 from .forms import ActivityForm, ReportForm#, ProfForm
 
 from .models import Sentence, Question, Activity, Decision, Report
+from spellchecker.models import Query
 
 from enum import Enum
 
@@ -417,38 +418,120 @@ def test_end(request):
 @login_required
 def stats(request):
 
-    decision_count = len(Decision.objects.all())
+    spellchecker_metrics = get_spellchecker_metrics()
 
-    skip_count = 0
+    mode_metrics = {
 
-    correct_answer_count = 0
-
-    for decision in Decision.objects.all():
-
-        status = decision.question.sentence.status
-        answer = decision.name
-
-        if answer == status:
-            correct_answer_count += 1
-
-        if answer == 'SKIP':
-            skip_count += 1
-
-    incorrect_answer_count = decision_count - correct_answer_count - skip_count
-
-    success_rate = round((correct_answer_count / decision_count), 2)*100
-
-    context = {
-
-        'decision_count': decision_count,
-        'skip_count': skip_count,
-        'correct_answer_count': correct_answer_count,
-        'incorrect_answer_count': incorrect_answer_count,
-        'success_rate': success_rate,
+        'MODE_0': get_mode_metrics('MODE_0'),
+        'MODE_1': get_mode_metrics('MODE_1'),
+        'MODE_2': get_mode_metrics('MODE_2'),
+        'MODE_3': get_mode_metrics('MODE_3'),
+        'MODE_4': get_mode_metrics('MODE_4'),
+        'MODE_5': get_mode_metrics('MODE_5'),
+        'MODE_6': get_mode_metrics('MODE_6'),
 
     }
 
+    general_metrics = get_general_metrics(mode_metrics)
+
+    context = {
+        'general_metrics': general_metrics,
+        'mode_metrics': mode_metrics,
+        'spellchecker_metrics': spellchecker_metrics
+    }
+
     return render(request, 'game/stats.html', context)
+
+def get_mode_metrics(mode):
+    
+    answer_count, correct_count, incorrect_count, indecision_count, skip_count = 0, 0, 0, 0, 0 
+
+    answer_count = Question.objects.all().filter(mode=mode).count()
+
+    # Calculate answer counts
+    for question in Question.objects.all().filter(mode=mode):
+
+        decision = question.decision.name
+        status = question.sentence.status
+
+        if decision == status:
+            correct_count += 1
+        elif decision == 'INDECISIVE':
+            indecision_count += 1
+        elif decision == 'SKIP':
+            skip_count += 1
+
+    incorrect_count = answer_count - correct_count - indecision_count - skip_count
+
+    # Calculate scores
+    accuracy_score = correct_count / (correct_count + incorrect_count)
+    indecision_score = indecision_count  / (correct_count + incorrect_count + indecision_count)
+
+    accuracy_score = round(accuracy_score, 2)
+    indecision_score = round(indecision_score, 2)
+
+    mode_metrics = {
+
+        'answer_count': answer_count,
+        'correct_count': correct_count,
+        'incorrect_count': incorrect_count,
+        'indecision_count': indecision_count,
+        'skip_count': skip_count,
+        'accuracy_score': accuracy_score,
+        'indecision_score': indecision_score,
+
+    }
+
+    return mode_metrics
+
+def get_general_metrics(mode_metrics):
+
+    user_count = User.objects.all().count()
+    report_count = Report.objects.all().count()
+
+    answer_count, correct_count, incorrect_count, indecision_count, skip_count = 0, 0, 0, 0, 0 
+
+    # Find the general metrics by aggregating mode metrics
+    for mode_name, metrics in mode_metrics.items():
+        answer_count += metrics.get('answer_count')
+        correct_count += metrics.get('correct_count')
+        incorrect_count += metrics.get('incorrect_count')
+        indecision_count += metrics.get('indecision_count')
+        skip_count += metrics.get('skip_count')
+
+    # Calculate scores
+    accuracy_score = correct_count / (correct_count + incorrect_count)
+    indecision_score = indecision_count  / (correct_count + incorrect_count + indecision_count)
+
+    accuracy_score = round(accuracy_score, 2)
+    indecision_score = round(indecision_score, 2)
+
+    general_metrics = {
+
+        'user_count': user_count,
+        'answer_count': answer_count,
+        'correct_count': correct_count,
+        'incorrect_count': incorrect_count,
+        'indecision_count': indecision_count,
+        'skip_count': skip_count,
+        'accuracy_score': accuracy_score,
+        'indecision_score': indecision_score,
+        'report_count': report_count,
+
+    }
+
+    return general_metrics
+
+def get_spellchecker_metrics():
+
+    query_count = Query.objects.all().count()
+
+    spellchecker_metrics = {
+        'query_count': query_count
+    }
+
+    return spellchecker_metrics
+
 
 @login_required
 def sentence_counts(request):
