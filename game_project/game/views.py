@@ -419,7 +419,7 @@ def test_end(request):
 def stats(request):
 
     spellchecker_metrics = get_spellchecker_metrics()
-
+    
     mode_metrics = {
 
         'MODE_0': get_mode_metrics('MODE_0'),
