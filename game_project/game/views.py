@@ -551,20 +551,18 @@ def stats_decision_csv(request):
         if not hasattr(question, 'decision'):
             continue
 
-        decision_id = question.decision.pk #
-        decision = question.decision.name #
-        status = question.sentence.status #
+        decision_id = question.decision.pk 
+        decision = question.decision.name 
+        status = question.sentence.status 
 
-        sentence_id = question.sentence.pk #
+        sentence_id = question.sentence.pk 
 
-        user_id = question.user.pk # 
+        user_id = question.user.pk 
 
-        mode = question.mode #
+        mode = question.mode 
 
         relative_mask_pos = question.relative_mask_pos
         relative_unmask_pos = question.relative_unmask_pos
-
-        #clitic = question.sentence.clitic
 
         is_correct = "False" #
 
@@ -576,8 +574,6 @@ def stats_decision_csv(request):
             is_correct = "-"
 
         writer.writerow([decision_id, user_id, sentence_id, mode, relative_mask_pos, relative_unmask_pos, decision, status, is_correct])
-
-
     
     return response
 
@@ -602,9 +598,6 @@ def stats_sentence_csv(request):
         writer.writerow([sentence_id, text, pos, clitic, status, decision_count])
 
     return response
-
-
-
 
 @login_required
 def sentence_counts(request):
