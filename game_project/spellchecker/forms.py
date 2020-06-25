@@ -6,4 +6,5 @@ class QueryForm(forms.Form):
 
 
 class QueryFeedbackForm(forms.Form):
-	isHappy = forms.BooleanField(required = False)
+	#isHappy = forms.BooleanField(required = False)
+	report = forms.CharField(max_length=1000)
