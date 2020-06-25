@@ -19,5 +19,8 @@ urlpatterns = [
 	path('isinma_cevap/', views.warmup_answer, name='warmup_answer'),
 	path('isinma_bitis/', views.warmup_end, name='warmup_end'),
 	path('stats/sentencecounts', views.sentence_counts, name='sentence_counts'),
+	path('stats/decision/csv/', views.stats_decision_csv, name='stats_decision_csv'),
+	path('stats/sentence/csv/', views.stats_sentence_csv, name='stats_sentence_csv'),
+
 
 ]

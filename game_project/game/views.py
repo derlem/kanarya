@@ -536,6 +536,75 @@ def get_spellchecker_metrics():
 
     return spellchecker_metrics
 
+@login_required
+def stats_decision_csv(request):
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="decision_stats.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['decision_id', 'user_id', 'sentence_id', 'mode', 'relative_mask_pos', 'relative_unmask_pos', 'decision', 'status', 'is_correct'])
+
+    for question in Question.objects.all():
+
+        # Solve the bug of question without decisions: Investigate
+        if not hasattr(question, 'decision'):
+            continue
+
+        decision_id = question.decision.pk #
+        decision = question.decision.name #
+        status = question.sentence.status #
+
+        sentence_id = question.sentence.pk #
+
+        user_id = question.user.pk # 
+
+        mode = question.mode #
+
+        relative_mask_pos = question.relative_mask_pos
+        relative_unmask_pos = question.relative_unmask_pos
+
+        #clitic = question.sentence.clitic
+
+        is_correct = "False" #
+
+        if decision == status:
+            is_correct = "True"
+        elif decision == 'INDECISIVE':
+            is_correct = "-"
+        elif decision == 'SKIP':
+            is_correct = "-"
+
+        writer.writerow([decision_id, user_id, sentence_id, mode, relative_mask_pos, relative_unmask_pos, decision, status, is_correct])
+
+
+    
+    return response
+
+@login_required
+def stats_sentence_csv(request):
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="sentence_stats.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['sentence_id', 'text', 'pos', 'clitic', 'status', 'decision_count'])
+
+    for sentence in Sentence.objects.all():
+
+        sentence_id = sentence.pk
+        text = sentence.text
+        pos = sentence.pos
+        clitic = sentence.clitic
+        status = sentence.status
+        decision_count = sentence.decision_count
+
+        writer.writerow([sentence_id, text, pos, clitic, status, decision_count])
+
+    return response
+
+
+
 
 @login_required
 def sentence_counts(request):
