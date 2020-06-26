@@ -17,6 +17,8 @@ from enum import Enum
 
 from django.core.paginator import Paginator
 
+ADMIN_USERNAME = 'hasan'
+
 NUM_OF_PROF_QUESTIONS = 5
 
 MODE_1_DECISION_LIMIT = 100
@@ -418,6 +420,9 @@ def test_end(request):
 @login_required
 def stats(request):
 
+    if request.user.username != ADMIN_USERNAME:
+        return render(request, 'game/no_access_message.html')
+
     spellchecker_metrics = get_spellchecker_metrics()
 
     mode_metrics = {
@@ -539,6 +544,9 @@ def get_spellchecker_metrics():
 @login_required
 def stats_decision_csv(request):
 
+    if request.user.username != ADMIN_USERNAME:
+        return render(request, 'game/no_access_message.html')
+
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="decision_stats.csv"'
 
@@ -580,6 +588,9 @@ def stats_decision_csv(request):
 @login_required
 def stats_sentence_csv(request):
 
+    if request.user.username != ADMIN_USERNAME:
+        return render(request, 'game/no_access_message.html')
+
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="sentence_stats.csv"'
 
@@ -601,6 +612,9 @@ def stats_sentence_csv(request):
 
 @login_required
 def sentence_counts(request):
+
+    if request.user.username != ADMIN_USERNAME:
+        return render(request, 'game/no_access_message.html')
 
     sentences = Sentence.objects.all().order_by('-decision_count')
 
