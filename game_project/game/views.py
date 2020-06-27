@@ -654,6 +654,7 @@ def get_warmup_question_context(warmup_question_index):
 
     return text, status, clitic, pos
 
+@login_required
 def warmup_question(request):    
 
     warmup_question_index = request.user.profile.last_seen_warmup_idx
@@ -752,7 +753,7 @@ def warmup_question(request):
     return render(request, 'game/warmup_question.html',context)
     
 
-
+@login_required
 def warmup_answer(request):
 
     # Get the question context
