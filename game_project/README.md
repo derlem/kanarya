@@ -15,6 +15,8 @@ $ cd kanarya/
 $ git checkout --track origin/game_project
 $ cd game_project/
 $ pip install -r requirements.txt
+$ #Get the spellchecker model if you have access to minerva. The following command works:
+$ scp <username>@minerva:/opt/kanarya/resources/flair_models/huggingfaceTurkish_20200325_01/best-model.pt spellchecker/static/
 $ python manage.py migrate
 ```
 
@@ -24,11 +26,17 @@ Then create a super user with the following command:
 $ python manage.py createsuperuser
 ```
 
+This version is in the production mode. If you want to run it in the development mode, set the `DEBUG` setting to `True`
+```console
+$ vim game_project/settings.py
+$ #Set the DEBUG to True
+```
+
 Lastly, run the server:
 
 ```console
 $ python manage.py runserver
 ```
 
-Go to `http://127.0.0.1:8000/login` and login with the super user.
+Go to `http://127.0.0.1:8000/`
 
