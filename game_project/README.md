@@ -15,10 +15,27 @@ $ cd kanarya/
 $ git checkout --track origin/game_project
 $ cd game_project/
 $ pip install -r requirements.txt
-$ #Get the spellchecker model if you have access to minerva. The following command works:
-$ scp <username>@minerva:/opt/kanarya/resources/flair_models/huggingfaceTurkish_20200325_01/best-model.pt spellchecker/static/
+$ #Get the spellchecker model if you have access to minerva. For example:
+$ scp path_to_the_spellchecker_model spellchecker/static/
 $ python manage.py migrate
 ```
+
+Create a configuration file for the application:
+
+```console
+sudo touch /etc/kanarya_config.json
+```
+
+Afterwards fill in the following three variables inside this file:
+
+```consolve
+{
+  "SECRET_KEY": "write_down_random_50_characters_here",
+  "EMAIL_USER": "username_for_email_service",
+  "EMAIL_PASS": "password_for_email_service"
+}
+```
+
 
 Then create a super user with the following command:
 
