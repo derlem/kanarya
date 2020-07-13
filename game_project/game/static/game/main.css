@@ -475,6 +475,10 @@ tr:nth-child(even) {
   padding-left: +2em;
 }
 
+.inline-block {
+   display: inline-block;
+}
+
 .poster_row {
   display: flex;
 }
