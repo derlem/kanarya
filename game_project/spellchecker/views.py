@@ -18,28 +18,26 @@ url = finders.find('best-model.pt')
 flair.device = torch.device('cpu')
 classifier = SequenceTagger.load_from_file(url)
 
-def query(request):
 
+def query(request):
     if request.method == 'POST':
 
         form = QueryForm(request.POST)
 
         if form.is_valid():
 
-
             sentence = form.cleaned_data['sentence']
 
             request.session['sentence'] = sentence
-            
+
             query = Query(sentence=sentence)
 
             if request.user.is_authenticated:
-            	query.user = request.user
-            
+                query.user = request.user
+
             query.save()
 
             request.session['query_pk'] = query.pk
-            
 
             return redirect('spellchecker_answer')
 
@@ -48,46 +46,40 @@ def query(request):
 
         form = QueryForm()
 
-
     return render(request, 'spellchecker/spellchecker_query.html')
 
+
 def answer(request):
+    sentence = request.session.get('sentence')
 
-	sentence = request.session.get('sentence')
+    labeled_words, is_error_found = spellchecker(sentence)
 
-	labeled_words, is_error_found = spellchecker(sentence)
+    context = {
+        'labeled_words': labeled_words,
+        'is_error_found': is_error_found,
+    }
 
-	context = {
-	'labeled_words': labeled_words,
-	'is_error_found': is_error_found,
-	}
+    if request.method == 'POST':
 
+        form = QueryFeedbackForm(request.POST)
 
-	if request.method == 'POST':
+        if form.is_valid():
+            report = form.cleaned_data['report']
 
-		form = QueryFeedbackForm(request.POST)
+            query_pk = request.session.get('query_pk')
+            query = Query.objects.filter(pk=query_pk)[0]
 
-		if form.is_valid():
+            query.sentence = query.sentence + " | REPORT: " + report
 
-			report = form.cleaned_data['report']
+            query.save()
 
-			query_pk = request.session.get('query_pk')
-			query = Query.objects.filter(pk=query_pk)[0]
+            return redirect('spellchecker_query')
 
-			query.sentence = query.sentence + " | REPORT: " + report
+    else:
 
-			query.save()
+        form = QueryFeedbackForm()
 
-			return redirect('spellchecker_query')
-
-	else:
-
-		form = QueryFeedbackForm()
-
-
-
-
-	return render(request, 'spellchecker/spellchecker_answer.html', context)
+    return render(request, 'spellchecker/spellchecker_answer.html', context)
 
 
 def spellchecker(sentence):
@@ -105,21 +97,18 @@ def spellchecker(sentence):
 
     print(tagged_string)
 
+    is_error_found = False
+
     idx = 0
     for token in tokens:
-	is_error_found = False
-
-
-	idx = 0
-	for token in tokens:
 
         print(str(idx) + ": " + token)
 
-		if token == '<B-ERR>':
+        if token == '<B-ERR>':
 
-			is_error_found = True
+            is_error_found = True
 
-			labels[idx-1] = True
+            labels[idx - 1] = True
 
             # if de/da is seperate, highlight the word before the de/da as well
             if len(words[idx - 1]) == 2:
@@ -140,4 +129,4 @@ def spellchecker(sentence):
 
     labeled_words = [{'word': words[i], 'label': labels[i]} for i in range(len(words))]
 
-	return labeled_words, is_error_found
+    return labeled_words, is_error_found

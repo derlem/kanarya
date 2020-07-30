@@ -1,0 +1,99 @@
+{% extends 'game/base.html' %}
+{% load static %}
+{% block content %}
+
+
+    <div class="spellchecker">
+
+        <h1>-de/-da Yazım Hatası Bulucu</h1>
+
+        <br>
+        <br>
+
+        <div class="spellchecker_answer">
+
+            {% for entry in labeled_words %}
+
+                {% if entry.label == True %}
+
+                    <span style="background: #f06b81; font-size:3vh" >{{entry.word}}</span>
+
+                {% else %}
+
+                    <span style="font-size:3vh">{{entry.word}}</span>
+
+                {% endif %}
+
+            {% endfor  %}
+
+        </div>
+
+        <br>
+
+        <div align="center">
+
+            {% if is_error_found %}
+
+            {% else %}
+
+                <p style="color: green; font-size:2vh;" >Hata bulunamadı.</p>
+
+
+            {% endif %}
+
+        </div>
+
+        <br>
+
+        <div >
+            <a  href=" {% url 'spellchecker_query' %} " class="btn btn-outline-info mb-4">Başka bir cümle dene</a>
+        </div>
+
+        <br>
+        <br>
+
+        <div>
+
+            <button id="reportButton" class="btn btn-danger mb-4" name="answer" value="Show Div" onclick="showDiv()">Hata Bildir</button>
+        </div>
+
+
+        <div id="reportDiv" align="center" style="display:none;">
+
+            <h3>Hata Bildir</h3>
+
+            <form  method="POST" id="report">
+                {% csrf_token %}
+
+                <div class="textdiv">
+
+                    <textarea style="width: 80%; font-size:2vh;" rows="4" cols="50" name="report" id="report" placeholder="Hata mesajını giriniz..."></textarea>
+
+
+
+                </div>
+
+                <br>
+                <br>
+
+                <div>
+                    <button align="center" style="background-color: #f73106; color: white;" type="submit">Hata Bildir</button>
+                </div>
+
+            </form>
+
+
+
+        </div>
+    </div>
+
+    <script >
+
+        function showDiv() {
+           document.getElementById('reportDiv').style.display = "block";
+           $("#reportButton").hide()
+        }
+
+    </script>
+
+{% endblock content %}
