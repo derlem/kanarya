@@ -469,3 +469,52 @@ tr:nth-child(even) {
   font-size:3vh;
   font-family: "Courier New", Courier, monospace;
 }
+
+.indented_text {
+  //text-indent: +2em;
+  padding-left: +2em;
+}
+
+.inline-block {
+   display: inline-block;
+}
+
+.poster_row {
+  display: flex;
+}
+
+/* Create three equal columns that sits next to each other */
+.poster_column {
+  flex: 50%;
+  padding: 15px;
+}
+
+.poster_caption {
+  text-align: center;
+  font-size:2vh;
+}
+
+#t01 tr:nth-child(even) {
+  background-color: #eee;
+}
+#t01 tr:nth-child(odd) {
+ background-color: #eee;
+}
+#t01 th {
+  background-color: black;
+  color: white;
+}
+
+#img_poster img {
+  border: 5px solid #555;
+}
+
+.news_row {
+  display: flex;
+}
+
+/* Create three equal columns that sits next to each other */
+.news_column {
+  flex: 33.33%;
+  padding: 15px;
+}

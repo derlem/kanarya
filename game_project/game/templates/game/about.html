@@ -1,16 +1,135 @@
 {% extends 'game/base.html' %}
+{% load static %}
 {% block content %}
+
+	<h2 style="text-align: center;">Hakkımızda</h2>
+
+	<br>
 
 	<div class="container">
 
-		<p>Bu site ve ilgili çalışma Boğaziçi Üniversitesi Bilgisayar Mühendisliğinde geliştirilmiştir.</p>
+		<p>Bu site ve ilgili çalışma Boğaziçi Üniversitesi Bilgisayar Mühendisliğinde geliştirilmiştir. Bu çalışmanın altyapısını ve deneyimizin sonuçlarını açıklayacağımız akademik makaleleri, çalışmanın yazılım altyapısını ve ilgili diğer haberleri hazır oldukça paylaşacağız. Bu çıktılardan zamanında haberdar olmak isterseniz bu sayfayı, <a href="https://twitter.com/DeDaTakintisi">Twitter</a> sayfamızı ya da kişisel sosyal mesya hesaplarımızı takip edebilirsiniz. Çalışma hakkında temel seviyede bilgi edinmek isterseniz aşağıdaki posterlerimizi inceleyebilirsiniz.</p>
 
-		<h4>İletişim</h4>
+		<br>
 
-		<p>Hasan Öztürk : hasan.ozturk@boun.edu.tr</p>
-		<p>Alperen Değirmenci : alperen.degirmenci@boun.edu.tr</p>
-		<p>Onur Güngör : onurgu@boun.edu.tr</p>
-		<p>Suzan Üsküdarlı : suzan.uskudarli@boun.edu.tr</p>
+		<div class="container">
+
+			<h3 style="text-align: center;"> Haberler </h3>
+
+			<br>
+			<!--
+			<div class="news_row">
+			  <div class="news_column">
+			  	<figure>
+			  	  <a href="https://haberler.boun.edu.tr/tr/haber/bogazicililerden-de-da-takintisi-icin-web-sitesi">
+			  	  	<img id="img_poster" src="{% static 'game/boun_haber.png' %}" alt="Poster 1" style="width:100%">
+			  	  </a>
+				  <figcaption class="poster_caption">Boğaziçi Üniversitesi Haberleri, Temmuz 2020</figcaption>
+				</figure>
+			  </div>
+			  <div class="news_column">
+			  	<figure>
+				  <a href="https://www.milliyet.com.tr/pazar/de-ve-daya-muhendis-dokunusu-6256670">
+			  	  	<img id="img_poster" src="{% static 'game/milliyet_haber.png' %}" alt="Poster 2" style="width:100%">
+			  	  </a>
+				  <figcaption class="poster_caption">Milliyet Gazetesi, Temmuz 2020</figcaption>
+				</figure>
+			  </div>
+			  <div class="news_column">
+			  	<figure>
+				  <a href="https://www.webtekno.com/de-da-nasil-yazilir-hata-bulucu-h95646.html">
+			  	  	<img id="img_poster" src="{% static 'game/webtekno_haber.png' %}" alt="Poster 2" style="width:100%">
+			  	  </a>
+				  <figcaption class="poster_caption">Webtekno, Haziran 2020</figcaption>
+				</figure>
+			  </div>
+			</div>
+			-->
+
+			<div>
+
+				<ul>
+				  <li><a href="https://www.milliyet.com.tr/pazar/de-ve-daya-muhendis-dokunusu-6256670">“De ve da”ya mühendis dokunuşu</a> (<b>Milliyet Pazar</b>, 12/07/2020, <a href="{% static 'game/milliyet_haber.png' %}">küpür</a>)</li>
+				  <li><a href="https://haberler.boun.edu.tr/tr/haber/bogazicililerden-de-da-takintisi-icin-web-sitesi">Boğaziçililerden "-de/-da Takıntısı" için web sitesi</a>  (<b>Boğaziçi Üniversitesi Haberleri</b>, 09/07/2020, <a href="{% static 'game/boun_haber.png' %}">küpür</a>)</li>
+				  <li><a href="https://www.webtekno.com/de-da-nasil-yazilir-hata-bulucu-h95646.html">'-De, -Da' Ekini Doğru Yazıp Yazmadığınızı Kontrol Eden İnternet Sitesi</a> (<b>Webtekno</b>, 25/06/2020, <a href="{% static 'game/webtekno_haber.png' %}">küpür</a>)</li>
+				</ul>
+
+			</div>
+
+		</div>
+
+		<br>
+
+		<h3 style="text-align: center;">Bize Ulaşın</h3>
+
+		<br>
+
+		<table id="t01">
+		  <tr>
+		    <th></th>
+		    <th>Araştırmacı</th>
+		    <th>İletişim</th>
+		  </tr>
+		  <tr>
+		    <td> <img src="{% static 'game/hasan.jpeg' %}" width="100em" height="100em"> </td>
+		    <td> Hasan Öztürk </td>
+		    <td> 
+		    	<p><a href = "mailto: hasan.ozturk@boun.edu.tr">E-mail</a></p>
+		    	<p><a href="https://www.linkedin.com/in/hasan-öztürk-6bb759150/">Linkedin</a></p>
+		    	<!--<p><a href="https://twitter.com/hasannozturkk">Twitter</a></p>-->
+		    </td>
+		  </tr>
+		  <tr>
+		    <td> <img src="{% static 'game/alperen.jpeg' %}" width="100em" height="100em"> </td>
+		    <td> Alperen Değirmenci </td>
+		    <td> 
+		    	<p><a href = "mailto: alperen.degirmenci@boun.edu.tr">E-mail</a></p>
+		    	<p><a href="https://www.linkedin.com/in/alperen-degirmenci/">Linkedin</a></p>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td> <img src="{% static 'game/onur.jpeg' %}" width="100em" height="100em"> </td>
+		    <td> Onur Güngör </td>
+		    <td> 
+		    	<p><a href="https://www.cmpe.boun.edu.tr/~onurgu/">https://www.cmpe.boun.edu.tr/~onurgu/</a></p>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td> <img src="{% static 'game/suzan.jpeg' %}" width="100em" height="100em"> </td>
+		    <td> Dr. Suzan Üsküdarlı </td>
+		    <td> 
+		    	<p><a href="https://www.cmpe.boun.edu.tr/~uskudarli/">https://www.cmpe.boun.edu.tr/~uskudarli/</a></p>
+		    </td>
+		  </tr>
+		</table>
+
+	</div>
+
+	<br>
+
+	<div class="container">
+
+		<h3 style="text-align: center;"> Posterler </h3>
+
+
+		<div class="poster_row">
+		  <div class="poster_column">
+		  	<figure>
+		  	  <a href="{% static 'game/Poster1.png' %}">
+		  	  	<img id="img_poster" src="{% static 'game/Poster1.png' %}" alt="Poster 1" style="width:100%">
+		  	  </a>
+			  <figcaption class="poster_caption">Poster 1: "de/da" yazım hatası bulucunun geliştirilmesi</figcaption>
+			</figure>
+		  </div>
+		  <div class="poster_column">
+		  	<figure>
+			  <a href="{% static 'game/Poster2.png' %}">
+		  	  	<img id="img_poster" src="{% static 'game/Poster2.png' %}" alt="Poster 2" style="width:100%">
+		  	  </a>
+			  <figcaption class="poster_caption">Poster 2: "de/da" yazım hatası bulucunun açıklanması</figcaption>
+			</figure>
+		  </div>
+		</div>
 
 	</div>
 

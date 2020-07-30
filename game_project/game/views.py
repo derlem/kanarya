@@ -11,10 +11,13 @@ import os
 from .forms import ActivityForm, ReportForm#, ProfForm
 
 from .models import Sentence, Question, Activity, Decision, Report
+from spellchecker.models import Query
 
 from enum import Enum
 
 from django.core.paginator import Paginator
+
+ADMIN_USERNAME = 'hasan'
 
 NUM_OF_PROF_QUESTIONS = 5
 
@@ -417,41 +420,201 @@ def test_end(request):
 @login_required
 def stats(request):
 
-    decision_count = len(Decision.objects.all())
+    if request.user.username != ADMIN_USERNAME:
+        return render(request, 'game/no_access_message.html')
 
-    skip_count = 0
+    spellchecker_metrics = get_spellchecker_metrics()
 
-    correct_answer_count = 0
+    mode_metrics = {
 
-    for decision in Decision.objects.all():
+        'MODE_0': get_mode_metrics('MODE_0'),
+        'MODE_1': get_mode_metrics('MODE_1'),
+        'MODE_2': get_mode_metrics('MODE_2'),
+        'MODE_3': get_mode_metrics('MODE_3'),
+        'MODE_4': get_mode_metrics('MODE_4'),
+        'MODE_5': get_mode_metrics('MODE_5'),
+        'MODE_6': get_mode_metrics('MODE_6'),
 
-        status = decision.question.sentence.status
-        answer = decision.name
+    }
 
-        if answer == status:
-            correct_answer_count += 1
-
-        if answer == 'SKIP':
-            skip_count += 1
-
-    incorrect_answer_count = decision_count - correct_answer_count - skip_count
-
-    success_rate = round((correct_answer_count / decision_count), 2)*100
+    general_metrics = get_general_metrics(mode_metrics)
 
     context = {
-
-        'decision_count': decision_count,
-        'skip_count': skip_count,
-        'correct_answer_count': correct_answer_count,
-        'incorrect_answer_count': incorrect_answer_count,
-        'success_rate': success_rate,
-
+        'general_metrics': general_metrics,
+        'mode_metrics': mode_metrics,
+        'spellchecker_metrics': spellchecker_metrics
     }
 
     return render(request, 'game/stats.html', context)
 
+def get_mode_metrics(mode):
+    
+    answer_count, correct_count, incorrect_count, indecision_count, skip_count = 0, 0, 0, 0, 0 
+
+    answer_count = Question.objects.all().filter(mode=mode).count()
+
+    # Calculate answer counts
+    for question in Question.objects.all().filter(mode=mode):
+
+        # Solve the bug of question without decisions: Investigate
+        if not hasattr(question, 'decision'):
+            continue
+
+        decision = question.decision.name
+        status = question.sentence.status
+
+        if decision == status:
+            correct_count += 1
+        elif decision == 'INDECISIVE':
+            indecision_count += 1
+        elif decision == 'SKIP':
+            skip_count += 1
+
+    incorrect_count = answer_count - correct_count - indecision_count - skip_count
+
+    # Calculate scores
+    accuracy_score = correct_count / (correct_count + incorrect_count)
+    indecision_score = indecision_count  / (correct_count + incorrect_count + indecision_count)
+
+    accuracy_score = round(accuracy_score, 2)
+    indecision_score = round(indecision_score, 2)
+
+    mode_metrics = {
+
+        'answer_count': answer_count,
+        'correct_count': correct_count,
+        'incorrect_count': incorrect_count,
+        'indecision_count': indecision_count,
+        'skip_count': skip_count,
+        'accuracy_score': accuracy_score,
+        'indecision_score': indecision_score,
+
+    }
+
+    return mode_metrics
+
+def get_general_metrics(mode_metrics):
+
+    user_count = User.objects.all().count()
+    report_count = Report.objects.all().count()
+
+    answer_count, correct_count, incorrect_count, indecision_count, skip_count = 0, 0, 0, 0, 0 
+
+    # Find the general metrics by aggregating mode metrics
+    for mode_name, metrics in mode_metrics.items():
+        answer_count += metrics.get('answer_count')
+        correct_count += metrics.get('correct_count')
+        incorrect_count += metrics.get('incorrect_count')
+        indecision_count += metrics.get('indecision_count')
+        skip_count += metrics.get('skip_count')
+
+    # Calculate scores
+    accuracy_score = correct_count / (correct_count + incorrect_count)
+    indecision_score = indecision_count  / (correct_count + incorrect_count + indecision_count)
+
+    accuracy_score = round(accuracy_score, 2)
+    indecision_score = round(indecision_score, 2)
+
+    general_metrics = {
+
+        'user_count': user_count,
+        'answer_count': answer_count,
+        'correct_count': correct_count,
+        'incorrect_count': incorrect_count,
+        'indecision_count': indecision_count,
+        'skip_count': skip_count,
+        'accuracy_score': accuracy_score,
+        'indecision_score': indecision_score,
+        'report_count': report_count,
+
+    }
+
+    return general_metrics
+
+def get_spellchecker_metrics():
+
+    query_count = Query.objects.all().count()
+
+    spellchecker_metrics = {
+        'query_count': query_count
+    }
+
+    return spellchecker_metrics
+
+@login_required
+def stats_decision_csv(request):
+
+    if request.user.username != ADMIN_USERNAME:
+        return render(request, 'game/no_access_message.html')
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="decision_stats.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['decision_id', 'user_id', 'sentence_id', 'mode', 'relative_mask_pos', 'relative_unmask_pos', 'decision', 'status', 'is_correct'])
+
+    for question in Question.objects.all():
+
+        # Solve the bug of question without decisions: Investigate
+        if not hasattr(question, 'decision'):
+            continue
+
+        decision_id = question.decision.pk 
+        decision = question.decision.name 
+        status = question.sentence.status 
+
+        sentence_id = question.sentence.pk 
+
+        user_id = question.user.pk 
+
+        mode = question.mode 
+
+        relative_mask_pos = question.relative_mask_pos
+        relative_unmask_pos = question.relative_unmask_pos
+
+        is_correct = "False" #
+
+        if decision == status:
+            is_correct = "True"
+        elif decision == 'INDECISIVE':
+            is_correct = "-"
+        elif decision == 'SKIP':
+            is_correct = "-"
+
+        writer.writerow([decision_id, user_id, sentence_id, mode, relative_mask_pos, relative_unmask_pos, decision, status, is_correct])
+    
+    return response
+
+@login_required
+def stats_sentence_csv(request):
+
+    if request.user.username != ADMIN_USERNAME:
+        return render(request, 'game/no_access_message.html')
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="sentence_stats.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['sentence_id', 'text', 'pos', 'clitic', 'status', 'decision_count'])
+
+    for sentence in Sentence.objects.all():
+
+        sentence_id = sentence.pk
+        text = sentence.text
+        pos = sentence.pos
+        clitic = sentence.clitic
+        status = sentence.status
+        decision_count = sentence.decision_count
+
+        writer.writerow([sentence_id, text, pos, clitic, status, decision_count])
+
+    return response
+
 @login_required
 def sentence_counts(request):
+
+    if request.user.username != ADMIN_USERNAME:
+        return render(request, 'game/no_access_message.html')
 
     sentences = Sentence.objects.all().order_by('-decision_count')
 
@@ -491,6 +654,7 @@ def get_warmup_question_context(warmup_question_index):
 
     return text, status, clitic, pos
 
+@login_required
 def warmup_question(request):    
 
     warmup_question_index = request.user.profile.last_seen_warmup_idx
@@ -589,7 +753,7 @@ def warmup_question(request):
     return render(request, 'game/warmup_question.html',context)
     
 
-
+@login_required
 def warmup_answer(request):
 
     # Get the question context

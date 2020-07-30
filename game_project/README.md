@@ -15,13 +15,38 @@ $ cd kanarya/
 $ git checkout --track origin/game_project
 $ cd game_project/
 $ pip install -r requirements.txt
+$ #Get the spellchecker model if you have access to minerva. For example:
+$ scp path_to_the_spellchecker_model spellchecker/static/
 $ python manage.py migrate
 ```
+
+Create a configuration file for the application:
+
+```console
+sudo touch /etc/kanarya_config.json
+```
+
+Afterwards fill in the following three variables inside this file:
+
+```consolve
+{
+  "SECRET_KEY": "write_down_random_50_characters_here",
+  "EMAIL_USER": "username_for_email_service",
+  "EMAIL_PASS": "password_for_email_service"
+}
+```
+
 
 Then create a super user with the following command:
 
 ```console
 $ python manage.py createsuperuser
+```
+
+This version is in the production mode. If you want to run it in the development mode, set the `DEBUG` setting to `True`
+```console
+$ vim game_project/settings.py
+$ #Set the DEBUG to True
 ```
 
 Lastly, run the server:
@@ -30,5 +55,5 @@ Lastly, run the server:
 $ python manage.py runserver
 ```
 
-Go to `http://127.0.0.1:8000/login` and login with the super user.
+Go to `http://127.0.0.1:8000/`
 
