@@ -1,6 +1,0 @@
-[submodule "bert_pretraining/bert"]
-	path = training/bert_pretraining/bert
-	url = https://github.com/onurgu/bert.git
-[submodule "bert_pretraining/bert_google"]
-	path = training/bert_pretraining/bert_google
-	url = https://github.com/haozturk/bert.git
