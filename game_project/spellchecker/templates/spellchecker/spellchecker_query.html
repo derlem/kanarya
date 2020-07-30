@@ -1,0 +1,59 @@
+{% extends 'game/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+	
+
+	<div class="spellchecker">
+
+		<h1>-de/-da Yazım Hatası Bulucu</h1>
+
+		<br>
+        <br>
+
+		<form method="POST">
+        	{% csrf_token %}
+
+            <textarea  class="spellchecker_query" name="sentence" rows="4" cols="50"  id="sentence" placeholder="Denemek için içinde de/da ek ya da bağlacı geçen bir cümle yazın..."></textarea>
+
+		    <!--<p>Cümle: <input style="width: 500px" type="text" name="sentence"></p>-->
+
+		    <br>
+		    <br>
+
+		    <p><input class="btn btn-outline-info mb-4" type="submit" value="Denetle"></p>
+		</form>
+
+
+    </div>
+
+    <div align="center">
+
+    	<!--Eğer "-de/-da" yazım hatası bulucuyu beğendiyseniz bu programı geliştirmeye <a href="{% url 'welcome' %}">katkıda bulunmak ister misiniz?</a> -->
+
+    	"-de/-da" hatalarıyla ilgili sürmekte olan <a href="{% url 'welcome' %}">deneyimize de katılmak ister misiniz?</a>
+
+    </div>
+
+	<div class="select-box">
+    
+	  <label for="dropdown" class="label select-box1"><span class="label-desc">Örnek bir cümle seçin.</span> </label>
+	  <select id="dropdown" class="select">
+	  	<option value=""></option>
+	    <option value="Ekran da Tarkan'ı gören seyirciler çok heyecanlandı.">Ekran da Tarkan'ı gören seyirciler çok heyecanlandı.</option>
+	    <option value="Gördük ki evden çıkmadanda hayat devam ediyor.">Gördük ki evden çıkmadanda hayat devam ediyor.</option>
+	    <option value="Yazım denetleyicisini onlarda çok beğendi.">Yazım denetleyicisini onlarda çok beğendi.</option>
+	  </select>
+		    
+	</div>
+
+<script type="text/javascript">
+	
+var mytextbox = document.getElementById('sentence');
+var mydropdown = document.getElementById('dropdown');
+
+mydropdown.onchange = function(){
+     mytextbox.value = this.value;
+}
+</script>
+
+{% endblock content %}

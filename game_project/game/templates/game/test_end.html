@@ -1,0 +1,43 @@
+{% extends 'game/base.html' %}
+{% block content %}
+
+	<div align="center">
+
+		<!--<h2>Test bitti, çok teşekkürler!</h2>-->
+
+		<br>
+		<br>
+
+		<h5>Eğer bize yardımcı olmaya devam etmek isterseniz bir kere daha çözebilirsiniz.</h5>
+		<h4></h4>
+
+		<br>
+		<br>
+
+		<a class="btn btn-outline-info" href=" {% url 'question' %} ">YENİ DENEY</a>
+
+		<br>
+		<br>
+		<br>
+		<br>
+
+
+		<h5>"-de/-da" yazım hatalarını tespit eden uygulamayı kendi cümlelerinizle sınamak isterseniz kapımız her zaman açık!</h5>
+
+		<br>
+
+		<a class="btn btn-outline-info" href=" {% url 'spellchecker_query' %} ">Yazım denetleyicisine git.</a>
+
+		<br>
+		<br>
+		<br>
+		<br>
+
+		<h5>Eğer bu çalışma ile ilgili geribildirim vermek isterseniz bize şu e-mail adresinden ulaşabilirsiniz: <a href = "mailto: hasan.ozturk@boun.edu.tr">hasan.ozturk@boun.edu.tr</a> </h5>
+
+
+	</div>
+
+	
+	
+{% endblock content %}

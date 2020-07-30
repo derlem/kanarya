@@ -1,0 +1,117 @@
+{% extends 'game/base.html' %}
+{% block content %}
+
+	<div>
+
+		<h2>Spellchecker Statistics</h2>
+
+		<table>
+		  <tr>
+		    <th>Metric</th>
+		    <th>Value</th>
+		  </tr>
+		  <tr>
+		    <td>Number of Queries</td>
+		    <td> {{ spellchecker_metrics.query_count }} </td>
+		  </tr>
+		</table>
+
+	</div>	
+
+	<br>
+
+	<div>
+		
+		<h2>General Experiment Statistics</h2>
+
+		<table>
+		  <tr>
+		    <th>Metric</th>
+		    <th>Value</th>
+		  </tr>
+		  <tr>
+		    <td>Number of Users</td>
+		    <td> {{ general_metrics.user_count }} </td>
+		  </tr>
+		  <tr>
+		    <td>Number of Answers</td>
+		    <td> {{ general_metrics.answer_count }} </td>
+		  </tr>
+		  <tr>
+		    <td>Number of Correct Answers</td>
+		    <td> {{ general_metrics.correct_count }} </td>
+		  </tr>
+		  <tr>
+		    <td>Number of Incorrect Answers</td>
+		    <td> {{ general_metrics.incorrect_count }} </td>
+		  </tr>
+		  <tr>
+		    <td>Number of Indecisive Answers</td>
+		    <td> {{ general_metrics.indecision_count }} </td>
+		  </tr>
+		  <tr>
+		    <td>Number of Skips</td>
+		    <td> {{ general_metrics.skip_count }} </td>
+		  </tr>
+		  <tr>
+		    <td>Number of Reports</td>
+		    <td> {{ general_metrics.report_count }} </td>
+		  </tr>
+		  <tr>
+		    <td>Accuracy Score</td>
+		    <td> {{ general_metrics.accuracy_score }} </td>
+		  </tr>
+		  <tr>
+		    <td>Indecision Score</td>
+		    <td> {{ general_metrics.indecision_score }} </td>
+		  </tr>
+		  
+		</table>
+
+	</div>	
+
+	<br>
+
+	<div>
+
+		<h2>Mode Specific Statistics</h2>
+
+		<table>
+	    <tr>
+	    	<th>Mode</th>
+	        <th>Number of Answers</th>
+	        <th>Number of Correct Answers</th>
+	        <th>Number of Incorrect Answers</th>
+	        <th>Number of Indecisive Answers</th>
+	        <th>Number of Skips</th>
+	        <th>Accuracy Score</th>
+	        <th>Indecision Score</th>
+	    </tr>
+
+	    {% for mode_name, metrics in mode_metrics.items %}
+		    <tr> 
+		        <td>{{ mode_name }}</td>
+		        <td>{{ metrics.answer_count }}</td>
+		        <td>{{ metrics.correct_count }}</td>
+		        <td>{{ metrics.incorrect_count }}</td>
+		        <td>{{ metrics.indecision_count }}</td>
+		        <td>{{ metrics.skip_count }}</td>
+		        <td>{{ metrics.accuracy_score }}</td>
+		        <td>{{ metrics.indecision_score }}</td>
+		    </tr>
+		{% endfor %}
+	</table>
+
+	</div>	
+
+	<br>
+
+	
+	
+
+	
+	
+
+	
+	
+{% endblock content %}

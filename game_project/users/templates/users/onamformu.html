@@ -1,0 +1,58 @@
+{% extends 'game/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+	<div class="container">
+
+		<article class="media content-section">
+		  <div class="media-body">
+		    <!--<h2><a class="article-title" href="#">Onam Formu</a></h2>-->
+		    <h2 style="text-align:center" >Onam Formu</h2>
+		    <p class="article-content">
+
+		    	Bu araştırmada Türkçede sıklıkla rastlanan “de/da” bağlacı ve  “-de/da” eklerinin hatalı yazılma halini tespit etmek için veriye dayalı olarak geliştirmiş olduğumuz modelin nasıl çalıştığını daha iyi anlamayı hedefliyoruz. Bunun için size  “de/da”  bağlacı ve/veya eki içeren cümlelerin bir kısmını göstererek sizden “de/da” nın bitişik mi ya da ayrı mı yazılması gerektiğini belirtmenizi isteyeceğiz. 
+
+		    	Sizi  “de/da”  bağlaç ve eki ile ilgili hataların otomatik tespiti için geliştirilmiş bir modelin  anlaşılması ile ilgili bir araştırmaya katılmaya davet ediyoruz. Bu çalışma bilimsel amaçlarla yapılmaktadır.
+
+		    	Çevrimiçi bir ortamda size  “de/da”  bağlacı ve/veya eki içeren belirli bir sayıda cümlenin bir kısmını göstererek sizden  “de/da”’nın bitişik mi veya ayrı mı yazılması gerektiğini belirtmenizi isteyeceğiz. 
+
+				Cevap vermek istemediğiniz soruları atlayabilirsiniz. 
+
+		    	Çalışma yaklaşık 15 dakika sürecektir. İsterseniz bitirdikten sonra da çözmeye devam edebilirsiniz. 
+
+		    	Sizden toplanan veriler hiçbir durumda tek başına kullanılmayacak; birçok katılımcıdan gelen veriler grup halinde değerlendirilecektir. Veriler, kimden geldiğine dair hiçbir bilgiyle eşleştirilmeyecektir. Verileri işleyerek elde ettiğimiz sonuçlar anonim olarak açık bilim standartlarına uygun şekilde bilimsel yayınlarda paylaşılacaktır. 
+
+		    	Çalışmaya katılmanız tamamen isteğe bağlıdır. Bu formu onaylasanız dahi kendinizi rahat hissetmediğiniz herhangi bir anda çalışmayı bırakabilirsiniz. Bu durumda hiçbir olumsuzluk ile karşılaşmayacaksınız ve sizden almış olduğumuz veri dilerseniz imha edilecektir. Bu araştırmaya katılımınız karşılığında size herhangi bir şey verilmeyecektir. Ancak, katılımcı olarak “de/da” denetleyicisini kullanabilir ve deneyde kullanılacak olan verdiğiniz yanıtları görebilirsiniz. Ayrıca, bu çalışmanın sonuçlarını görmek isterseniz bizden isteyebilirsiniz. Bu araştırmanın ileride diğer araştırmacılara ve bu alanda çalışan bireylere katkı yapması beklenmektedir. 
+
+		    	Yapmak istediğimiz araştırmanın size herhangi bir riski yoktur. Bu formu onaylamadan önce sormak istediğiniz bir soru varsa lütfen Suzan Üsküdarlı  (E-mail:suzan.uskudarli@boun.edu.tr; 212-359-7682) ile iletişime geçiniz. Araştırmayla ilgili haklarınız konusunda Sosyal ve Beşeri Bilimler İnsan Araştırmaları Etik Kurulu’na (fminarek@boun.edu.tr ) ile temasa geçebilirsiniz. 
+
+		    	Aşağıdaki “Kabul ediyorum” a tıklayarak yukarıdaki metni okuduğunuzu, katılmanız istenen çalışmanın kapsamını ve amacını, gönüllü olarak üzerinize düşen sorumlulukları tamamen anladığınızı ve  bu çalışmaya tamamen gönüllü olarak katılmayı kabul ettiğinizi teyit edebilirsiniz. Aksi takdirde “Kabul etmiyorum” a basabilirsiniz.
+
+
+		    </p>
+
+		    <!--
+		    <div style="text-align: center">
+		    	<form  method="POST">
+	                {% csrf_token %}
+
+	            	<button type="submit" name="onam" value="true" class="btn btn-outline-success mb-4">Kabul ediyorum</button>
+	            	<button type="submit" name="onam" value="false" class="btn btn-outline-danger mb-4">Kabul etmiyorum</button>
+
+	        	</form>
+		    </div>
+			-->
+
+		  </div>
+		</article>	
+
+		
+
+	</div>
+	
+	
+
+
+
+{% endblock content %}
