@@ -88,6 +88,16 @@ a.article-title:hover {
   position:relative;
 }
 
+.textdiv textarea {
+    width: 80%;
+    font-size:2vh;
+}
+
+.reportForm button {
+    background-color: #f73106;
+    color: white;
+}
+
 .textbutton{
   background-color: #f73106 ;
   color: white;

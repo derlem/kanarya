@@ -10,18 +10,90 @@
 		<br>
         <br>
 
-		<form method="POST">
-        	{% csrf_token %}
+        {% if labeled_words %}
+            <div class="spellchecker_answer">
 
-            <textarea  class="spellchecker_query" name="sentence" rows="4" cols="50"  id="sentence" placeholder="Denemek için içinde de/da ek ya da bağlacı geçen bir cümle yazın..."></textarea>
+                {% for entry in labeled_words %}
 
-		    <!--<p>Cümle: <input style="width: 500px" type="text" name="sentence"></p>-->
+                    {% if entry.label == True %}
 
-		    <br>
-		    <br>
+                        <span style="background: #f06b81; font-size:3vh" >{{entry.word}}</span>
 
-		    <p><input class="btn btn-outline-info mb-4" type="submit" value="Denetle"></p>
-		</form>
+                    {% else %}
+
+                        <span style="font-size:3vh">{{entry.word}}</span>
+
+                    {% endif %}
+
+                {% endfor  %}
+
+            </div>
+
+            <br>
+
+            <div align="center">
+
+                {% if is_error_found %}
+
+                {% else %}
+
+                    <p style="color: green; font-size:2vh;" >Hata bulunamadı.</p>
+
+
+                {% endif %}
+
+            </div>
+
+            <br>
+
+            <div >
+                <a href=" {% url 'spellchecker:query' %} " class="btn btn-outline-info mb-4">Başka bir cümle dene</a>
+            </div>
+
+            <br>
+            <br>
+
+            <div>
+
+                <button id="reportButton" class="btn btn-danger mb-4" name="answer" value="Show Div" onclick="showDiv()">Hata Bildir</button>
+            </div>
+
+
+            <div id="reportDiv" align="center" style="display:none;">
+
+                <h3>Hata Bildir</h3>
+
+                <form method="POST" id="reportForm" action="{% url 'spellchecker:feedback' %}">
+                    {% csrf_token %}
+                    <div class="textdiv">
+                        <textarea rows="4" cols="50" name="report" id="report"
+                                  placeholder="Hata mesajını giriniz..."></textarea>
+                    </div>
+                    <br>
+                    <br>
+                    <div>
+                        <button align="center" type="submit">Hata Bildir</button>
+                    </div>
+
+                </form>
+            </div>
+
+        {% else %}
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <textarea  class="spellchecker_query" name="sentence" rows="4" cols="50" id="sentence" placeholder="Denemek için içinde de/da ek ya da bağlacı geçen bir cümle yazın..."></textarea>
+
+                <!--<p>Cümle: <input style="width: 500px" type="text" name="sentence"></p>-->
+
+                <br>
+                <br>
+
+                <p><input class="btn btn-outline-info mb-4" type="submit" value="Denetle"></p>
+            </form>
+
+        {% endif %}
 
 
     </div>
