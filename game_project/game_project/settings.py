@@ -152,3 +152,5 @@ EMAIL_HOST_PASSWORD = config['EMAIL_PASS']
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
+
+DOMAIN_NAME = 'dedatakintisi.derlem.com'

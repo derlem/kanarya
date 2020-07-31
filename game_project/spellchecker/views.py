@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect, HttpResponseNotAllowed
+from django.http import HttpResponseRedirect, HttpResponseNotAllowed, HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
@@ -11,53 +11,69 @@ from django.contrib.staticfiles import finders
 
 from .models import Query, Feedback
 
-from game.forms import ReportForm
-from game.models import Report
-
-from users.models import User
-
-from game.views import str2bool
-
 url = finders.find('best-model.pt')
 flair.device = torch.device('cpu')
 classifier = SequenceTagger.load_from_file(url)
 
 
+def query_detail(request, random_id):
+
+    query = Query.objects.get(random_id=random_id)
+    if query:
+        is_error_found, labeled_words = parse_tagged_string(query.tagged_sentence)
+        context = {
+            'labeled_words': labeled_words,
+            'is_error_found': is_error_found,
+            'query_random_id': random_id
+        }
+        return render(request, 'spellchecker/spellchecker_query.html', context)
+    else:
+        return HttpResponseNotFound()
+
+
 def query(request):
+    form = QueryForm()
     if request.method == 'GET':
-        form = QueryForm()
+        if 'sentence' in request.GET:
+            sentence = request.GET['sentence']
+        else:
+            sentence = None
     elif request.method == 'POST':
         form = QueryForm(request.POST)
-
         if form.is_valid():
-
             sentence = form.cleaned_data['sentence']
-
-            labeled_words, is_error_found, tagged_sentence = invoke_spellchecker_engine(sentence)
-
-            query = Query(sentence=sentence,
-                          tagged_sentence=tagged_sentence)
-            if request.user.is_authenticated:
-                query.user = request.user
-            else:
-                query.user = None
-            query.save()
-
-            request.session['query_pk'] = query.pk
-
-            context = {
-                'labeled_words': labeled_words,
-                'is_error_found': is_error_found,
-                'form': form
-            }
-
-            # return redirect('spellchecker_answer')
-            return render(request, 'spellchecker/spellchecker_query.html', context)
+        else:
+            sentence = None
     else:
-        form = QueryForm()
+        return HttpResponseNotAllowed(permitted_methods=["GET", "POST"])
 
-    context = {'form': form}
-    return render(request, 'spellchecker/spellchecker_query.html', context)
+    if sentence:
+        labeled_words, is_error_found, tagged_sentence = invoke_spellchecker_engine(sentence)
+
+        query = Query(sentence=sentence,
+                      tagged_sentence=tagged_sentence)
+        if request.user.is_authenticated:
+            query.user = request.user
+        else:
+            query.user = None
+        query.save()
+
+        query_random_id = str(query.random_id)
+        request.session['query_random_id'] = query_random_id
+        request.session['query_pk'] = query.pk
+
+        context = {
+            'labeled_words': labeled_words,
+            'is_error_found': is_error_found,
+            'query_random_id': query_random_id,
+            'form': form
+        }
+
+        # return redirect('spellchecker_answer')
+        return render(request, 'spellchecker/spellchecker_query.html', context)
+    else:
+        context = {'form': form}
+        return render(request, 'spellchecker/spellchecker_query.html', context)
 
 
 def feedback(request):

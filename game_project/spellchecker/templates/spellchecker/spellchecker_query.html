@@ -1,5 +1,7 @@
 {% extends 'game/base.html' %}
 {% load crispy_forms_tags %}
+{% load global_information_tags %}
+
 {% block content %}
 
 
@@ -43,6 +45,14 @@
                 {% endif %}
 
             </div>
+
+            <br/>
+
+            <!--    <a href="{%  url 'spellchecker:query_detail' query_random_id %}">{{ query_random_id }}</a> -->
+            <!-- Trigger -->
+            <button id="copypaste_btn" class="btn" data-clipboard-text="http://{% domain_name %}{% url 'spellchecker:query_detail' query_random_id %}">
+                Bu sonucu başkalarıyla paylaşmak isterseniz tıklayın ve yapıştırın!
+            </button>
 
             <br>
 
