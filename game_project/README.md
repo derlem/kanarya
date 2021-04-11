@@ -57,3 +57,7 @@ $ python manage.py runserver
 
 Go to `http://127.0.0.1:8000/`
 
+Troubleshooting:
+
+- While deploying the app to a server, some libraries create problems. https://serverfault.com/questions/844761/wsgi-truncated-or-oversized-response-headers-received-from-daemon-process 
+
