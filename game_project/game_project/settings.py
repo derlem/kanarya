@@ -14,7 +14,9 @@ import os
 import json
 from django.contrib.messages import constants as messages
 
-with open('/etc/kanarya_config.json') as config_file:
+config_filepath = '/etc/kanarya_config.json'
+
+with open(config_filepath) as config_file:
     config = json.load(config_file)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)

@@ -1,0 +1,5 @@
+{
+  "SECRET_KEY": "loremipsum",
+  "EMAIL_USER": "username",
+  "EMAIL_PASS": "password"
+}
