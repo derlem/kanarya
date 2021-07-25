@@ -27,6 +27,16 @@
 	  gtag('js', new Date());  gtag('config', 'UA-170798910-2');
 	</script>
 
+    <script>
+
+        function showDiv() {
+           document.getElementById('reportDiv').style.display = "block";
+           $("#reportButton").hide()
+        }
+
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
 </head>
 <body>
 
@@ -40,7 +50,7 @@
 	      </button>
 	      <div class="collapse navbar-collapse" id="navbarToggle">
 	        <div class="navbar-nav mr-auto">
-	          <a class="nav-item nav-link" href="{% url 'spellchecker_query' %}">-de/-da Yazım Hatası Bulucu</a>
+	          <a class="nav-item nav-link" href="{% url 'spellchecker:query' %}">-de/-da Yazım Hatası Bulucu</a>
 	          <a class="nav-item nav-link" href="{% url 'about' %}">Hakkımızda</a>
 	        </div>
 	        <!-- Navbar Right Side -->
@@ -89,6 +99,9 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  
+
+    <script>
+        var clipboard = new ClipboardJS('#copypaste_btn');
+    </script>
 </body>
 </html>

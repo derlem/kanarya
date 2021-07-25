@@ -28,7 +28,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = bool(os.environ["DEBUG"]) if "DEBUG" in os.environ else False
 
 ADMINS = [('Hasan', 'hasan.ozturk2398@hotmail.com'),]
 
@@ -152,3 +152,5 @@ EMAIL_HOST_PASSWORD = config['EMAIL_PASS']
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
+
+DOMAIN_NAME = 'dedatakintisi.derlem.com'

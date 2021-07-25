@@ -1,7 +1,9 @@
 {% extends 'game/base.html' %}
 {% load crispy_forms_tags %}
+{% load global_information_tags %}
+
 {% block content %}
-	
+
 
 	<div class="spellchecker">
 
@@ -10,18 +12,98 @@
 		<br>
         <br>
 
-		<form method="POST">
-        	{% csrf_token %}
+        {% if labeled_words %}
+            <div class="spellchecker_answer">
 
-            <textarea  class="spellchecker_query" name="sentence" rows="4" cols="50"  id="sentence" placeholder="Denemek için içinde de/da ek ya da bağlacı geçen bir cümle yazın..."></textarea>
+                {% for entry in labeled_words %}
 
-		    <!--<p>Cümle: <input style="width: 500px" type="text" name="sentence"></p>-->
+                    {% if entry.label == True %}
 
-		    <br>
-		    <br>
+                        <span style="background: #f06b81; font-size:3vh" >{{entry.word}}</span>
 
-		    <p><input class="btn btn-outline-info mb-4" type="submit" value="Denetle"></p>
-		</form>
+                    {% else %}
+
+                        <span style="font-size:3vh">{{entry.word}}</span>
+
+                    {% endif %}
+
+                {% endfor  %}
+
+            </div>
+
+            <br>
+
+            <div align="center">
+
+                {% if is_error_found %}
+
+                {% else %}
+
+                    <p style="color: green; font-size:2vh;" >Hata bulunamadı.</p>
+
+
+                {% endif %}
+
+            </div>
+
+            <br/>
+
+            <!--    <a href="{%  url 'spellchecker:query_detail' query_random_id %}">{{ query_random_id }}</a> -->
+            <!-- Trigger -->
+            <button id="copypaste_btn" class="btn" data-clipboard-text="http://{% domain_name %}{% url 'spellchecker:query_detail' query_random_id %}">
+                Bu sonucu başkalarıyla paylaşmak isterseniz tıklayın ve yapıştırın!
+            </button>
+
+            <br>
+
+            <div >
+                <a href=" {% url 'spellchecker:query' %} " class="btn btn-outline-info mb-4">Başka bir cümle dene</a>
+            </div>
+
+            <br>
+            <br>
+
+            <div>
+
+                <button id="reportButton" class="btn btn-danger mb-4" name="answer" value="Show Div" onclick="showDiv()">Hata Bildir</button>
+            </div>
+
+
+            <div id="reportDiv" align="center" style="display:none;">
+
+                <h3>Hata Bildir</h3>
+
+                <form method="POST" id="reportForm" action="{% url 'spellchecker:feedback' %}">
+                    {% csrf_token %}
+                    <div class="textdiv">
+                        <textarea rows="4" cols="50" name="report" id="report"
+                                  placeholder="Hata mesajını giriniz..."></textarea>
+                    </div>
+                    <br>
+                    <br>
+                    <div>
+                        <button align="center" type="submit">Hata Bildir</button>
+                    </div>
+
+                </form>
+            </div>
+
+        {% else %}
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <textarea  class="spellchecker_query" name="sentence" rows="4" cols="50" id="sentence" placeholder="Denemek için içinde de/da ek ya da bağlacı geçen bir cümle yazın..."></textarea>
+
+                <!--<p>Cümle: <input style="width: 500px" type="text" name="sentence"></p>-->
+
+                <br>
+                <br>
+
+                <p><input class="btn btn-outline-info mb-4" type="submit" value="Denetle"></p>
+            </form>
+
+        {% endif %}
 
 
     </div>
@@ -35,7 +117,7 @@
     </div>
 
 	<div class="select-box">
-    
+
 	  <label for="dropdown" class="label select-box1"><span class="label-desc">Örnek bir cümle seçin.</span> </label>
 	  <select id="dropdown" class="select">
 	  	<option value=""></option>
@@ -43,11 +125,11 @@
 	    <option value="Gördük ki evden çıkmadanda hayat devam ediyor.">Gördük ki evden çıkmadanda hayat devam ediyor.</option>
 	    <option value="Yazım denetleyicisini onlarda çok beğendi.">Yazım denetleyicisini onlarda çok beğendi.</option>
 	  </select>
-		    
+
 	</div>
 
 <script type="text/javascript">
-	
+
 var mytextbox = document.getElementById('sentence');
 var mydropdown = document.getElementById('dropdown');
 

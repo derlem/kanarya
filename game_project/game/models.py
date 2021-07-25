@@ -24,7 +24,7 @@ class Question(models.Model):
 
 class Activity(models.Model):
 	question = models.ForeignKey(Question, on_delete=models.CASCADE)
-	created_at = models.DateTimeField(default=timezone.now())
+	created_at = models.DateTimeField(default=timezone.now)
 	name = models.CharField(max_length=10) # INDECISIVE, SEPARATE, ADJACENT, SKIP, REPORT
 
 
